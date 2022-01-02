@@ -1,0 +1,8 @@
+{
+	"require":
+	{
+		"spipu/html2pdf": "5.*"
+		"fpdf/fpdf": "^1.81"
+		"luecano/numero-a-letras"
+	}
+}

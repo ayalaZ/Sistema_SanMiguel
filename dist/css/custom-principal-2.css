@@ -1,0 +1,90 @@
+
+#page-wrapper{
+    background-color: #F5F5F5;
+}
+.navbar-inverse .navbar-brand{
+    color: #ffffff;
+}
+.navbar-brand{
+  color: #ffffff;
+  font-weight: normal;
+}
+/*Resize icons*/
+.sidebar .fas{
+    font-size: 20px;
+}
+
+/*Top nav right*/
+
+.navbar-top-links li a:hover{
+    color: #212121;
+}
+
+.sidebar .sidebar-nav{
+    height: 4120px;
+    overflow: hidden;
+}
+.sidebar-nav{
+    color: #ffffff;
+    background: #37474F;
+}
+.sidebar-nav ul li{
+    border: 0;
+
+}
+.sidebar-nav ul li a:hover{
+    color: #ffffff;
+    background: #263238;
+}
+
+.sidebar-nav ul li a{
+    border: 0;
+    color: #ffffff;
+}
+.sidebar ul li a.active{
+    background: #A81A1A;
+    -moz-box-shadow:    inset 0 0 4px #000000;
+    -webkit-box-shadow: inset 0 0 4px #000000;
+    box-shadow:         inset 0 0 4px #000000;
+}
+
+.estadistics{
+    background-color: #ffffff;
+    padding-top: 20px;
+    padding-bottom: 35px;
+    border: 1px solid #E0E0E0;
+}
+.comparative{
+    background-color: #ffffff;
+    padding-top: 0px;
+    border: 1px solid #E0E0E0;
+}
+.estadistics .stat-border{
+    border-bottom: 2px solid #b71c1c;
+}
+.estadistics .stat-icon{
+    font-size: 32px;
+    float: left;
+    padding: 10px;
+}
+.estadistics .stat-values{
+    float: left;
+    padding: 10px;
+}
+.estadistics .value{
+    font-size: 18px;
+}
+.estadistics .name{
+    font-size: 12px;
+}
+.orders{
+    background-color: #ffffff;
+    padding-top: 20px;
+    border: 1px solid #E0E0E0;
+}
+td ul.opt{
+    list-style-type: none;
+}
+.actions a:hover{
+    text-decoration: none;
+}
