@@ -27,7 +27,13 @@ function setMenu($permisosActuales, $permisoRequerido)
 {
     return ((intval($permisosActuales) & intval($permisoRequerido)) == 0) ? false : true;
 }
-$articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE Cantidad<'30' ORDER BY IdBodega");
+$bodegas = $mysqli->query("SELECT * FROM tbl_bodega");
+if (isset($_POST['bodega'])) {
+    $bodega = $_POST['bodega'];
+    $articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE IdBodega='$bodega' ORDER BY IdBodega");
+} else {
+    $articulos = $mysqli->query("SELECT * FROM tbl_articulo ORDER BY IdBodega");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,13 +54,10 @@ $articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE Cantidad<'30' ORDE
     <link rel="stylesheet" href="herramientas/dist/css/adminlte.min.css">
     <!-- SWEETALERT -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.css" />
-
-
     <!-- DataTables CSS library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="css/inventario.css">
-
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -68,18 +71,6 @@ $articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE Cantidad<'30' ORDE
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-            <li class="navbar-nav">
-                <a href="inventario.php" class="nav-link"><i class="fas fa-warehouse"></i> Inventario</a>
-            </li>
-            <li class="navbar-nav">
-                <a href="asignaciones.php" class="nav-link"><i class="fas fa-exchange-alt"></i> Traslados y Asignaciones</a>
-            </li>
-            <li class="navbar-nav">
-                <a href="reportes.php" class="nav-link"><i class="fas fa-file-alt"></i> Reportes Inventario</a>
-            </li>
-            <li class="navbar-nav">
-                <a href="HistorialRegistros.php" class="nav-link"><i class="fas fa-scroll"></i> Detalle de registros</a>
             </li>
         </ul>
         <!-- Right navbar links -->
@@ -116,7 +107,7 @@ $articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE Cantidad<'30' ORDE
                     <!--<img src="herramientas/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">-->
                 </div>
                 <div class="info">
-                    <a href="index.php"><?php echo $_SESSION['nombres'] ?></a>
+                    <a href="index.php"><?php echo $_SESSION['nombres']; ?></a>
                 </div>
             </div>
             <!-- menu -->
@@ -213,58 +204,70 @@ $articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE Cantidad<'30' ORDE
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3>Informacion sobre los articulos</h3>
+                    <h3>Inventario</h3>
                 </div>
             </div>
         </div>
-        <section class="content">
+        <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Alertas de los articulos</h3>
+                    <button class="btn btn-info float-right"><i class="fas fa-plus"></i> Agregar Nuevo Articulo</button>
                 </div>
                 <div class="card-body">
                     <table class="table tabla">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th colspan="5">
+                                    <select name="bodega" id="bodega" class="form-control">
+                                        <option value="">Todas</option>
+                                        <?php 
+                                            while ($datos = $bodegas->fetch_array()) {
+                                                ?>
+                                                    <option value="<?php echo $datos['IdBodega'] ?>"><?php echo $datos['NombreBodega'] ?></option>
+                                                <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </th>
+                            </tr>
+                            <tr>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
-                                <th>Descripcion</th>
-                                <th>Cantidad</th>
+                                <th>Cant</th>
                                 <th>Bodega</th>
+                                <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $contador = 1;
+
                             while ($datos = $articulos->fetch_array()) {
                                 $idBodega = $datos['IdBodega'];
                                 $bodega = $mysqli->query("SELECT * FROM tbl_bodega WHERE IdBodega='$idBodega'");
                                 $ArregleBodegas = $bodega->fetch_array();
-                                if ($datos['Cantidad'] < 10) {
                             ?>
-                                    <tr class="table-danger">
-                                        <td><?php echo $contador ?></td>
-                                        <td><?php echo $datos['Codigo'] ?></td>
-                                        <td><?php echo $datos['NombreArticulo'] ?></td>
-                                        <td><?php echo $datos['Descripcion'] ?></td>
-                                        <td><?php echo $datos['Cantidad'] ?></td>
-                                        <td><?php echo $ArregleBodegas['NombreBodega'] ?></td>
-                                    </tr>
-                                <?php
-                                } else {
-                                ?>
-                                    <tr class="table-warning">
-                                        <td><?php echo $contador ?></td>
-                                        <td><?php echo $datos['Codigo'] ?></td>
-                                        <td><?php echo $datos['NombreArticulo'] ?></td>
-                                        <td><?php echo $datos['Descripcion'] ?></td>
-                                        <td><?php echo $datos['Cantidad'] ?></td>
-                                        <td><?php echo $ArregleBodegas['NombreBodega'] ?></td>
-                                    </tr>
+                                <tr>
+                                    <td><?php echo $datos['Codigo'] ?></td>
+                                    <td><?php echo $datos['NombreArticulo'] ?></td>
+                                    <td><?php echo $datos['Cantidad'] ?></td>
+                                    <td><?php echo $ArregleBodegas['NombreBodega'] ?></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-danger" type="button">Opciones</button>
+                                            <button class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#"><i class="fas fa-eye"></i> Ver</a>
+                                                <a class="dropdown-item" href="#"><i class="fas fa-pencil-alt"></i> Editar</a>
+                                                <a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#"><i class="fas fa-truck-moving"></i> Trasladar</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             <?php
-                                }
-                                $contador = $contador + 1;
                             }
                             ?>
                         </tbody>
@@ -528,6 +531,7 @@ $articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE Cantidad<'30' ORDE
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <!-- DataTables JBootstrap -->
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <script src="js/inventario.js"></script>
     <script>
         $(document).ready(function() {
             $('.tabla').DataTable({
