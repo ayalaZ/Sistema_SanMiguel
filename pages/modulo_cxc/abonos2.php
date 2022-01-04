@@ -130,8 +130,9 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                     <h3 class="card-title">Abonos</h3>
                 </div>
                 <div class="card-body">
-                    <form id="frAbonos" action="php/aplicarAbonosx2.php" method="POST">
+                    <form id="frAbonos" action="#" method="POST">
                         <!--<div class="col-md-12">
+                            php/aplicarAbonosx2.php
                             <div>
                                 <a href="estadoCuenta.php?codigoCliente=<?php if (isset($_GET['codigoCliente'])) echo $_GET['codigoCliente']; ?>" target="_blank" rel="noopener noreferrer" class="btn btn-danger btn-sm"><i style="color:#fff" class="fas fa-file-invoice-dollar"></i></a>
                             </div>
@@ -252,7 +253,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             </div>
                             <div class="col-md-2">
                                 <label for="cuotaapagar">Cuota a pagar</label>
-                                <input type="text" name="totalPagar" id="totalPagar" class="form-control">
+                                <input type="text" name="totalPagar" id="totalPagar" class="form-control" disabled>
                             </div>
                         </div>
                         <div class="row">
@@ -262,25 +263,25 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             </div>
                             <div class="col-md-2">
                                 <label for="cesc">% CESC</label>
-                                <input type="text" name="porImp" id="porImp" class="form-control">
+                                <input type="text" name="porImp" id="porImp" class="form-control" disabled>
                             </div>
                             <div class="col-md-2">
                                 <label for="impuesto">Impuesto seguridad</label>
-                                <input type="text" name="impSeg" id="impSeg" class="form-control">
+                                <input type="text" name="impSeg" id="impSeg" class="form-control" disabled>
                             </div>
                             <div class="col-md-2">
                                 <label for="conimpuesto">Cuota + Impuesto</label>
-                                <input type="text" name="totalAbonoImpSeg" id="totalAbonoImpSeg" class="form-control">
+                                <input type="text" name="totalAbonoImpSeg" id="totalAbonoImpSeg" class="form-control" disabled>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="aplicarCesc" id="aplicarCesc" value="0">
+                                    <input class="form-check-input" type="radio" name="aplicarCesc" id="pospago" value="0">
                                     <label class="form-check-label" for="aplicarCesc">Pospago</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="aplicarCesc" id="aplicarCesc" value="0">
+                                    <input class="form-check-input" type="radio" name="aplicarCesc" id="exento" value="0">
                                     <label class="form-check-label" for="aplicarCesc">Exento</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -315,7 +316,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="text" name="meses" id="meses" class="form-control" placeholder="meses">
+                                <input type="text" name="meses" id="meses" class="form-control" placeholder="meses" >
                             </div>
                             <div class="col-md-3">
                                 <select name="xmeses" id="xmeses" class="form-control">

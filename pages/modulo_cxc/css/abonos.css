@@ -1,3 +1,12 @@
+input,
+textarea {
+    font-weight: bold!important;
+}
+
+option {
+    font-weight: bold!important;
+}
+
 .recibo {
     border: 1px solid #000;
     padding: 10px;

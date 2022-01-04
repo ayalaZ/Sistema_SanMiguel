@@ -225,7 +225,7 @@
                 <br>
 
                 <a href="inventario.php"><button class="btn btn-success pull-left" type="button" name="regresar"><i class="fas fa-arrow-circle-left"></i> Atrás</button></a>
-                <button id="traslados" type="submit" class="btn btn-default pull-left" disabled="disabled" accesskey="t"><i class='fas fa-truck'></i> Trasladar producto a otra Bodega</button>
+                <button id="traslados" type="submit" class="btn btn-default pull-left" accesskey="t"><i class='fas fa-truck'></i> Trasladar producto a otra Bodega</button>
 
                 <button class="btn btn-primary pull-right agregar" type="button" name="button" data-toggle="modal" data-target="#agregar" accesskey="a"><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto a bodega</button>
                 <!-- <button class="btn btn-success pull-right agregar" type="button" name="button" data-toggle="modal" data-target="#regresar"><i class="fas fa-undo"></i> Devolver Producto a bodega</button> -->
@@ -611,7 +611,7 @@
     <script type="text/javascript">
         $(function() {
             $(".checkbox").click(function(){
-                $('#traslados').prop('disabled',$('input.checkbox:checked').length == 0);
+                //$('#traslados').prop('disabled',$('input.checkbox:checked').length == 0);
             });
         });
     </script>

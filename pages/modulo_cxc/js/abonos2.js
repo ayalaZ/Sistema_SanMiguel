@@ -7,6 +7,8 @@ $(document).ready(function() {
         dataType: 'Json',
         success: function(datax) {
             $("#ultimoRecibo").val(datax.valor);
+            $("#porImp").val(0.00);
+            $("#impSeg").val(0.00);
         },
         error: function() {
             swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
@@ -46,6 +48,10 @@ $(document).ready(function() {
                 $("#diaCobro").val(datax.dia);
                 $("#valorCuota").val(datax.cuota);
                 $("#totalPagar").val(datax.cuota);
+                $("#porImp").val("0.00");
+                $("#impSeg").val("0.00");
+                $("#totalAbonoImpSeg").val(datax.cuota);
+                $("#meses").val(datax.meses);
                 document.getElementById("servicio").selectedIndex = 0;
             },
             error: function() {
@@ -73,10 +79,78 @@ $(document).ready(function() {
         });
     });
 
-    var cuotaApagar = document.getElementById("totalPagar");
-    cuotaApagar.addEventListener("keydown", function(e) {
-        if (e.keyCode == 13) {
-            alert("mensaje de prueba");
+    $("#aplicarCesc").change(function() {
+        if (this.checked) {
+            $valor = $(this).val();
+            $cuota = $("#totalPagar").val();
+            $proceso = 'impuesto',
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/informacionCliente.php',
+                    data: { valor: $valor, cuota: $cuota, proceso: $proceso },
+                    dataType: 'Json',
+                    success: function(datax) {
+                        $("#porImp").val(datax.cesc);
+                        $("#impSeg").val(datax.impuesto);
+                        $("#totalAbonoImpSeg").val(datax.total);
+                    }
+                });
         }
+    });
+    $("#pospago").change(function() {
+        if (this.checked) {
+            $valor = $(this).val();
+            $cuota = $("#totalPagar").val();
+            $proceso = 'Sinimpuesto',
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/informacionCliente.php',
+                    data: { valor: $valor, cuota: $cuota, proceso: $proceso },
+                    dataType: 'Json',
+                    success: function(datax) {
+                        $("#porImp").val(datax.cesc);
+                        $("#impSeg").val(datax.impuesto);
+                        $("#totalAbonoImpSeg").val(datax.total);
+                    }
+                });
+        }
+    });
+    $("#exento").change(function() {
+        if (this.checked) {
+            $valor = $(this).val();
+            $cuota = $("#totalPagar").val();
+            $proceso = 'Sinimpuesto',
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/informacionCliente.php',
+                    data: { valor: $valor, cuota: $cuota, proceso: $proceso },
+                    dataType: 'Json',
+                    success: function(datax) {
+                        $("#porImp").val(datax.cesc);
+                        $("#impSeg").val(datax.impuesto);
+                        $("#totalAbonoImpSeg").val(datax.total);
+                    }
+                });
+        }
+    });
+
+    $("#xmeses").change(function() {
+        $meses = $(this).val();
+        $cuota = $("#valorCuota").val();
+        $porcentaje = $("#porImp").val();
+        $mes = $("#meses").val();
+        $proceso = 'meses',
+            $.ajax({
+                type: 'POST',
+                url: 'php/informacionCliente.php',
+                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, mes: $mes },
+                dataType: 'Json',
+                success: function(datax) {
+                    $("#totalPagar").val(datax.cuota);
+                    $("#impSeg").val(datax.impuesto);
+                    $("#totalAbonoImpSeg").val(datax.total);
+                    $("#meses").val(datax.meses);
+                }
+            });
     });
 });
