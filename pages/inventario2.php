@@ -217,23 +217,9 @@ if (isset($_POST['bodega'])) {
                     <table class="table tabla">
                         <thead>
                             <tr>
-                                <th colspan="5">
-                                    <select name="bodega" id="bodega" class="form-control">
-                                        <option value="">Todas</option>
-                                        <?php 
-                                            while ($datos = $bodegas->fetch_array()) {
-                                                ?>
-                                                    <option value="<?php echo $datos['IdBodega'] ?>"><?php echo $datos['NombreBodega'] ?></option>
-                                                <?php
-                                            }
-                                        ?>
-                                    </select>
-                                </th>
-                            </tr>
-                            <tr>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
-                                <th>Cant</th>
+                                <th>Cantidad</th>
                                 <th>Bodega</th>
                                 <th>Opciones</th>
                             </tr>
@@ -535,6 +521,7 @@ if (isset($_POST['bodega'])) {
     <script>
         $(document).ready(function() {
             $('.tabla').DataTable({
+                dom: 'Pfrtip',
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
