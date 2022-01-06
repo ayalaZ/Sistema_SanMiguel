@@ -14,3 +14,10 @@
 .tabla>tbody>tr>td {
     font-weight: bold!important;
 }
+
+.mostrar {
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    font-size: medium;
+}

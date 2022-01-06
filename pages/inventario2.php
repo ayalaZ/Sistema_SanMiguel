@@ -244,11 +244,12 @@ if (isset($_POST['bodega'])) {
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#"><i class="fas fa-eye"></i> Ver</a>
+                                                <a class="Ver dropdown-item" href="#" data-toggle="modal" data-target="#Verarticulo" id="Ver" data="<?php echo $datos['IdArticulo'] ?>"><i class="fas fa-eye"></i> Ver</a>
                                                 <a class="dropdown-item" href="#"><i class="fas fa-pencil-alt"></i> Editar</a>
                                                 <a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Eliminar</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#"><i class="fas fa-truck-moving"></i> Trasladar</a>
+                                                <a class="Salidad dropdown-item" href="#" data-toggle="modal" data-target="#Salidad" data="<?php echo $datos['IdArticulo'] ?>"><i class="fas fa-undo-alt"></i> Salidas</a>
                                             </div>
                                         </div>
                                     </td>
@@ -506,6 +507,97 @@ if (isset($_POST['bodega'])) {
         </div>
     </aside>
     <!-- TELEFONOS -->
+    <!-- Modal Ver Articulos -->
+    <div class="modal fade" id="Verarticulo" tabindex="-1" role="dialog" aria-labelledby="VerarticuloLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="VerarticuloLabel">Detalles</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td>Codigo</td>
+                            <td><input type="text" name="codigo" id="codigo" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Nombre</td>
+                            <td><input type="text" name="nombre" id="nombre" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Descripcion</td>
+                            <td><input type="text" name="descripcion" id="descripcion" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad</td>
+                            <td><input type="text" name="cantidad" id="cantidad" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Fecha</td>
+                            <td><input type="text" name="fecha" id="fecha" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Proveedor</td>
+                            <td><input type="text" name="proveedor" id="proveedor" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Tipo</td>
+                            <td><input type="text" name="tipo" id="tipo" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Categoria</td>
+                            <td><input type="text" name="categoria" id="categoria" class="form-control mostrar" ></td>
+                        </tr>
+                        <tr>
+                            <td>Bodega</td>
+                            <td><input type="text" name="bodega" id="bodega" class="form-control mostrar" ></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin modal Ver articulo -->
+    <!-- Modal para salidas -->
+    <div class="modal fade" id="Salidad" tabindex="-1" role="dialog" aria-labelledby="SalidadLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="SalidadLabel">Especificaciones de salida</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   <form action="#">
+                       <div class="form-group">
+                           <label for="Articulo">Nombre de Articulo</label> 
+                           <input type="text" name="salidad-nombre" id="salidad-nombre" class="form-control mostrar" readonly>
+                       </div>
+                       <div class="form-group">
+                           <label for="fecha">Fecha</label> 
+                           <input type="date" name="salidad-fecha" id="salidad-fecha" class="form-control">
+                       </div>
+                       <div class="form-group">
+                           <label for="cantidad">Cantidad</label> 
+                           <input type="number" name="salidad-cantidad" id="salidad-cantidad" class="form-control" min='1'>
+                       </div>
+                       <div class="form-group">
+                           <label for="descripcion">Descripcion</label> 
+                           <textarea name="salidad-descripcion" id="salidad-descripcion" cols="30" rows="10" class="form-control"></textarea>
+                       </div>
+                       <div class="form-group">
+                           <input type="hidden" name="id" id="id">
+                       </div>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de modal para salidas -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
     <script src="herramientas/plugins/jquery/jquery.min.js"></script>
@@ -517,7 +609,6 @@ if (isset($_POST['bodega'])) {
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <!-- DataTables JBootstrap -->
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
-    <script src="js/inventario.js"></script>
     <script>
         $(document).ready(function() {
             $('.tabla').DataTable({
@@ -545,6 +636,7 @@ if (isset($_POST['bodega'])) {
             });
         });
     </script>
+    <script src="js/inventario.js"></script>
 </body>
 
 </html>
