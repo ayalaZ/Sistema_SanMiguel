@@ -788,7 +788,7 @@ if (isset($_POST['bodega'])) {
                             </div>
                             <div class="col-md-6">
                                 <label for="cantidad">Cantidad</label>
-                                <input type="number" name="Tcatidad" id="Tcantidad" class="form-control" min='1'>
+                                <input type="number" name="Tcantidad" id="Tcantidad" class="form-control" min='1'>
                             </div>
                         </div>
                         <div class="row">
