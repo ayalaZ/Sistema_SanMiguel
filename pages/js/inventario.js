@@ -1,5 +1,156 @@
 $(document).ready(function() {
+    jQuery.validator.addMethod(
+        "money",
+        function(value, element) {
+            var isValidMoney = /^\d{0,4}(\.\d{0,2})?$/.test(value);
+            return this.optional(element) || isValidMoney;
+        },
+        "Insert "
+    );
 
+    $("#formulario-salidas").validate({
+        rules: {
+            salidadfecha: {
+                required: true
+            },
+            salidadcantidad: {
+                required: true
+            },
+            salidaddescripcion: {
+                required: true
+            }
+        },
+        messages: {
+            salidadfecha: {
+                required: "Es dato es requerido",
+            },
+            salidadcantidad: {
+                required: "Este dato es requerido",
+            },
+            salidaddescripcion: {
+                required: 'Este dato es requerido',
+            },
+        },
+        submitHandler: function(form) {
+            agregar_salida();
+        }
+    });
+    $("#formularioEditar").validate({
+        rules: {
+            Editcodigo: {
+                required: true,
+            },
+            Editnombre: {
+                required: true,
+            },
+            Editcantidad: {
+                required: true,
+            },
+            Editfecha: {
+                required: true,
+            },
+            EditprecioC: {
+                required: true,
+                money: true,
+            },
+            EditprecioV: {
+                required: true,
+                money: true,
+            },
+            Edittipo: {
+                required: true,
+            },
+            Editcategoria: {
+                required: true,
+            },
+            Editbodega: {
+                required: true,
+            },
+            Editunidad: {
+                required: true,
+            },
+            Editdescripcion: {
+                required: true,
+            },
+            Editproveedor: {
+                required: true,
+            },
+            Editgarantia: {
+                required: true,
+                min: 1,
+            },
+        },
+        messages: {
+            Editcodigo: {
+                required: 'Este dato es necesario',
+            },
+            Editnombre: {
+                required: 'Este dato es necesario',
+            },
+            Editcantidad: {
+                required: 'Este dato es necesario',
+            },
+            Editfecha: {
+                required: 'Este dato es necesario',
+            },
+            EditprecioC: {
+                required: 'Este dato es necesario',
+                money: 'El valor debe ser tipo moneda',
+            },
+            EditprecioV: {
+                required: 'Este dato es necesario',
+                money: 'El valor debe ser tipo moneda',
+            },
+            Edittipo: {
+                required: 'Este dato es necesario',
+            },
+            Editcategoria: {
+                required: 'Este dato es necesario',
+            },
+            Editbodega: {
+                required: 'Este dato es necesario',
+            },
+            Editunidad: {
+                required: 'Este dato es necesario',
+            },
+            Editdescripcion: {
+                required: 'Este dato es necesario',
+            },
+            Editproveedor: {
+                required: 'Este dato es necesario',
+            },
+            Editgarantia: {
+                required: 'Este dato es necesario',
+                min: 'La cantidad tiene que ser mayor o igual a 1',
+            },
+        },
+        submitHandler: function(form) {
+            editar_articulo();
+        }
+    });
+    $("#formularioTrasladar").validate({
+        rules: {
+            Tcantidad: {
+                required: true,
+            },
+            TbodegaD: {
+                required: true,
+            },
+        },
+        messages: {
+            Tcantidad: {
+                required: "Este dato es necesario",
+                max: "Debe ingresar un valor que este en el rango",
+                min: "Debe ingresar un valor que sea mayor a 1",
+            },
+            TbodegaD: {
+                required: "Este dato es necesario",
+            },
+        },
+        submitHandler: function(form) {
+            trasladar_articulo();
+        }
+    });
 });
 
 $('.Ver').click(function() {
@@ -19,7 +170,7 @@ $('.Ver').click(function() {
             $('#proveedor').val(datax.proveedor);
             $('#tipo').val(datax.tipo);
             $('#categoria').val(datax.categoria);
-            $('#bodega').val(datax.bodega);
+            $('#verbodega').val(datax.bodega);
         }
     });
 });
@@ -35,6 +186,125 @@ $(".Salidad").click(function() {
             success: function(datax) {
                 $("#salidad-nombre").val(datax.nombre);
                 $("#id").val(datax.id);
+                $("#salidadcantidad").attr({
+                    "max": datax.cantidad
+                });
             }
         });
 });
+
+function agregar_salida() {
+    var form = $("#formulario-salidas");
+    var formdata = false;
+    if (window.FormData) {
+        formdata = new FormData(form[0]);
+    }
+    $.ajax({
+        type: 'POST',
+        url: 'controladores/inventario.php',
+        cache: false,
+        data: formdata ? formdata : form.serialize(),
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+
+        success: function(datax) {
+            swal('Estado de la operacion', datax.msg, datax.typeinfo);
+            if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                setInterval('location.reload()', 3000);
+            }
+
+        }
+    });
+}
+
+function editar_articulo() {
+    var form = $("#formularioEditar");
+    var formdata = false;
+    if (window.FormData) {
+        formdata = new FormData(form[0]);
+    }
+    $.ajax({
+        type: 'POST',
+        url: 'controladores/inventario.php',
+        cache: false,
+        data: formdata ? formdata : form.serialize(),
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+
+        success: function(datax) {
+            swal('Estado de la operacion', datax.msg, datax.typeinfo);
+            if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                setInterval('location.reload()', 3000);
+            }
+
+        }
+    });
+}
+
+$(".editar").click(function() {
+    $id = $(this).attr("data");
+    $proceso = "vereditar",
+        $.ajax({
+            type: 'POST',
+            url: 'controladores/inventario.php',
+            data: { id: $id, proceso: $proceso },
+            dataType: 'Json',
+            success: function(datax) {
+                $("#Editid").val(datax.id);
+                $("#EditCodigo").val(datax.codigo);
+                $("#Editnombre").val(datax.nombre);
+                $("#Editcantidad").val(datax.cantidad);
+                $("#Editfecha").val(datax.fecha);
+                $("#EditprecioC").val(datax.precioc);
+                $("#EditprecioV").val(datax.preciov);
+                $("#Editdescripcion").val(datax.descripcion);
+                $("#Editcredito").val(datax.credito);
+                $("#Editgarantia").val(datax.garantia);
+            }
+        });
+});
+$(".trasladar").click(function() {
+    $id = $(this).attr("data");
+    $proceso = "vertrasladar",
+        $.ajax({
+            type: 'POST',
+            url: 'controladores/inventario.php',
+            data: { id: $id, proceso: $proceso },
+            dataType: 'Json',
+            success: function(datax) {
+                $("#Tnombre").val(datax.nombre);
+                $("#TbodegaO").val(datax.bodega);
+                $("#Tcantidad").attr({
+                    "max": datax.cantidad
+                });
+                $("#idtraslado").val(datax.id);
+            }
+        });
+});
+
+function trasladar_articulo() {
+    var form = $("#formularioTrasladar");
+    var formdata = false;
+    if (window.FormData) {
+        formdata = new FormData(form[0]);
+    }
+    $.ajax({
+        type: 'POST',
+        url: 'controladores/inventario.php',
+        cache: false,
+        data: formdata ? formdata : form.serialize(),
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+
+        success: function(datax) {
+            swal('Estado de la operacion', datax.msg, datax.typeinfo);
+            if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                setInterval('location.reload()', 3000);
+            }
+
+        }
+    });
+}

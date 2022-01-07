@@ -21,3 +21,12 @@
     font-weight: bold;
     font-size: medium;
 }
+
+.modal-header {
+    background-color: red;
+    color: #fff;
+}
+
+.error {
+    color: red!important;
+}
