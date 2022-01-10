@@ -163,7 +163,24 @@ switch ($proceso) {
         $categoria = $datos['IdCategoria'];
         $proveedor = $datos['IdProveedor'];
         $cantidadArticulo = $datos['Cantidad'];
+
         if ($cantidad == $cantidadArticulo) {
+            $existeArticulo = $mysqli->query("SELECT * FROM tbl_articulo WHERE NombreArticulo='$nombre' AND Codigo='$codigo' AND IdArticulo!='$id' AND IdBodega='$bodegadestino'");
+            $numerodearticulos = $mysqli->query("SELECT count(*) AS total FROM tbl_articulo WHERE NombreArticulo='$nombre' AND Codigo='$codigo' AND IdArticulo!='$id' AND IdBodega='$bodegadestino'");
+            $datosotroarticulo = $existeArticulo->fetch_array();
+            $datosnumeroarticulos = $numerodearticulos->fetch_array();
+            $nuevoId = $datosotroarticulo['IdArticulo'];
+            if ($datosnumeroarticulos['total'] > 0) {
+                $sumar = $mysqli->query("UPDATE tbl_articulo SET Cantidad = Cantidad + $cantidad WHERE IdArticulo='$nuevoId'");
+                if ($sumar) {
+                    $restar = $mysqli->query("UPDATE tbl_articulo SET Cantidad = Cantidad - $cantidad WHERE IdArticulo='$id'");
+                    $xdatos['msg'] = 'Se sumaron los articulos a la nueva bodega y se dejo en cero los articulo de la anterior bodega';
+                    $xdatos['typeinfo'] = 'success';
+                } else {
+                    $xdatos['msg'] = 'No se pudieron sumar los articulos a la nueva bodega y los articulos de la anterior bodega se dejaron intacto';
+                    $xdatos['typeinfo'] = 'error' . _error();
+                }
+            }else{
             $nuevaBodega = $mysqli->query("UPDATE tbl_articulo SET IdBodega='$bodegadestino' WHERE IdArticulo='$id'");
             if ($nuevaBodega) {
                 $xdatos['msg'] = 'Se traslado todos los articulos a la nueva bodega';
@@ -172,15 +189,17 @@ switch ($proceso) {
                 $xdatos['msg'] = 'No se pudo trasladar los articulos a la nueva bodega';
                 $xdatos['typeinfo'] = 'error' . _error();
             }
+        }
         } else {
-            $existeArticulo = $mysqli->query("SELECT * FROM tbl_articulo WHERE NombreArticulo='$nombre' AND Codigo='$codigo' AND IdArticulo!='$id'");
-            $cantidadArticulos = $existeArticulo->num_rows;
+            $existeArticulo = $mysqli->query("SELECT * FROM tbl_articulo WHERE NombreArticulo='$nombre' AND Codigo='$codigo' AND IdArticulo!='$id' AND IdBodega='$bodegadestino'");
+            $numerodearticulos = $mysqli->query("SELECT count(*) AS total FROM tbl_articulo WHERE NombreArticulo='$nombre' AND Codigo='$codigo' AND IdArticulo!='$id' AND IdBodega='$bodegadestino'");
             $datosotroarticulo = $existeArticulo->fetch_array();
+            $datosnumeroarticulos = $numerodearticulos->fetch_array();
             $nuevoId = $datosotroarticulo['IdArticulo'];
-            if ($cantidad > 0) {
+            if ($datosnumeroarticulos['total'] > 0) {
                 $sumar = $mysqli->query("UPDATE tbl_articulo SET Cantidad = Cantidad + $cantidad WHERE IdArticulo='$nuevoId'");
                 if ($sumar) {
-                    $restar = $mysqli->query("UPDATE tbl_articulo SET Cantidad = Cantidad + $cantidad WHERE IdArticulo='$id'");
+                    $restar = $mysqli->query("UPDATE tbl_articulo SET Cantidad = Cantidad - $cantidad WHERE IdArticulo='$id'");
                     $xdatos['msg'] = 'Se sumaron los articulos a la nueva bodega';
                     $xdatos['typeinfo'] = 'success';
                 } else {
@@ -191,7 +210,7 @@ switch ($proceso) {
                 $insert = $mysqli->query("INSERT INTO tbl_articulo(Codigo, NombreArticulo, Descripcion, Cantidad, PrecioCompra, PrecioVenta, FechaEntrada, nFactura, pGarantia, IdUnidadMedida, IdTipoProducto, IdCategoria, IdProveedor, IdBodega)
                                                         VALUES ('$codigo','$nombre','$descripcion','$cantidad','$precioC','$precioV','$fecha','$credito','$garantia','$unidad','$tipo','$categoria','$proveedor','$bodegadestino')");
                 if ($insert) {
-                    $restar = $mysqli->query("UPDATE tbl_articulo SET Cantidad = Cantidad + $cantidad WHERE IdArticulo='$id'");
+                    $restar = $mysqli->query("UPDATE tbl_articulo SET Cantidad = Cantidad - $cantidad WHERE IdArticulo='$id'");
                     $xdatos['msg'] = 'Se agregaron los articulo a la nueva bodega';
                     $xdatos['typeinfo'] = 'success';
                 } else {

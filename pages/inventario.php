@@ -8,6 +8,7 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION["user"])) {
     header('Location: ../login.php');
 }
+
 const ADMINISTRADOR = 1;
 const CONTABILIDAD = 2;
 const PLANILLA = 4;
@@ -32,11 +33,16 @@ if (isset($_POST['bodega'])) {
     $bodega = $_POST['bodega'];
     if ($bodega != "") {
         $articulos = $mysqli->query("SELECT * FROM tbl_articulo WHERE IdBodega='$bodega' ORDER BY IdBodega");
+        $textobodega = $mysqli->query("SELECT * FROM tbl_bodega WHERE IdBodega='$bodega'");
+        $textodatosBodega = $textobodega->fetch_array();
+        $nombreBodega = $textodatosBodega['NombreBodega'];
     } else {
         $articulos = $mysqli->query("SELECT * FROM tbl_articulo ORDER BY IdBodega");
+        $nombreBodega = "Todas";
     }
 } else {
     $articulos = $mysqli->query("SELECT * FROM tbl_articulo ORDER BY IdBodega");
+    $nombreBodega = "Todas";
 }
 ?>
 <!DOCTYPE html>
@@ -216,7 +222,7 @@ if (isset($_POST['bodega'])) {
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3>Inventario</h3>
+                    <h5>Inventario de la bodega: <?php echo $nombreBodega ?></h5>
                 </div>
             </div>
         </div>
@@ -225,7 +231,7 @@ if (isset($_POST['bodega'])) {
                 <div class="card-header">
                     <button class="btn btn-info float-right"><i class="fas fa-plus"></i> Agregar Nuevo Articulo</button>&nbsp;&nbsp;
                     <form action="inventario.php" method="POST" style="display: inline">
-                        <select class="form-control col-md-2 float-right" id="bodega" name='bodega' onchange="this.form.submit()">
+                        <select class="form-control col-md-3 float-right" id="bodega" name='bodega' onchange="this.form.submit()" style="margin-right: 5px;">
                             <option value="">Seleccione Bodega</option>
                             <option value="">Todas</option>
                             <?php
