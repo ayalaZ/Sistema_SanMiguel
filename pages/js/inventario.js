@@ -151,6 +151,101 @@ $(document).ready(function() {
             trasladar_articulo();
         }
     });
+    $("#formularioIngresar").validate({
+        rules: {
+            Addcodigo: {
+                required: true,
+            },
+            Addnombre: {
+                required: true,
+            },
+            Addcantidad: {
+                required: true,
+                min: 1,
+            },
+            Addfecha: {
+                required: true,
+            },
+            AddprecioC: {
+                required: true,
+                money: true,
+            },
+            AddprecioV: {
+                required: true,
+                money: true,
+            },
+            Addtipo: {
+                required: true,
+            },
+            Addcategoria: {
+                required: true,
+            },
+            Addbodega: {
+                required: true,
+            },
+            Addunidad: {
+                required: true,
+            },
+            Adddescripcion: {
+                required: true,
+            },
+            Addproveedor: {
+                required: true,
+            },
+            Addgarantia: {
+                required: true,
+                min: 1,
+            },
+        },
+        messages: {
+            Addcodigo: {
+                required: 'Este dato es necesario',
+            },
+            Addnombre: {
+                required: 'Este dato es necesario',
+            },
+            Addcantidad: {
+                required: 'Este dato es necesario',
+                min: 'La cantidad tiene que ser mayor o igual a 1',
+            },
+            Addfecha: {
+                required: 'Este dato es necesario',
+            },
+            AddprecioC: {
+                required: 'Este dato es necesario',
+                money: 'El valor debe ser tipo moneda',
+            },
+            AddprecioV: {
+                required: 'Este dato es necesario',
+                money: 'El valor debe ser tipo moneda',
+            },
+            Addtipo: {
+                required: 'Este dato es necesario',
+            },
+            Addcategoria: {
+                required: 'Este dato es necesario',
+            },
+            Addbodega: {
+                required: 'Este dato es necesario',
+            },
+            Addunidad: {
+                required: 'Este dato es necesario',
+            },
+            Adddescripcion: {
+                required: 'Este dato es necesario',
+            },
+            Addproveedor: {
+                required: 'Este dato es necesario',
+            },
+            Addgarantia: {
+                required: 'Este dato es necesario',
+                min: 'La cantidad tiene que ser mayor o igual a 1',
+            },
+        },
+        submitHandler: function(form) {
+            agregar_articulo();
+        }
+    });
 });
 
 $('.Ver').click(function() {
@@ -218,6 +313,31 @@ function agregar_salida() {
     });
 }
 
+function agregar_articulo() {
+    var form = $("#formularioIngresar");
+    var formdata = false;
+    if (window.FormData) {
+        formdata = new FormData(form[0]);
+    }
+    $.ajax({
+        type: 'POST',
+        url: 'controladores/inventario.php',
+        cache: false,
+        data: formdata ? formdata : form.serialize(),
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+
+        success: function(datax) {
+            swal('Estado de la operacion', datax.msg, datax.typeinfo);
+            if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                setInterval('location.reload()', 3000);
+            }
+
+        }
+    });
+}
+
 function editar_articulo() {
     var form = $("#formularioEditar");
     var formdata = false;
@@ -262,6 +382,22 @@ $(".editar").click(function() {
                 $("#Editdescripcion").val(datax.descripcion);
                 $("#Editcredito").val(datax.credito);
                 $("#Editgarantia").val(datax.garantia);
+            }
+        });
+});
+$(".eliminar").click(function() {
+    $id = $(this).attr("data");
+    $proceso = "Eliminar",
+        $.ajax({
+            type: 'POST',
+            url: "controladores/inventario.php",
+            data: { id: $id, proceso: $proceso },
+            dataType: 'Json',
+            success: function(datax) {
+                swal('Estado de la operacion', datax.msg, datax.typeinfo);
+                if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                    setInterval('location.reload()', 3000);
+                }
             }
         });
 });

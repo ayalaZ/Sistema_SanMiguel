@@ -70,8 +70,8 @@ switch ($proceso) {
                 $xdatos['typeinfo'] = 'success';
             }
         } else {
-            $xdatos['msg'] = 'Operacion no se pudo realizar';
-            $xdatos['typeinfo'] = 'error' . _error();
+            $xdatos['msg'] = 'Operacion no se pudo realizar' . _error();
+            $xdatos['typeinfo'] = 'error';
         }
         echo json_encode($xdatos);
         break;
@@ -125,8 +125,8 @@ switch ($proceso) {
             $xdatos['msg'] = "Operacion realizada con exito";
             $xdatos['typeinfo'] = 'success';
         } else {
-            $xdatos['msg'] = "Operacion realizada con exito";
-            $xdatos['typeinfo'] = 'error' . _error();
+            $xdatos['msg'] = "Operacion realizada con exito" . _error();
+            $xdatos['typeinfo'] = 'error';
         }
         echo json_encode($xdatos);
         break;
@@ -177,19 +177,19 @@ switch ($proceso) {
                     $xdatos['msg'] = 'Se sumaron los articulos a la nueva bodega y se dejo en cero los articulo de la anterior bodega';
                     $xdatos['typeinfo'] = 'success';
                 } else {
-                    $xdatos['msg'] = 'No se pudieron sumar los articulos a la nueva bodega y los articulos de la anterior bodega se dejaron intacto';
-                    $xdatos['typeinfo'] = 'error' . _error();
+                    $xdatos['msg'] = 'No se pudieron sumar los articulos a la nueva bodega y los articulos de la anterior bodega se dejaron intacto' . _error();
+                    $xdatos['typeinfo'] = 'error';
                 }
-            }else{
-            $nuevaBodega = $mysqli->query("UPDATE tbl_articulo SET IdBodega='$bodegadestino' WHERE IdArticulo='$id'");
-            if ($nuevaBodega) {
-                $xdatos['msg'] = 'Se traslado todos los articulos a la nueva bodega';
-                $xdatos['typeinfo'] = 'success';
             } else {
-                $xdatos['msg'] = 'No se pudo trasladar los articulos a la nueva bodega';
-                $xdatos['typeinfo'] = 'error' . _error();
+                $nuevaBodega = $mysqli->query("UPDATE tbl_articulo SET IdBodega='$bodegadestino' WHERE IdArticulo='$id'");
+                if ($nuevaBodega) {
+                    $xdatos['msg'] = 'Se traslado todos los articulos a la nueva bodega';
+                    $xdatos['typeinfo'] = 'success';
+                } else {
+                    $xdatos['msg'] = 'No se pudo trasladar los articulos a la nueva bodega' . _error();
+                    $xdatos['typeinfo'] = 'error';
+                }
             }
-        }
         } else {
             $existeArticulo = $mysqli->query("SELECT * FROM tbl_articulo WHERE NombreArticulo='$nombre' AND Codigo='$codigo' AND IdArticulo!='$id' AND IdBodega='$bodegadestino'");
             $numerodearticulos = $mysqli->query("SELECT count(*) AS total FROM tbl_articulo WHERE NombreArticulo='$nombre' AND Codigo='$codigo' AND IdArticulo!='$id' AND IdBodega='$bodegadestino'");
@@ -203,8 +203,8 @@ switch ($proceso) {
                     $xdatos['msg'] = 'Se sumaron los articulos a la nueva bodega';
                     $xdatos['typeinfo'] = 'success';
                 } else {
-                    $xdatos['msg'] = 'No se pudieron sumar los articulos a la nueva bodega';
-                    $xdatos['typeinfo'] = 'error' . _error();
+                    $xdatos['msg'] = 'No se pudieron sumar los articulos a la nueva bodega' . _error();
+                    $xdatos['typeinfo'] = 'error';
                 }
             } else {
                 $insert = $mysqli->query("INSERT INTO tbl_articulo(Codigo, NombreArticulo, Descripcion, Cantidad, PrecioCompra, PrecioVenta, FechaEntrada, nFactura, pGarantia, IdUnidadMedida, IdTipoProducto, IdCategoria, IdProveedor, IdBodega)
@@ -214,9 +214,54 @@ switch ($proceso) {
                     $xdatos['msg'] = 'Se agregaron los articulo a la nueva bodega';
                     $xdatos['typeinfo'] = 'success';
                 } else {
-                    $xdatos['msg'] = 'No se pudieron agregar los articulos a la nueva bodega';
-                    $xdatos['typeinfo'] = 'error' . _error();
+                    $xdatos['msg'] = 'No se pudieron agregar los articulos a la nueva bodega' . _error();
+                    $xdatos['typeinfo'] = 'error';
                 }
+            }
+        }
+        echo json_encode($xdatos);
+        break;
+    case 'Eliminar':
+        $id = $_POST['id'];
+        $eliminarArticulo = $mysqli->query("DELETE FROM tbl_articulo WHERE IdArticulo='$id'");
+        if ($eliminarArticulo) {
+            $xdatos['msg'] = "Articulo eliminado correctamente";
+            $xdatos['typeinfo'] = "success";
+        } else {
+            $xdatos['msg'] = "Error no se pudo eliminar el articulo correctamente" . _error();
+            $xdatos['typeinfo'] = "error";
+        }
+        echo json_encode($xdatos);
+        break;
+    case 'aplicaringresar':
+        $codigoAdd = $_POST['Addcodigo'];
+        $nombreAdd = $_POST['Addnombre'];
+        $cantidadAdd = $_POST['Addcantidad'];
+        $fechaAdd = $_POST['Addfecha'];
+        $preciocAdd = $_POST['AddprecioC'];
+        $preciovAdd = $_POST['AddprecioV'];
+        $tipoAdd = $_POST['Addtipo'];
+        $categoriaAdd = $_POST['Addcategoria'];
+        $bodegaAdd = $_POST['Addbodega'];
+        $unidadAdd = $_POST['Addunidad'];
+        $descripcionAdd = $_POST['Adddescripcion'];
+        $creditoAdd = $_POST['Addcredito'];
+        $garantiaAdd = $_POST['Addgarantia'];
+        $proveedorAdd = $_POST['Addproveedor'];
+        $existencia = $mysqli->query("SELECT count(*) AS total FROM tbl_articulo WHERE Codigo='$codigoAdd' AND NombreArticulo='$nombreAdd'");
+        $existencia2 = $existencia->fetch_array();
+        if ($existencia2['total'] > 0) {
+            $xdatos['msg'] = 'Ya existe el mismo articulo con el mismo codigo';
+            $xdatos['typeinfo'] = 'error';
+        } else {
+            $ingresarArticulo = $mysqli->query("INSERT INTO tbl_articulo(Codigo, NombreArticulo, Descripcion, Cantidad, PrecioCompra, PrecioVenta, FechaEntrada, nFactura, pGarantia, IdUnidadMedida, IdTipoProducto, IdCategoria, IdProveedor, IdBodega)
+                                         VALUES ('$codigoAdd','$nombreAdd','$descripcionAdd','$cantidadAdd','$preciocAdd','$preciovAdd','$fechaAdd','$creditoAdd','$garantiaAdd','$unidadAdd','$tipoAdd','$categoriaAdd','$proveedorAdd','$bodegaAdd')");
+            if ($ingresarArticulo) {
+                $xdatos['msg'] = "Se registro el articulo con exito";
+                $xdatos['typeinfo'] = "success";
+            } else {
+                $xdatos['msg'] = "No se pudo registrar el articulo" . _error();
+                $xdatos['typeinfo'] = "error";
             }
         }
         echo json_encode($xdatos);

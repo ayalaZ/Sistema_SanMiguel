@@ -6,7 +6,7 @@ if (!isset($_SESSION)) {
     ]);
 }
 if (!isset($_SESSION["user"])) {
-    header('Location: ../login.php');
+    header('Location: ../pages/login.php');
 }
 
 const ADMINISTRADOR = 1;
@@ -89,6 +89,12 @@ if (isset($_POST['bodega'])) {
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" role="button"><i class="fas fa-ethernet"></i> Inventario de internet</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" role="button" data-toggle="modal" data-target="#Versalidas"><i class="fas fa-info-circle"></i> Salidas</a>
             </li>
         </ul>
         <!-- Right navbar links -->
@@ -229,7 +235,7 @@ if (isset($_POST['bodega'])) {
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <button class="btn btn-info float-right"><i class="fas fa-plus"></i> Agregar Nuevo Articulo</button>&nbsp;&nbsp;
+                    <button class="btn btn-info float-right" data-toggle="modal" data-target="#ModalIngresar"><i class="fas fa-plus"></i> Agregar Nuevo Articulo</button>&nbsp;&nbsp;
                     <form action="inventario.php" method="POST" style="display: inline">
                         <select class="form-control col-md-3 float-right" id="bodega" name='bodega' onchange="this.form.submit()" style="margin-right: 5px;">
                             <option value="">Seleccione Bodega</option>
@@ -277,7 +283,7 @@ if (isset($_POST['bodega'])) {
                                             <div class="dropdown-menu">
                                                 <a class="Ver dropdown-item" href="#" data-toggle="modal" data-target="#Verarticulo" id="Ver" data="<?php echo $datos['IdArticulo'] ?>"><i class="fas fa-eye"></i> Ver</a>
                                                 <a class="editar dropdown-item" href="#" data-toggle="modal" data-target="#EditarArticulo" data="<?php echo $datos['IdArticulo'] ?>"><i class="fas fa-pencil-alt"></i> Editar</a>
-                                                <a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                                                <a class="eliminar dropdown-item" href="#" data="<?php echo $datos['IdArticulo'] ?>"><i class="fas fa-trash-alt"></i> Eliminar</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="trasladar dropdown-item" href="#" data-toggle="modal" data-target="#modalTrasladar" data='<?php echo $datos['IdArticulo'] ?>'><i class="fas fa-truck-moving"></i> Trasladar</a>
                                                 <a class="Salidad dropdown-item" href="#" data-toggle="modal" data-target="#Salidad" data="<?php echo $datos['IdArticulo'] ?>"><i class="fas fa-undo-alt"></i> Salidas</a>
@@ -803,7 +809,7 @@ if (isset($_POST['bodega'])) {
                                 <input type="text" name="TbodegaO" id="TbodegaO" class="form-control mostrar" readonly>
                             </div>
                             <div class="col-md-6">
-                            <label for="bodega">Bodega destino</label>
+                                <label for="bodega">Bodega destino</label>
                                 <select name="TbodegaD" id="TbodegaD" class="form-control">
                                     <option value="">Seleccione bodega de articulo</option>
                                     <?php
@@ -829,6 +835,193 @@ if (isset($_POST['bodega'])) {
         </div>
     </div>
     <!--Fin de modal trasladar -->
+    <!-- Inicio modal ver salidas -->
+    <div class="modal fade" id="Versalidas" tabindex="-1" role="dialog" aria-labelledby="VersalidasLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="VersalidasLabel">Salidas de articulos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Articulo</th>
+                                <th>Cant</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $listadeSalidas = $mysqli->query("SELECT * FROM SalidadArticulos ORDER BY fecha");
+                        while ($datos = $listadeSalidas->fetch_array()) {
+                            $idarticulo = $datos['IdArticulo'];
+                            $nombrearticulo = $mysqli->query("SELECT * FROM tbl_articulo WHERE IdArticulo='$idarticulo'");
+                            $datosnombre = $nombrearticulo->fetch_array();
+                            ?>
+                                <tr>
+                                    <td><?php echo $datos['fecha'] ?></td>
+                                    <td><?php echo $datosnombre['NombreArticulo'] ?></td>
+                                    <td><?php echo $datos['cantidad'] ?></td>
+                                    <td><?php echo $datos['descripcion']?></td>
+                                </tr>
+                            <?php
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin modal ver salidas -->
+    <!-- Inicio modal Ingresar -->
+    <div class="modal fade" id="ModalIngresar" tabindex="-1" role="dialog" aria-labelledby="ModalIngresarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalIngresarLabel">Ingresar nuevo articulo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form id="formularioIngresar" method="POST">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="codigo">Codigo</label>
+                                <input type="text" name="Addcodigo" id="Addcodigo" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Articulo">Nombre de Articulo</label>
+                                <input type="text" name="Addnombre" id="Addnombre" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="proveedor">Proveedor</label>
+                                <select name="Addproveedor" id="Addproveedor" class="form-control">
+                                    <option value="">Seleccione proveedor del articulo</option>
+                                    <?php
+                                    $tipo = $mysqli->query("SELECT * FROM tbl_proveedor");
+                                    while ($datos = $tipo->fetch_array()) {
+                                    ?>
+                                        <option value="<?php echo $datos['IdProveedor'] ?>"><?php echo $datos['Nombre'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" name="Addcantidad" id="Addcantidad" class="form-control" min='1'>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fecha">Fecha de entrada</label>
+                                <input type="date" name="Addfecha" id="Addfecha" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="precioc">Precio de compra</label>
+                                <input type="text" name="AddprecioC" id="AddprecioC" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="preciov">Precio de venta</label>
+                                <input type="text" name="AddprecioV" id="AddprecioV" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="credito">N° Credito Fiscal</label>
+                                <input type="text" name="Addcredito" id="Addcredito" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="garantia">Garantia (Meses)</label>
+                                <input type="number" name="Addgarantia" id="Addgarantia" class="form-control" min='1'>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="tipo">Tipo</label>
+                                <select name="Addtipo" id="Addtipo" class="form-control">
+                                    <option value="">Seleccione tipo de articulo</option>
+                                    <?php
+                                    $tipo = $mysqli->query("SELECT * FROM tbl_tipoproducto");
+                                    while ($datos = $tipo->fetch_array()) {
+                                    ?>
+                                        <option value="<?php echo $datos['IdTipoProducto'] ?>"><?php echo $datos['NombreTipoProducto'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="categoria">Categoria</label>
+                                <select name="Addcategoria" id="Addcategoria" class="form-control">
+                                    <option value="">Seleccione categoria de articulo</option>
+                                    <?php
+                                    $tipo = $mysqli->query("SELECT * FROM tbl_categoria");
+                                    while ($datos = $tipo->fetch_array()) {
+                                    ?>
+                                        <option value="<?php echo $datos['IdCategoria'] ?>"><?php echo $datos['NombreCategoria'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="bodega">Bodega</label>
+                                <select name="Addbodega" id="Addbodega" class="form-control">
+                                    <option value="">Seleccione bodega de articulo</option>
+                                    <?php
+                                    $bodegas = $mysqli->query("SELECT * FROM tbl_bodega");
+                                    while ($datos = $bodegas->fetch_array()) {
+                                    ?>
+                                        <option value="<?php echo $datos['IdBodega'] ?>"><?php echo $datos['NombreBodega'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="unidad">Unidad de medida</label>
+                                <select name="Addunidad" id="Addunidad" class="form-control">
+                                    <option value="">Seleccione unidad de articulo</option>
+                                    <?php
+                                    $tipo = $mysqli->query("SELECT * FROM tbl_unidadmedida");
+                                    while ($datos = $tipo->fetch_array()) {
+                                    ?>
+                                        <option value="<?php echo $datos['IdUnidadMedida'] ?>"><?php echo $datos['NombreUnidadMedida'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripcion</label>
+                            <textarea name="Adddescripcion" id="Adddescripcion" cols="30" rows="5" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="hidden" name="proceso" id="proceso" value="aplicaringresar">
+                            <button type="submit" class="btn btn-danger btn-lg">Aplicar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de modal ingresar -->
     <script>
         $(document).ready(function() {
             $('.tabla').DataTable({
