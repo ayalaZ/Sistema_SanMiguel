@@ -70,8 +70,17 @@ $(document).ready(function() {
             data: { serv: $servicio, cod: $codigo, proceso: $proceso },
             dataType: 'Json',
             success: function(datax) {
-                $("#valorCuota").val(datax.cuota);
-                $("#totalPagar").val(datax.cuota);
+                if (datax.cuota == 0 || datax.cuota == null) {
+                    swal('Error', 'Cliente no posee el servicio seleccionado', 'error');
+                    if (datax.servicio == 'i') {
+                        $('#servicio option:eq(0)').attr('selected', 'selected')
+                    } else {
+                        $('#servicio option:eq(1)').attr('selected', 'selected')
+                    }
+                } else {
+                    $("#valorCuota").val(datax.cuota);
+                    $("#totalPagar").val(datax.cuota);
+                }
             },
             error: function() {
                 swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
@@ -138,12 +147,12 @@ $(document).ready(function() {
         $meses = $(this).val();
         $cuota = $("#valorCuota").val();
         $porcentaje = $("#porImp").val();
-        $mes = $("#meses").val();
+        $codigo = $("#codigo").val();
         $proceso = 'meses',
             $.ajax({
                 type: 'POST',
                 url: 'php/informacionCliente.php',
-                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, mes: $mes },
+                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo },
                 dataType: 'Json',
                 success: function(datax) {
                     $("#totalPagar").val(datax.cuota);
@@ -153,4 +162,5 @@ $(document).ready(function() {
                 }
             });
     });
+
 });

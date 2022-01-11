@@ -46,11 +46,14 @@ switch ($proceso) {
             $mesPendiente = date_format(date_create($mesPendiente), 'm/Y');
             $xdatos['meses'] = $mesPendiente;
         }
+
+       
         echo json_encode($xdatos);
         break;
     case 'servicio':
         $servicio = $_POST['serv'];
         $codigo = $_POST['cod'];
+        $xdatos['servicio'] = $servicio;
         $datoscliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");
         $arreglodatosclientes = $datoscliente->fetch_array();
         if ($servicio == 'i') {
@@ -80,20 +83,206 @@ switch ($proceso) {
         echo json_encode($xdatos);
         break;
     case 'meses':
+        $codigo = $_POST['cod'];
         $cuota = $_POST['cuota'];
         $meses = $_POST['meses'];
         $porcentaje = $_POST['porcentaje'];
-        $mes = $_POST['mes'];
         $totalApagar = $cuota * $meses;
         $impuesto = $totalApagar * $porcentaje;
         $total = $totalApagar + $impuesto;
         $xdatos['cuota'] = round($totalApagar, 2);
         $xdatos['impuesto'] = round($impuesto, 2);
         $xdatos['total'] = round($total, 2);
-        if ($meses == 2) {
-            $mespendiente2 = date("m/Y", strtotime($mes."+1 month"));
-            $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
-            $xdatos['meses'] = $mes.",".$mesPendiente2;
+        
+
+        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY mesCargo DESC LIMIT 1");
+        $arregloMeses = $querymeses->fetch_array();
+        if ($arregloMeses['mesCargo']) {
+            $mesTabla = '01/' . $arregloMeses['mesCargo'];
+            $date = str_replace('/', '-', $mesTabla);
+            $date = date('Y-m-d', strtotime($date));
+            $mesTabla = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+            $mesTabla = date_format(date_create($mesTabla), 'm/Y');
+            $mes = $mesTabla;
+        } elseif ($arregloMeses['mesCargo'] == NULL) {
+            $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+            $mesTabla = date_format(date_create($mesTabla), 'm/Y');
+            $mes = $mesTabla;
+        }
+
+        $fechaCompleta = "01/" . $mes;
+        $date = str_replace('/', '-', $fechaCompleta);
+        $date = date('Y-m-d', strtotime($date));
+
+        switch ($meses) {
+            case '1':
+                $xdatos['meses'] = $mes;
+                break;
+            case '2':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $xdatos['meses'] = $mesPendiente2 . "," . $mes;
+                break;
+            case '3':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $xdatos['meses'] = $mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '4':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $xdatos['meses'] = $mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '5':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $xdatos['meses'] = $mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '6':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $mesPendiente6 = date('Y-m-d', strtotime("+5 month", strtotime($date)));
+                $mesPendiente6 = date_format(date_create($mesPendiente6), 'm/Y');
+                $xdatos['meses'] = $mesPendiente6.",".$mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '7':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $mesPendiente6 = date('Y-m-d', strtotime("+5 month", strtotime($date)));
+                $mesPendiente6 = date_format(date_create($mesPendiente6), 'm/Y');
+                $mesPendiente7 = date('Y-m-d', strtotime("+6 month", strtotime($date)));
+                $mesPendiente7 = date_format(date_create($mesPendiente7), 'm/Y');
+                $xdatos['meses'] = $mesPendiente7.",".$mesPendiente6.",".$mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '8':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $mesPendiente6 = date('Y-m-d', strtotime("+5 month", strtotime($date)));
+                $mesPendiente6 = date_format(date_create($mesPendiente6), 'm/Y');
+                $mesPendiente7 = date('Y-m-d', strtotime("+6 month", strtotime($date)));
+                $mesPendiente7 = date_format(date_create($mesPendiente7), 'm/Y');
+                $mesPendiente8 = date('Y-m-d', strtotime("+7 month", strtotime($date)));
+                $mesPendiente8 = date_format(date_create($mesPendiente8), 'm/Y');
+                $xdatos['meses'] = $mesPendiente8.",".$mesPendiente7.",".$mesPendiente6.",".$mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '9':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $mesPendiente6 = date('Y-m-d', strtotime("+5 month", strtotime($date)));
+                $mesPendiente6 = date_format(date_create($mesPendiente6), 'm/Y');
+                $mesPendiente7 = date('Y-m-d', strtotime("+6 month", strtotime($date)));
+                $mesPendiente7 = date_format(date_create($mesPendiente7), 'm/Y');
+                $mesPendiente8 = date('Y-m-d', strtotime("+7 month", strtotime($date)));
+                $mesPendiente8 = date_format(date_create($mesPendiente8), 'm/Y');
+                $mesPendiente9 = date('Y-m-d', strtotime("+8 month", strtotime($date)));
+                $mesPendiente9 = date_format(date_create($mesPendiente9), 'm/Y');
+                $xdatos['meses'] = $mesPendiente9.",".$mesPendiente8.",".$mesPendiente7.",".$mesPendiente6.",".$mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '10':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $mesPendiente6 = date('Y-m-d', strtotime("+5 month", strtotime($date)));
+                $mesPendiente6 = date_format(date_create($mesPendiente6), 'm/Y');
+                $mesPendiente7 = date('Y-m-d', strtotime("+6 month", strtotime($date)));
+                $mesPendiente7 = date_format(date_create($mesPendiente7), 'm/Y');
+                $mesPendiente8 = date('Y-m-d', strtotime("+7 month", strtotime($date)));
+                $mesPendiente8 = date_format(date_create($mesPendiente8), 'm/Y');
+                $mesPendiente9 = date('Y-m-d', strtotime("+8 month", strtotime($date)));
+                $mesPendiente9 = date_format(date_create($mesPendiente9), 'm/Y');
+                $mesPendiente10 = date('Y-m-d', strtotime("+9 month", strtotime($date)));
+                $mesPendiente10 = date_format(date_create($mesPendiente10), 'm/Y');
+                $xdatos['meses'] = $mesPendiente10.",".$mesPendiente9.",".$mesPendiente8.",".$mesPendiente7.",".$mesPendiente6.",".$mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '11':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $mesPendiente6 = date('Y-m-d', strtotime("+5 month", strtotime($date)));
+                $mesPendiente6 = date_format(date_create($mesPendiente6), 'm/Y');
+                $mesPendiente7 = date('Y-m-d', strtotime("+6 month", strtotime($date)));
+                $mesPendiente7 = date_format(date_create($mesPendiente7), 'm/Y');
+                $mesPendiente8 = date('Y-m-d', strtotime("+7 month", strtotime($date)));
+                $mesPendiente8 = date_format(date_create($mesPendiente8), 'm/Y');
+                $mesPendiente9 = date('Y-m-d', strtotime("+8 month", strtotime($date)));
+                $mesPendiente9 = date_format(date_create($mesPendiente9), 'm/Y');
+                $mesPendiente10 = date('Y-m-d', strtotime("+9 month", strtotime($date)));
+                $mesPendiente10 = date_format(date_create($mesPendiente10), 'm/Y');
+                $mesPendiente11 = date('Y-m-d', strtotime("+10 month", strtotime($date)));
+                $mesPendiente11 = date_format(date_create($mesPendiente11), 'm/Y');
+                $xdatos['meses'] = $mesPendiente11.",".$mesPendiente10.",".$mesPendiente9.",".$mesPendiente8.",".$mesPendiente7.",".$mesPendiente6.",".$mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
+            case '12':
+                $mesPendiente2 = date('Y-m-d', strtotime("+1 month", strtotime($date)));
+                $mesPendiente2 = date_format(date_create($mesPendiente2), 'm/Y');
+                $mesPendiente3 = date('Y-m-d', strtotime("+2 month", strtotime($date)));
+                $mesPendiente3 = date_format(date_create($mesPendiente3), 'm/Y');
+                $mesPendiente4 = date('Y-m-d', strtotime("+3 month", strtotime($date)));
+                $mesPendiente4 = date_format(date_create($mesPendiente4), 'm/Y');
+                $mesPendiente5 = date('Y-m-d', strtotime("+4 month", strtotime($date)));
+                $mesPendiente5 = date_format(date_create($mesPendiente5), 'm/Y');
+                $mesPendiente6 = date('Y-m-d', strtotime("+5 month", strtotime($date)));
+                $mesPendiente6 = date_format(date_create($mesPendiente6), 'm/Y');
+                $mesPendiente7 = date('Y-m-d', strtotime("+6 month", strtotime($date)));
+                $mesPendiente7 = date_format(date_create($mesPendiente7), 'm/Y');
+                $mesPendiente8 = date('Y-m-d', strtotime("+7 month", strtotime($date)));
+                $mesPendiente8 = date_format(date_create($mesPendiente8), 'm/Y');
+                $mesPendiente9 = date('Y-m-d', strtotime("+8 month", strtotime($date)));
+                $mesPendiente9 = date_format(date_create($mesPendiente9), 'm/Y');
+                $mesPendiente10 = date('Y-m-d', strtotime("+9 month", strtotime($date)));
+                $mesPendiente10 = date_format(date_create($mesPendiente10), 'm/Y');
+                $mesPendiente11 = date('Y-m-d', strtotime("+10 month", strtotime($date)));
+                $mesPendiente11 = date_format(date_create($mesPendiente11), 'm/Y');
+                $mesPendiente12 = date('Y-m-d', strtotime("+11 month", strtotime($date)));
+                $mesPendiente12 = date_format(date_create($mesPendiente12), 'm/Y');
+                $xdatos['meses'] = $mesPendiente12.",".$mesPendiente11.",".$mesPendiente10.",".$mesPendiente9.",".$mesPendiente8.",".$mesPendiente7.",".$mesPendiente6.",".$mesPendiente5.",".$mesPendiente4.",".$mesPendiente3.",".$mesPendiente2 . "," . $mes;
+                break;
         }
         echo json_encode($xdatos);
         break;
