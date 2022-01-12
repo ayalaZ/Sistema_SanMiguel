@@ -52,10 +52,38 @@ $(document).ready(function() {
                 $("#impSeg").val("0.00");
                 $("#totalAbonoImpSeg").val(datax.cuota);
                 $("#meses").val(datax.meses);
-                document.getElementById("servicio").selectedIndex = 0;
+                if (datax.cambio == 'true') {
+                    document.getElementById("servicio").selectedIndex = 1;
+                    if (datax.filas != 0) {
+                        var filas = datax.filas;
+                        for (var i = 0; i < filas; i++) {
+                            var nuevafila = "<tr><td>" +
+                                datax.tabla[i][0].numeroFactura + "</td></td>" +
+                                datax.tabla[i][0].mesCargo + "</td></td>" +
+                                datax.tabla[i][0].numeroFactura + "</td></td>" +
+                                datax.tabla[i][0].cuotaInternet + "</td></td>" +
+                                datax.tabla[i][0].fechaVencimiento + "</td></td>";
+                            $("#cargos tbody").append(nuevafila);
+                        }
+                    }
+                } else {
+                    document.getElementById("servicio").selectedIndex = 0;
+                    if (datax.filas != 0) {
+                        var filas = datax.filas;
+                        for (var i = 0; i < filas; i++) {
+                            var nuevafila = "<tr><td>" +
+                                datax.tabla[i][0].numeroFactura + "</td></td>" +
+                                datax.tabla[i][0].mesCargo + "</td></td>" +
+                                datax.tabla[i][0].numeroFactura + "</td></td>" +
+                                datax.tabla[i][0].cuotaCable + "</td></td>" +
+                                datax.tabla[i][0].fechaVencimiento + "</td></td>";
+                            $("#cargos tbody").append(nuevafila);
+                        }
+                    }
+                }
             },
             error: function() {
-                swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
+                swal('Error', 'Ha ocurrido un error al traer la informacion del cliente', 'error');
             }
         });
     });
@@ -71,15 +99,19 @@ $(document).ready(function() {
             dataType: 'Json',
             success: function(datax) {
                 if (datax.cuota == 0 || datax.cuota == null) {
-                    swal('Error', 'Cliente no posee el servicio seleccionado', 'error');
                     if (datax.servicio == 'i') {
-                        $('#servicio option:eq(0)').attr('selected', 'selected')
+                        $select = document.getElementById("servicio");
+                        $select.children[0].selected = true;
+
                     } else {
-                        $('#servicio option:eq(1)').attr('selected', 'selected')
+                        $select = document.getElementById("servicio");
+                        $select.children[1].selected = true;
                     }
+                    swal('Error', 'Cliente no posee el servicio seleccionado', 'error');
                 } else {
                     $("#valorCuota").val(datax.cuota);
                     $("#totalPagar").val(datax.cuota);
+                    $("#totalAbonoImpSeg").val(datax.cuota);
                 }
             },
             error: function() {

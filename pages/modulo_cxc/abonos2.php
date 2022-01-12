@@ -230,8 +230,8 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             <div class="col-md-3">
                                 <label for="servicio">Servicio</label>
                                 <select name="servicio" id="servicio" class="form-control">
-                                    <option value="c">Cable</option>
-                                    <option value="i">Internet</option>
+                                    <option value="c" id="servicioCABLE">Cable</option>
+                                    <option value="i" id="servicioINTERNET">Internet</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -298,7 +298,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table">
+                                <table class="table" id="cargos">
                                     <thead>
                                         <tr>
                                             <th scope="col">N° Factura</th>

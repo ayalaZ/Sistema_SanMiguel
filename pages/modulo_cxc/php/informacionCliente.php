@@ -30,8 +30,24 @@ switch ($proceso) {
         $xdatos['nombre'] = $arreglodatosclientes['nombre'];
         $xdatos['nrc'] = $arreglodatosclientes['num_registro'];
         $xdatos['direccion'] = $arreglodatosclientes['direccion_cobro'];
-        $xdatos['dia'] = $arreglodatosclientes['dia_cobro'];
-        $xdatos['cuota'] = round($arreglodatosclientes['valor_cuota'], 2);
+        $cuotaAenviar = $arreglodatosclientes['valor_cuota'];
+        if ($cuotaAenviar == 0) {
+            $xdatos['dia'] = $arreglodatosclientes['dia_corbo_in'];
+            $xdatos['cuota'] = round($arreglodatosclientes['cuota_in'],2);
+            $xdatos['cambio'] = 'true';
+            $tabla = $mysqli->query("SELECT *,count(*) AS total FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='I' AND anulada='0'");
+            $cargos = $tabla->fetch_array();
+            $xdatos['tabla'] = $cargos;
+            $xdatos['filas'] =$cargos['total']; 
+        }else{
+            $xdatos['dia'] = $arreglodatosclientes['dia_cobro'];
+            $xdatos['cuota'] = round($arreglodatosclientes['valor_cuota'], 2);
+            $xdatos['cambio'] = 'false';
+            $tabla = $mysqli->query("SELECT *,count(*) AS total FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='C' AND anulada='0'"); 
+            $cargos = $tabla->fetch_array();
+            $xdatos['tabla'] = $cargos;
+            $xdatos['filas'] =$cargos['total']; 
+        }
         $meses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY mesCargo DESC LIMIT 1");
         $arregloMeses = $meses->fetch_array();
         if ($arregloMeses['mesCargo']) {
@@ -46,8 +62,7 @@ switch ($proceso) {
             $mesPendiente = date_format(date_create($mesPendiente), 'm/Y');
             $xdatos['meses'] = $mesPendiente;
         }
-
-       
+              
         echo json_encode($xdatos);
         break;
     case 'servicio':
@@ -57,9 +72,9 @@ switch ($proceso) {
         $datoscliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");
         $arreglodatosclientes = $datoscliente->fetch_array();
         if ($servicio == 'i') {
-            $xdatos['cuota'] = $arreglodatosclientes['cuota_in'];
+            $xdatos['cuota'] = round($arreglodatosclientes['cuota_in'],2);
         } else {
-            $xdatos['cuota'] = $arreglodatosclientes['valor_cuota'];
+            $xdatos['cuota'] = round($arreglodatosclientes['valor_cuota'],2);
         }
         echo json_encode($xdatos);
         break;
