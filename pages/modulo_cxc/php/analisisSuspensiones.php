@@ -233,11 +233,11 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
             $pdf->SetFont('Arial','B',8);
             $pdf->Ln(3);
             $pdf->Cell(10,6,utf8_decode('N°'),1,0,'L');
-            $pdf->Cell(70,6,utf8_decode('Cliente'),1,0,'L');
-            $pdf->Cell(97,6,utf8_decode('Direccion de cobro'),1,0,'L');
+            $pdf->Cell(50,6,utf8_decode('Cliente'),1,0,'L');
+            $pdf->Cell(77,6,utf8_decode('Direccion de cobro'),1,0,'L');
 
             $pdf->Cell(26,6,utf8_decode('Colonia'),1,0,'L');
-
+            $pdf->Cell(26,6,utf8_decode('Coordenadas'),1,0,'L');
             $current_y = $pdf->GetY();
             $current_x = $pdf->GetX();
             $cell_width = 12;
@@ -291,18 +291,22 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
                 $pdf->SetFont('Arial','',5);
                 $current_y = $pdf->GetY();
                 $current_x = $pdf->GetX();
-                $cell_width = 70;
-                $pdf->MultiCell(70,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
+                $cell_width = 50;
+                $pdf->MultiCell(50,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
                 $pdf->SetXY($current_x + $cell_width, $current_y);
 
                 $current_y = $pdf->GetY();
                 $current_x = $pdf->GetX();
-                $cell_width = 97;
+                $cell_width = 77;
                 $pdf->SetFont('Arial','',5);
-                $pdf->MultiCell(97,2,utf8_decode($row['direccion_cobro']),0,'L');
+                $pdf->MultiCell(77,2,utf8_decode($row['direccion_cobro']),0,'L');
                 $pdf->SetXY($current_x + $cell_width, $current_y);
 
                 $pdf->Cell(26,3,utf8_decode($colonia->getColonia($row['id_colonia'])),0,0,'L');
+                $codigo = $row['cod_cliente'];
+                $tcoordenadas = $mysqli->query("SELECT coordenadas FROM clientes WHERE cod_cliente='$codigo'");
+                $coordenadas = $tcoordenadas->fetch_array();
+                $pdf->Cell(26,3,utf8_decode($coordenadas['coordenadas']),0,'L');
 
                 $pdf->SetFont('Arial','',6);
                 $pdf->Cell(12,3,utf8_decode($row['dia_cobro']),0,0,'C');
@@ -406,10 +410,11 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
             $pdf->SetFont('Arial','B',8);
             $pdf->Ln(6);
             $pdf->Cell(10,6,utf8_decode('N°'),1,0,'L');
-            $pdf->Cell(70,6,utf8_decode('Cliente'),1,0,'L');
-            $pdf->Cell(97,6,utf8_decode('Direccion de cobro'),1,0,'L');
+            $pdf->Cell(50,6,utf8_decode('Cliente'),1,0,'L');
+            $pdf->Cell(77,6,utf8_decode('Direccion de cobro'),1,0,'L');
 
             $pdf->Cell(26,6,utf8_decode('Colonia'),1,0,'L');
+            $pdf->Cell(26,6,utf8_decode('Coordenadas'),1,0,'L');
 
             $current_y = $pdf->GetY();
             $current_x = $pdf->GetX();
@@ -458,19 +463,22 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
                 $pdf->SetFont('Arial','',5);
                 $current_y = $pdf->GetY();
                 $current_x = $pdf->GetX();
-                $cell_width = 70;
+                $cell_width = 50;
                 $pdf->MultiCell(70,3,utf8_decode(strtoupper($row['cod_cliente']."  ".$row['nombre'])),0,'L');
                 $pdf->SetXY($current_x + $cell_width, $current_y);
 
                 $current_y = $pdf->GetY();
                 $current_x = $pdf->GetX();
-                $cell_width = 97;
+                $cell_width = 77;
                 $pdf->SetFont('Arial','',5);
-                $pdf->MultiCell(97,2,utf8_decode($row['direccion_cobro']),0,'L');
+                $pdf->MultiCell(77,2,utf8_decode($row['direccion_cobro']),0,'L');
                 $pdf->SetXY($current_x + $cell_width, $current_y);
 
                 $pdf->Cell(26,3,utf8_decode($colonia->getColonia($row['id_colonia'])),0,0,'L');
-
+                $codigo = $row['cod_cliente'];
+                $tcoordenadas = $mysqli->query("SELECT coordenadas FROM clientes WHERE cod_cliente='$codigo'");
+                $coordenadas = $tcoordenadas->fetch_array();
+                $pdf->Cell(26,3,utf8_decode($coordenadas['coordenadas']),0,'L');
                 $pdf->SetFont('Arial','',6);
                 $pdf->Cell(12,3,utf8_decode($row['dia_cobro']),0,0,'C');
                 $pdf->Cell(13,3,utf8_decode($row['servicio']),0,0,'C');
@@ -657,9 +665,10 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
                     $pdf->SetFont('Arial','B',6.8);
                     $pdf->Ln(6);
                     $pdf->Cell(10,6,utf8_decode('N°'),1,0,'L');
-                    $pdf->Cell(60,6,utf8_decode('Cliente'),1,0,'L');
-                    $pdf->Cell(97,6,utf8_decode('Direccion de cobro'),1,0,'L');
+                    $pdf->Cell(50,6,utf8_decode('Cliente'),1,0,'L');
+                    $pdf->Cell(77,6,utf8_decode('Direccion de cobro'),1,0,'L');
                     $pdf->Cell(26,6,utf8_decode('Colonia'),1,0,'L');
+                    $pdf->Cell(26,6,utf8_decode('Coordenadas'),1,0,'L');
                     $current_y = $pdf->GetY();
                     $current_x = $pdf->GetX();
                     $cell_width = 7;
@@ -739,16 +748,20 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
                     $pdf->SetFont('Arial','',5);
                     $current_y = $pdf->GetY();
                     $current_x = $pdf->GetX();
-                    $cell_width = 60;
-                    $pdf->MultiCell(60,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
+                    $cell_width = 50;
+                    $pdf->MultiCell(50,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
                     $pdf->SetXY($current_x + $cell_width, $current_y);
                     $current_y = $pdf->GetY();
                     $current_x = $pdf->GetX();
-                    $cell_width = 97;
+                    $cell_width = 77;
                     $pdf->SetFont('Arial','',5);
-                    $pdf->MultiCell(97,2,utf8_decode($row['direccion_cobro']),0,'L');
+                    $pdf->MultiCell(77,2,utf8_decode($row['direccion_cobro']),0,'L');
                     $pdf->SetXY($current_x + $cell_width, $current_y);
                     $pdf->Cell(26,3,utf8_decode($colonia->getColonia($row['id_colonia'])),0,0,'L');
+                    $codigo = $row['cod_cliente'];
+                $tcoordenadas = $mysqli->query("SELECT coordenadas FROM clientes WHERE cod_cliente='$codigo'");
+                $coordenadas = $tcoordenadas->fetch_array();
+                $pdf->Cell(26,3,utf8_decode($coordenadas['coordenadas']),0,'L');
                     $pdf->SetFont('Arial','',6);
                     $pdf->Cell(7,3,utf8_decode($row['dia_cobro']),0,0,'C');
                     $pdf->Cell(13,3,utf8_decode($row['servicio']),0,0,'C');
@@ -856,11 +869,11 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
                     $pdf->SetFont('Arial','B',8);
                     $pdf->Ln(6);
                     $pdf->Cell(10,6,utf8_decode('N°'),1,0,'L');
-                    $pdf->Cell(70,6,utf8_decode('Cliente'),1,0,'L');
-                    $pdf->Cell(97,6,utf8_decode('Direccion de cobro'),1,0,'L');
+                    $pdf->Cell(50,6,utf8_decode('Cliente'),1,0,'L');
+                    $pdf->Cell(77,6,utf8_decode('Direccion de cobro'),1,0,'L');
 
                     $pdf->Cell(26,6,utf8_decode('Colonia'),1,0,'L');
-
+                    $pdf->Cell(26,6,utf8_decode('Coordenadas'),1,0,'L');
                     $current_y = $pdf->GetY();
                     $current_x = $pdf->GetX();
                     $cell_width = 12;
@@ -911,19 +924,22 @@ function facturasGeneradasDosMesesOrdenadaPorColonias(){
                     $pdf->SetFont('Arial','',5);
                     $current_y = $pdf->GetY();
                     $current_x = $pdf->GetX();
-                    $cell_width = 70;
-                    $pdf->MultiCell(70,3,utf8_decode(strtoupper($row['cod_cliente']."  ".$row['nombre'])),0,'L');
+                    $cell_width = 50;
+                    $pdf->MultiCell(50,3,utf8_decode(strtoupper($row['cod_cliente']."  ".$row['nombre'])),0,'L');
                     $pdf->SetXY($current_x + $cell_width, $current_y);
 
                     $current_y = $pdf->GetY();
                     $current_x = $pdf->GetX();
-                    $cell_width = 97;
+                    $cell_width = 77;
                     $pdf->SetFont('Arial','',5);
-                    $pdf->MultiCell(97,2,utf8_decode($row['direccion_cobro']),0,'L');
+                    $pdf->MultiCell(77,2,utf8_decode($row['direccion_cobro']),0,'L');
                     $pdf->SetXY($current_x + $cell_width, $current_y);
 
                     $pdf->Cell(26,3,utf8_decode($colonia->getColonia($row['id_colonia'])),0,0,'L');
-
+                    $codigo = $row['cod_cliente'];
+                $tcoordenadas = $mysqli->query("SELECT coordenadas FROM clientes WHERE cod_cliente='$codigo'");
+                $coordenadas = $tcoordenadas->fetch_array();
+                $pdf->Cell(26,3,utf8_decode($coordenadas['coordenadas']),0,'L');
                     $pdf->SetFont('Arial','',6);
                     $pdf->Cell(12,3,utf8_decode($row['dia_cobro']),0,0,'C');
                     $pdf->Cell(13,3,utf8_decode($row['servicio']),0,0,'C');
@@ -1098,11 +1114,11 @@ function facturasGeneradasDosMesesOrderByCode(){
         $pdf->SetFont('Arial','B',8);
         $pdf->Ln(6);
         $pdf->Cell(10,6,utf8_decode('N°'),1,0,'L');
-        $pdf->Cell(70,6,utf8_decode('Cliente'),1,0,'L');
-        $pdf->Cell(97,6,utf8_decode('Direccion de cobro'),1,0,'L');
+        $pdf->Cell(50,6,utf8_decode('Cliente'),1,0,'L');
+        $pdf->Cell(77,6,utf8_decode('Direccion de cobro'),1,0,'L');
 
         $pdf->Cell(26,6,utf8_decode('Colonia'),1,0,'L');
-
+        $pdf->Cell(26,6,utf8_decode('Coordenadas'),1,0,'L');
         $current_y = $pdf->GetY();
         $current_x = $pdf->GetX();
         $cell_width = 12;
@@ -1144,19 +1160,22 @@ function facturasGeneradasDosMesesOrderByCode(){
             $pdf->SetFont('Arial','',5);
             $current_y = $pdf->GetY();
             $current_x = $pdf->GetX();
-            $cell_width = 70;
-            $pdf->MultiCell(70,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
+            $cell_width = 50;
+            $pdf->MultiCell(50,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
             $pdf->SetXY($current_x + $cell_width, $current_y);
 
             $current_y = $pdf->GetY();
             $current_x = $pdf->GetX();
-            $cell_width = 97;
+            $cell_width = 77;
             $pdf->SetFont('Arial','',5);
-            $pdf->MultiCell(97,2,utf8_decode($row['direccion_cobro']),0,'L');
+            $pdf->MultiCell(77,2,utf8_decode($row['direccion_cobro']),0,'L');
             $pdf->SetXY($current_x + $cell_width, $current_y);
 
             $pdf->Cell(26,3,utf8_decode($colonia->getColonia($row['id_colonia'])),0,0,'L');
-
+            $codigo = $row['cod_cliente'];
+                $tcoordenadas = $mysqli->query("SELECT coordenadas FROM clientes WHERE cod_cliente='$codigo'");
+                $coordenadas = $tcoordenadas->fetch_array();
+                $pdf->Cell(26,3,utf8_decode($coordenadas['coordenadas']),0,'L');
             $pdf->SetFont('Arial','',6);
             $pdf->Cell(12,3,utf8_decode($row['dia_cobro']),0,0,'C');
             $pdf->Cell(13,3,utf8_decode($row['servicio']),0,0,'C');
@@ -1270,11 +1289,11 @@ function facturasGeneradasDosMesesOrderByCode(){
                 $pdf->SetFont('Arial','B',8);
                 $pdf->Ln(6);
                 $pdf->Cell(10,6,utf8_decode('N°'),1,0,'L');
-                $pdf->Cell(70,6,utf8_decode('Cliente'),1,0,'L');
-                $pdf->Cell(97,6,utf8_decode('Direccion de cobro'),1,0,'L');
+                $pdf->Cell(50,6,utf8_decode('Cliente'),1,0,'L');
+                $pdf->Cell(77,6,utf8_decode('Direccion de cobro'),1,0,'L');
 
                 $pdf->Cell(26,6,utf8_decode('Colonia'),1,0,'L');
-
+                $pdf->Cell(26,6,utf8_decode('Coordenadas'),1,0,'L');
                 $current_y = $pdf->GetY();
                 $current_x = $pdf->GetX();
                 $cell_width = 12;
@@ -1318,19 +1337,22 @@ function facturasGeneradasDosMesesOrderByCode(){
                 $pdf->SetFont('Arial','',5);
                 $current_y = $pdf->GetY();
                 $current_x = $pdf->GetX();
-                $cell_width = 70;
-                $pdf->MultiCell(70,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
+                $cell_width = 50;
+                $pdf->MultiCell(50,3,utf8_decode(strtoupper(str_pad($row['cod_cliente'], 5, "0", STR_PAD_LEFT)."  ".$row['nombre'])),0,'L');
                 $pdf->SetXY($current_x + $cell_width, $current_y);
 
                 $current_y = $pdf->GetY();
                 $current_x = $pdf->GetX();
-                $cell_width = 97;
+                $cell_width = 77;
                 $pdf->SetFont('Arial','',5);
-                $pdf->MultiCell(97,2,utf8_decode($row['direccion_cobro']),0,'L');
+                $pdf->MultiCell(77,2,utf8_decode($row['direccion_cobro']),0,'L');
                 $pdf->SetXY($current_x + $cell_width, $current_y);
 
                 $pdf->Cell(26,3,utf8_decode($colonia->getColonia($row['id_colonia'])),0,0,'L');
-
+                $codigo = $row['cod_cliente'];
+                $tcoordenadas = $mysqli->query("SELECT coordenadas FROM clientes WHERE cod_cliente='$codigo'");
+                $coordenadas = $tcoordenadas->fetch_array();
+                $pdf->Cell(26,3,utf8_decode($coordenadas['coordenadas']),0,'L');
                 $pdf->SetFont('Arial','',6);
                 $pdf->Cell(12,3,utf8_decode($row['dia_cobro']),0,0,'C');
                 $pdf->Cell(13,3,utf8_decode($row['servicio']),0,0,'C');
@@ -1369,8 +1391,3 @@ if(isset($_POST['ordenarPorColonias'])){
 }else{
     facturasGeneradasDosMesesOrderByCode();
 }
-
-
-
-?>
-

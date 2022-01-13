@@ -35,18 +35,16 @@ switch ($proceso) {
             $xdatos['dia'] = $arreglodatosclientes['dia_corbo_in'];
             $xdatos['cuota'] = round($arreglodatosclientes['cuota_in'],2);
             $xdatos['cambio'] = 'true';
-            $tabla = $mysqli->query("SELECT *,count(*) AS total FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='I' AND anulada='0'");
-            $cargos = $tabla->fetch_array();
-            $xdatos['tabla'] = $cargos;
-            $xdatos['filas'] =$cargos['total']; 
+            $tabla = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='I' AND anulada='0'");
+            $xdatos['tabla'][] = $tabla->fetch_assoc();
+            $xdatos['filas'] =$tabla->num_rows; 
         }else{
             $xdatos['dia'] = $arreglodatosclientes['dia_cobro'];
             $xdatos['cuota'] = round($arreglodatosclientes['valor_cuota'], 2);
             $xdatos['cambio'] = 'false';
-            $tabla = $mysqli->query("SELECT *,count(*) AS total FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='C' AND anulada='0'"); 
-            $cargos = $tabla->fetch_array();
-            $xdatos['tabla'] = $cargos;
-            $xdatos['filas'] =$cargos['total']; 
+            $tabla = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='C' AND anulada='0'"); 
+            $xdatos['tabla'][] = $tabla->fetch_assoc();
+            $xdatos['filas'] =$tabla->num_rows; 
         }
         $meses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY mesCargo DESC LIMIT 1");
         $arregloMeses = $meses->fetch_array();

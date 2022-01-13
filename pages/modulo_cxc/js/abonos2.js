@@ -55,28 +55,28 @@ $(document).ready(function() {
                 if (datax.cambio == 'true') {
                     document.getElementById("servicio").selectedIndex = 1;
                     if (datax.filas != 0) {
+                        $('#cargos tbody').empty();
                         var filas = datax.filas;
                         for (var i = 0; i < filas; i++) {
                             var nuevafila = "<tr><td>" +
-                                datax.tabla[i][0].numeroFactura + "</td></td>" +
-                                datax.tabla[i][0].mesCargo + "</td></td>" +
-                                datax.tabla[i][0].numeroFactura + "</td></td>" +
-                                datax.tabla[i][0].cuotaInternet + "</td></td>" +
-                                datax.tabla[i][0].fechaVencimiento + "</td></td>";
+                                datax.tabla[i].numeroFactura + "</td><td>" +
+                                datax.tabla[i].mesCargo + "</td><td>" +
+                                datax.tabla[i].cuotaInternet + "</td><td>" +
+                                datax.tabla[i].fechaVencimiento + "</td></tr>";
                             $("#cargos tbody").append(nuevafila);
                         }
                     }
                 } else {
                     document.getElementById("servicio").selectedIndex = 0;
                     if (datax.filas != 0) {
+                        $('#cargos tbody').empty();
                         var filas = datax.filas;
                         for (var i = 0; i < filas; i++) {
                             var nuevafila = "<tr><td>" +
-                                datax.tabla[i][0].numeroFactura + "</td></td>" +
-                                datax.tabla[i][0].mesCargo + "</td></td>" +
-                                datax.tabla[i][0].numeroFactura + "</td></td>" +
-                                datax.tabla[i][0].cuotaCable + "</td></td>" +
-                                datax.tabla[i][0].fechaVencimiento + "</td></td>";
+                                datax.tabla[i].numeroFactura + "</td><td>" +
+                                datax.tabla[i].mesCargo + "</td><td>" +
+                                datax.tabla[i].cuotaCable + "</td><td>" +
+                                datax.tabla[i].fechaVencimiento + "</td></tr>";
                             $("#cargos tbody").append(nuevafila);
                         }
                     }

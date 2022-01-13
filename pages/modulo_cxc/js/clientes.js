@@ -48,8 +48,14 @@
 
 }*/
 
+$(document).ready(function() {
+    $('#fechaPrimerFacturaCable').change(function() {
+        valor = $(this).val();
+        $('#inicioContratoCable ').val(valor);
+    })
+});
 // CHANGE FORM COMPORT
-function nuevoCliente(){
+function nuevoCliente() {
     //var creadoPor = document.getElementById("creadoPor").value;
     window.location = "infoCliente.php?action=add"
     document.getElementById("btn-editar").disabled = true;
@@ -61,8 +67,7 @@ function nuevoCliente(){
         clearInputs[i].value = "";
         if (clearInputs[i].readOnly == true) {
             clearInputs[i].readOnly = false;
-        }
-        else if (clearInputs[i].disabled == true) {
+        } else if (clearInputs[i].disabled == true) {
             clearInputs[i].disabled = false;
         }
     }
@@ -88,7 +93,7 @@ function nuevoCliente(){
     changeAction("nueva");
 }
 
-function editarCliente(){
+function editarCliente() {
     document.getElementById("btn-nuevo").disabled = true;
     document.getElementById("btn-guardar").disabled = false;
     //document.getElementById("imprimir").disabled = true;
@@ -97,8 +102,7 @@ function editarCliente(){
     for (var i = 0; i < editInputs.length; i++) {
         if (editInputs[i].readOnly == true) {
             editInputs[i].readOnly = false;
-        }
-        else if (editInputs[i].disabled == true){
+        } else if (editInputs[i].disabled == true) {
             editInputs[i].disabled = false;
         }
     }
@@ -122,14 +126,14 @@ function editarCliente(){
     //CORTESIA Y EXENTOS
     if (document.getElementById("exento").checked == true) {
         document.getElementById("exento").value = "T";
-    }else if (document.getElementById("exento").checked == false) {
+    } else if (document.getElementById("exento").checked == false) {
         document.getElementById("exento").value = "F";
     }
 
 
     if (document.getElementById("cortesia").checked == true) {
         document.getElementById("cortesia").value = "T";
-    }else if (document.getElementById("cortesia").checked == false) {
+    } else if (document.getElementById("cortesia").checked == false) {
         document.getElementById("cortesia").value = "F";
     }
 
@@ -139,7 +143,7 @@ function editarCliente(){
     changeAction("editar");
 }
 
-function changeAction(action){
+function changeAction(action) {
     switch (action) {
         case "nueva":
             document.getElementById("ordenSuspension").action = "php/nuevoCliente.php";
@@ -152,21 +156,21 @@ function changeAction(action){
     }
 }
 //FUNCIONES PARA BOTONES
-function todoAtras1(codigo){
-    window.open("infoCliente.php?id="+String(codigo).padStart(5,"0"),"_self");
+function todoAtras1(codigo) {
+    window.open("infoCliente.php?id=" + String(codigo).padStart(5, "0"), "_self");
 }
 
-function atras1(codigo){
-    window.open("infoCliente.php?id="+String(parseInt(codigo)-1).padStart(5,"0"),"_self");
+function atras1(codigo) {
+    window.open("infoCliente.php?id=" + String(parseInt(codigo) - 1).padStart(5, "0"), "_self");
 }
 
-function adelante1(codigo){
-    window.open("infoCliente.php?id="+String(parseInt(codigo)+1).padStart(5,"0"),"_self");
+function adelante1(codigo) {
+    window.open("infoCliente.php?id=" + String(parseInt(codigo) + 1).padStart(5, "0"), "_self");
 }
 
-function todoAdelante1(codigo){
+function todoAdelante1(codigo) {
     console.log(codigo);
-    window.open("infoCliente.php?id="+String(codigo).padStart(5,"0"),"_self");
+    window.open("infoCliente.php?id=" + String(codigo).padStart(5, "0"), "_self");
 }
 
 
@@ -185,33 +189,33 @@ function guardarOrden(){
     }
 }*/
 
-function getExento(){
+function getExento() {
     if (document.getElementById("exento").checked == true) {
         document.getElementById("exento").value = "T";
-    }else if (document.getElementById("exento").checked == false) {
+    } else if (document.getElementById("exento").checked == false) {
         document.getElementById("exento").value = "F";
     }
 }
 
-function getCortesia(){
+function getCortesia() {
     if (document.getElementById("cortesia").checked == true) {
         document.getElementById("cortesia").value = "T";
-    }else if (document.getElementById("cortesia").checked == false) {
+    } else if (document.getElementById("cortesia").checked == false) {
         document.getElementById("cortesia").value = "F";
     }
 }
 
-function setVencimientoCable(){
+function setVencimientoCable() {
     var fechaCable = document.getElementById("fechaPrimerFacturaCable").value;
     var mesesCable = parseInt(document.getElementById("mesesContratoCable").value);
 
     var vencimientoCable = document.getElementById("vencimientoContratoCable").value;
     var vencimientoInter = document.getElementById("vencimientoContratoInternet").value;
-    if (vencimientoInter.length >= 10 && vencimientoCable.length < 10 ){
-        if (fechaCable.length != 10 || Number.isInteger(mesesCable) == false){
+    if (vencimientoInter.length >= 10 && vencimientoCable.length < 10) {
+        if (fechaCable.length != 10 || Number.isInteger(mesesCable) == false) {
             alert("Para calcular la fecha de vencimiento automaticamente, debes completar la fecha de primer factura y los meses de contrato");
             //document.getElementById("fechaPrimerFacturaCable").value = '';
-        }else{
+        } else {
 
             var nuevaFechaCable = fechaCable.split("/").reverse().join("-");
 
@@ -227,16 +231,15 @@ function setVencimientoCable(){
             document.getElementById("vencimientoContratoInternet").value = vencimiento;
             document.getElementById("vencimientoContratoInternet").style.color = "red";
         }
-    }
-    else {
+    } else {
         var fechaCable = document.getElementById("fechaPrimerFacturaCable").value;
         var mesesCable = parseInt(document.getElementById("mesesContratoCable").value);
         //console.log(fechaCable.length);
         //console.log(Number.isInteger(mesesCable));
-        if (fechaCable.length != 10 || Number.isInteger(mesesCable) == false){
+        if (fechaCable.length != 10 || Number.isInteger(mesesCable) == false) {
             alert("Para calcular la fecah de vencimiento automaticamente, debes completar la fecha de primer factura y los meses de contrato");
             //document.getElementById("fechaPrimerFacturaCable").value = '';
-        }else{
+        } else {
 
             var nuevaFechaCable = fechaCable.split("/").reverse().join("-");
 
@@ -253,17 +256,17 @@ function setVencimientoCable(){
 
 }
 
-function setVencimientoInternet(){
+function setVencimientoInternet() {
     var fechaInter = document.getElementById("fechaPrimerFacturaInternet").value;
     var mesesInter = parseInt(document.getElementById("mesesContratoInternet").value);
 
     var vencimientoCable = document.getElementById("vencimientoContratoCable").value;
     var vencimientoInter = document.getElementById("vencimientoContratoInternet").value;
-    if (vencimientoCable.length >= 10 && vencimientoInter.length < 10 ){
-        if (fechaInter.length != 10 || Number.isInteger(mesesInter) == false){
+    if (vencimientoCable.length >= 10 && vencimientoInter.length < 10) {
+        if (fechaInter.length != 10 || Number.isInteger(mesesInter) == false) {
             alert("Para calcular la fecha de vencimiento automaticamente, debes completar la fecha de primer factura y los meses de contrato");
             //document.getElementById("fechaPrimerFacturaInternet").value = '';
-        }else{
+        } else {
 
             var nuevaFechaInter = fechaInter.split("/").reverse().join("-");
 
@@ -281,12 +284,11 @@ function setVencimientoInternet(){
 
 
         }
-    }
-    else {
-        if (fechaInter.length != 10 || Number.isInteger(mesesInter) == false){
+    } else {
+        if (fechaInter.length != 10 || Number.isInteger(mesesInter) == false) {
             alert("Para calcular la fecha de vencimiento automaticamente, debes completar la fecha de primer factura y los meses de contrato");
             //document.getElementById("fechaPrimerFacturaInternet").value = '';
-        }else{
+        } else {
 
             var nuevaFechaInter = fechaInter.split("/").reverse().join("-");
 
@@ -303,7 +305,7 @@ function setVencimientoInternet(){
 
 }
 
-function tipoServicioCabletv(){
+function tipoServicioCabletv() {
     var tipoServicio = document.getElementById("tipoServicioCable").value;
 
     if (tipoServicio == 2) {
@@ -313,27 +315,28 @@ function tipoServicioCabletv(){
         //document.getElementById('check1').checked = true;
         alert("POR FAVOR ASEGURATE DE LLENAR LOS DATOS DE LA CAJA DIGITAL");
         alert("PRESIONA EL BOTÓN DE TU DERECHA PARA DESPLEGAR LOS DATOS (EL BOTÓN AZÚL ( ͡° ͜ʖ ͡°))");
-    }else {
+    } else {
         document.getElementById('caja1').required = false;
         document.getElementById('cas1').required = false;
         document.getElementById('sn1').required = false;
     }
 
 }
-function selectTipoComp(){
+
+function selectTipoComp() {
     var tipoComprobante = document.getElementById('tipoComprobante').value;
-    if (tipoComprobante == "1"){
+    if (tipoComprobante == "1") {
         document.getElementById("nrc").required = true;
         var nrc = document.getElementById("nrc").value;
-        if (nrc.length < 3){
+        if (nrc.length < 3) {
             document.getElementById("nrc").focus();
         }
-    }else{
+    } else {
         document.getElementById("nrc").required = false;
     }
 }
 
-function fechaCovidCable(){
+function fechaCovidCable() {
     var covidDesdeC = document.getElementById("covidDesdeC").value;
     var covidHastaC = document.getElementById("covidHastaC").value;
     console.log(covidDesdeC);
@@ -342,11 +345,11 @@ function fechaCovidCable(){
         document.getElementById('covidDesdeC').required = true;
         document.getElementById('covidHastaC').required = true;
         document.getElementById('cuotaCovidC').required = true;
-    }else if(covidHastaC.length > 0) {
+    } else if (covidHastaC.length > 0) {
         document.getElementById('covidDesdeC').required = true;
         document.getElementById('covidHastaC').required = true;
         document.getElementById('cuotaCovidC').required = true;
-    }else{
+    } else {
         document.getElementById('covidDesdeC').required = false;
         document.getElementById('covidHastaC').required = false;
         document.getElementById('cuotaCovidC').required = false;
@@ -354,7 +357,7 @@ function fechaCovidCable(){
 
 }
 
-function fechaCovidInter(){
+function fechaCovidInter() {
     var covidDesdeI = document.getElementById("covidDesdeI").value;
     var covidHastaI = document.getElementById("covidHastaI").value;
     //console.log(covidDesdeI);
@@ -364,11 +367,11 @@ function fechaCovidInter(){
         document.getElementById('covidDesdeI').required = true;
         document.getElementById('covidHastaI').required = true;
         document.getElementById('cuotaCovidI').required = true;
-    }else if(covidHastaI.length > 0) {
+    } else if (covidHastaI.length > 0) {
         document.getElementById('covidDesdeI').required = true;
         document.getElementById('covidHastaI').required = true;
         document.getElementById('cuotaCovidI').required = true;
-    }else{
+    } else {
         document.getElementById('covidDesdeI').required = false;
         document.getElementById('covidHastaI').required = false;
         document.getElementById('cuotaCovidI').required = false;
