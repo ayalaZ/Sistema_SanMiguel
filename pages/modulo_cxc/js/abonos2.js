@@ -52,8 +52,20 @@ $(document).ready(function() {
                 $("#impSeg").val("0.00");
                 $("#totalAbonoImpSeg").val(datax.cuota);
                 $("#meses").val(datax.meses);
+                if (datax.comprobante == 1) {
+                    $("input[type=checkbox]").prop("checked", false);
+                    $("#creditofiscal").prop("checked", true);
+                } else {
+                    $("input[type=checkbox]").prop("checked", false);
+                    $("#consumidorfinal").prop("checked", true);
+                }
                 if (datax.cambio == 'true') {
                     document.getElementById("servicio").selectedIndex = 1;
+                    if (datax.estado_internet == 3) {
+                        swal('Error', 'El servicio de este cliente esta suspendido', 'error');
+                        $("#suspendido").prop("checked", false);
+                        $("#suspendido").prop("checked", true);
+                    }
                     if (datax.filas != 0) {
                         $('#cargos tbody').empty();
                         var filas = datax.filas;
@@ -65,8 +77,15 @@ $(document).ready(function() {
                                 datax.tabla[i].fechaVencimiento + "</td></tr>";
                             $("#cargos tbody").append(nuevafila);
                         }
+                    } else {
+                        $('#cargos tbody').empty();
                     }
                 } else {
+                    if (datax.estado_cable == 'T') {
+                        swal('Error', 'El servicio de este cliente esta suspendido', 'error');
+                        $("#suspendido").prop("checked", false);
+                        $("#suspendido").prop("checked", true);
+                    }
                     document.getElementById("servicio").selectedIndex = 0;
                     if (datax.filas != 0) {
                         $('#cargos tbody').empty();
@@ -79,6 +98,8 @@ $(document).ready(function() {
                                 datax.tabla[i].fechaVencimiento + "</td></tr>";
                             $("#cargos tbody").append(nuevafila);
                         }
+                    } else {
+                        $('#cargos tbody').empty();
                     }
                 }
             },
@@ -102,7 +123,6 @@ $(document).ready(function() {
                     if (datax.servicio == 'i') {
                         $select = document.getElementById("servicio");
                         $select.children[0].selected = true;
-
                     } else {
                         $select = document.getElementById("servicio");
                         $select.children[1].selected = true;
@@ -112,6 +132,33 @@ $(document).ready(function() {
                     $("#valorCuota").val(datax.cuota);
                     $("#totalPagar").val(datax.cuota);
                     $("#totalAbonoImpSeg").val(datax.cuota);
+                    if (datax.servicio == 'c') {
+                        if (datax.filas != 0) {
+                            $('#cargos tbody').empty();
+                            var filas = datax.filas;
+                            for (var i = 0; i < filas; i++) {
+                                var nuevafila = "<tr><td>" +
+                                    datax.tabla[i].numeroFactura + "</td><td>" +
+                                    datax.tabla[i].mesCargo + "</td><td>" +
+                                    datax.tabla[i].cuotaCable + "</td><td>" +
+                                    datax.tabla[i].fechaVencimiento + "</td></tr>";
+                                $("#cargos tbody").append(nuevafila);
+                            }
+                        }
+                    } else {
+                        if (datax.filas != 0) {
+                            $('#cargos tbody').empty();
+                            var filas = datax.filas;
+                            for (var i = 0; i < filas; i++) {
+                                var nuevafila = "<tr><td>" +
+                                    datax.tabla[i].numeroFactura + "</td><td>" +
+                                    datax.tabla[i].mesCargo + "</td><td>" +
+                                    datax.tabla[i].cuotaInternet + "</td><td>" +
+                                    datax.tabla[i].fechaVencimiento + "</td></tr>";
+                                $("#cargos tbody").append(nuevafila);
+                            }
+                        }
+                    }
                 }
             },
             error: function() {

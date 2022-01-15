@@ -314,8 +314,26 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group clearfix">
+                                    <div class="icheck-danger d-inline">
+                                        <input type="checkbox" name="creditofiscal" id="creditofiscal">
+                                        <label for="creditofiscal">Credito Fiscal</label>
+                                    </div>&nbsp;
+                                    <div class="icheck-danger d-inline">
+                                        <input type="checkbox" name="consumidorfinal" id="consumidorfinal">
+                                        <label for="consumidorfinal">Consumidor Final</label>
+                                    </div>&nbsp;
+                                    <div class="icheck-danger d-inline">
+                                        <input type="checkbox" name="suspendido" id="suspendido">
+                                        <label for="suspendido">Servicio Suspendido</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
-                                <input type="text" name="meses" id="meses" class="form-control" placeholder="meses" >
+                                <input type="text" name="meses" id="meses" class="form-control" placeholder="meses">
                             </div>
                             <div class="col-md-3">
                                 <select name="xmeses" id="xmeses" class="form-control">

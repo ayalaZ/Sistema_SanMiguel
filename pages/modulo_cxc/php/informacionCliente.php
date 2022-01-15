@@ -30,23 +30,44 @@ switch ($proceso) {
         $xdatos['nombre'] = $arreglodatosclientes['nombre'];
         $xdatos['nrc'] = $arreglodatosclientes['num_registro'];
         $xdatos['direccion'] = $arreglodatosclientes['direccion_cobro'];
+        $xdatos['comprobante'] = $arreglodatosclientes['tipo_comprobante'];
+        $xdatos['estado_cable'] = $arreglodatosclientes['servicio_suspendido'];
+        $xdatos['estado_internet'] = $arreglodatosclientes['estado_cliente_in'];
         $cuotaAenviar = $arreglodatosclientes['valor_cuota'];
         if ($cuotaAenviar == 0) {
             $xdatos['dia'] = $arreglodatosclientes['dia_corbo_in'];
             $xdatos['cuota'] = round($arreglodatosclientes['cuota_in'],2);
             $xdatos['cambio'] = 'true';
             $tabla = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='I' AND anulada='0'");
-            $xdatos['tabla'][] = $tabla->fetch_assoc();
+            $contador = 0;
+            while ($datos = $tabla->fetch_assoc()) {
+                $xdatos['tabla'][$contador] = [
+                    'numeroFactura'=>$datos['numeroFactura'],
+                    'mesCargo'=>$datos['mesCargo'],
+                    'cuotaInternet'=>$datos['cuotaInternet'],
+                    'fechaVencimiento'=>$datos['fechaVencimiento'],
+                ];
+                $contador +=1;
+            }
             $xdatos['filas'] =$tabla->num_rows; 
         }else{
             $xdatos['dia'] = $arreglodatosclientes['dia_cobro'];
             $xdatos['cuota'] = round($arreglodatosclientes['valor_cuota'], 2);
             $xdatos['cambio'] = 'false';
-            $tabla = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='C' AND anulada='0'"); 
-            $xdatos['tabla'][] = $tabla->fetch_assoc();
+            $tabla = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='C' AND anulada='0'");
+            $contador = 0;
+            while ($datos = $tabla->fetch_assoc()) {
+                $xdatos['tabla'][$contador] = [
+                    'numeroFactura'=>$datos['numeroFactura'],
+                    'mesCargo'=>$datos['mesCargo'],
+                    'cuotaCable'=>$datos['cuotaCable'],
+                    'fechaVencimiento'=>$datos['fechaVencimiento'],
+                ];
+                $contador +=1;
+            }
             $xdatos['filas'] =$tabla->num_rows; 
         }
-        $meses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY mesCargo DESC LIMIT 1");
+        $meses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY idAbono DESC LIMIT 1");
         $arregloMeses = $meses->fetch_array();
         if ($arregloMeses['mesCargo']) {
             $mesPendiente = '01/' . $arregloMeses['mesCargo'];
@@ -71,8 +92,32 @@ switch ($proceso) {
         $arreglodatosclientes = $datoscliente->fetch_array();
         if ($servicio == 'i') {
             $xdatos['cuota'] = round($arreglodatosclientes['cuota_in'],2);
+            $tabla = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='I' AND anulada='0'");
+            $contador = 0;
+            while ($datos = $tabla->fetch_assoc()) {
+                $xdatos['tabla'][$contador] = [
+                    'numeroFactura'=>$datos['numeroFactura'],
+                    'mesCargo'=>$datos['mesCargo'],
+                    'cuotaInternet'=>$datos['cuotaInternet'],
+                    'fechaVencimiento'=>$datos['fechaVencimiento'],
+                ];
+                $contador +=1;
+            }
+            $xdatos['filas'] =$tabla->num_rows;
         } else {
             $xdatos['cuota'] = round($arreglodatosclientes['valor_cuota'],2);
+            $tabla = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND estado='pendiente' AND tipoServicio='C' AND anulada='0'");
+            $contador = 0;
+            while ($datos = $tabla->fetch_assoc()) {
+                $xdatos['tabla'][$contador] = [
+                    'numeroFactura'=>$datos['numeroFactura'],
+                    'mesCargo'=>$datos['mesCargo'],
+                    'cuotaCable'=>$datos['cuotaCable'],
+                    'fechaVencimiento'=>$datos['fechaVencimiento'],
+                ];
+                $contador +=1;
+            }
+            $xdatos['filas'] =$tabla->num_rows;
         }
         echo json_encode($xdatos);
         break;
@@ -108,7 +153,7 @@ switch ($proceso) {
         $xdatos['total'] = round($total, 2);
         
 
-        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY mesCargo DESC LIMIT 1");
+        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY idAbono DESC LIMIT 1");
         $arregloMeses = $querymeses->fetch_array();
         if ($arregloMeses['mesCargo']) {
             $mesTabla = '01/' . $arregloMeses['mesCargo'];

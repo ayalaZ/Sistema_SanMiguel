@@ -726,6 +726,7 @@ $stmt->bindParam(':codigoCobrador', $_GET['cobrador']);
                                           echo "<br>";
                                       }
                                   }
+                                  
                                   if (isset($_GET['duplicado'])) {
                                       if ($_GET['duplicado'] == 'si') {
                                           echo '<script>alert("El recibo que intenta ingresar ya se encuentra en sistema, por favor corroborarlo.")</script>';
