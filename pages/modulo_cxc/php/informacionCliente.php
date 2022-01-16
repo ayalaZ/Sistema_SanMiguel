@@ -344,4 +344,20 @@ switch ($proceso) {
         }
         echo json_encode($xdatos);
         break;
+    case 'abonar':
+        $idCobrador = $_POST['cobrador'];
+        $querycobrador = $mysqli->query("SELECT * FROM tbl_cobradores WHERE codigoCobrador='$idCobrador'");
+        $cobrador = $querycobrador->fetch_array();
+        $recibo = $cobrador['prefijoCobro']."-".$_POST['ultimoRecibo'];
+        $queryrecibo = $mysqli->query("SELECT * FROM tbl_abonos WHERE numeroRecibo='$recibo'");
+        $numerorecibos = $queryrecibo->num_rows;
+        if ($numerorecibos > 0) {
+            $xdatos['msg'] = "Esta intentando ingresar un numero de recibo duplicado";
+            $xdatos['typeinfo'] = "error";
+        }else{
+            $xdatos['msg'] = "EXITO";
+            $xdatos['typeinfo'] = "success";
+        }
+        echo json_encode($xdatos);
+        break;
 }

@@ -128,15 +128,10 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
             <div class="card card-danger">
                 <div class="card-header">
                     <h3 class="card-title">Abonos</h3>
+                    <button class="btn btn-danger float-right" id="estado" name="estado"><i class="fas fa-file-invoice-dollar"></i></button>
                 </div>
                 <div class="card-body">
-                    <form id="frAbonos" action="#" method="POST">
-                        <!--<div class="col-md-12">
-                            php/aplicarAbonosx2.php
-                            <div>
-                                <a href="estadoCuenta.php?codigoCliente=<?php if (isset($_GET['codigoCliente'])) echo $_GET['codigoCliente']; ?>" target="_blank" rel="noopener noreferrer" class="btn btn-danger btn-sm"><i style="color:#fff" class="fas fa-file-invoice-dollar"></i></a>
-                            </div>
-                        </div>-->
+                    <form id="frAbonos"  method="POST">
                         <div class="row">
                             <div class="col-md-2 recibo">
                                 <input type="text" name="ultimoRecibo" id="ultimoRecibo" class="form-control" value="00000">
@@ -352,6 +347,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                                 </select>
                             </div>
                             <div class="col-md-3">
+                                <input type="hidden" name="proceso" id="proceso" value="abonar">
                                 <button type="submit" class="btn btn-danger btn-block"><i class="fas fa-check"></i> Aplicar Abono</button>
                             </div>
                         </div>
@@ -395,7 +391,10 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
             });
         });
     </script>
+     <!-- jquery validate -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="js/abonos2.js"></script>
+
 </body>
 
 </html>

@@ -242,4 +242,179 @@ $(document).ready(function() {
             });
     });
 
+    $("#estado").on("click", function() {
+        $codigo = $("#codigo").val();
+        if ($codigo == '' || $codigo == null) {
+            swal('Error', 'No ha seleccionado un cliente', 'error');
+        } else {
+            window.open('estadoCuenta.php?codigoCliente=' + $codigo, '_blank');
+        }
+    });
+
+    $("#frAbonos").validate({
+        rules: {
+            ultimoRecibo: {
+                required: true,
+            },
+            diaCobro: {
+                required: true
+            },
+            zona: {
+                required: true,
+            },
+            cobrador: {
+                required: true,
+            },
+            codigo: {
+                required: true,
+            },
+            nombreCliente: {
+                required: true,
+            },
+            nrc: {
+                required: true,
+            },
+            municipio: {
+                required: true,
+            },
+            colonia: {
+                required: true,
+            },
+            direccion: {
+                required: true,
+            },
+            servicio: {
+                required: true,
+            },
+            valorCuota: {
+                required: true,
+            },
+            totalPagar: {
+                required: true,
+            },
+            porImp: {
+                required: true,
+            },
+            impSeg: {
+                required: true,
+            },
+            totalAbonoImpSeg: {
+                required: true,
+            },
+            meses: {
+                required: true,
+            },
+            xmeses: {
+                required: true,
+            },
+        },
+        messages: {
+            ultimoRecibo: {
+                required: "Este dato es necesario",
+            },
+            diaCobro: {
+                required: "Este dato es necesario"
+            },
+            zona: {
+                required: "Este dato es necesario",
+            },
+            cobrador: {
+                required: "Este dato es necesario",
+            },
+            codigo: {
+                required: "Este dato es necesario",
+            },
+            nombreCliente: {
+                required: "Este dato es necesario",
+            },
+            nrc: {
+                required: "Este dato es necesario",
+            },
+            municipio: {
+                required: "Este dato es necesario",
+            },
+            colonia: {
+                required: "Este dato es necesario",
+            },
+            direccion: {
+                required: "Este dato es necesario",
+            },
+            servicio: {
+                required: "Este dato es necesario",
+            },
+            valorCuota: {
+                required: "Este dato es necesario",
+            },
+            totalPagar: {
+                required: "Este dato es necesario",
+            },
+            porImp: {
+                required: "Este dato es necesario",
+            },
+            impSeg: {
+                required: "Este dato es necesario",
+            },
+            totalAbonoImpSeg: {
+                required: "Este dato es necesario",
+            },
+            meses: {
+                required: "Este dato es necesario",
+            },
+            xmeses: {
+                required: "Este dato es necesario",
+            },
+        },
+        submitHandler: function(form) {
+            abono();
+        }
+    });
 });
+
+function abono() {
+    $recibo = $("#ultimoRecibo").val();
+    $codigo = $("#codigo").val();
+    $nombre = $("#nombreCliente").val();
+    $total = $("#totalAbonoImpSeg").val();
+    if ($("#servicio").val() == 'c') {
+        $servicio = 'Cable';
+    } else {
+        $servicio = 'Internet';
+    }
+    swal({
+        title: "¿Seguro que deseas continuar?",
+        text: "Esta a punto de abonar " + $total + " del cliente " + $codigo + " " + $nombre + " por el servicio de " + $servicio + " en el recibo numero " + $recibo,
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: "No",
+        confirmButtonText: "Continuar",
+        closeOnConfirm: false,
+        closeOnCancel: true
+    }).then(function() {
+        if ($('#suspendido').is(':checked')) {
+            swal('Error', 'No puede realizar el abono por que este cliente esta suspendido', 'error');
+        } else {
+            var form = $("#frAbonos");
+            var formdata = false;
+            if (window.FormData) {
+                formdata = new FormData(form[0]);
+            }
+            $.ajax({
+                type: 'POST',
+                url: 'php/informacionCliente.php',
+                cache: false,
+                data: formdata ? formdata : form.serialize(),
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+
+                success: function(datax) {
+                    swal('Estado de la operacion', datax.msg, datax.typeinfo);
+                    if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                        setInterval('location.reload()', 30000000000000000);
+                    }
+
+                }
+            });
+        }
+    });
+}
