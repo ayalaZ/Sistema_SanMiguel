@@ -355,8 +355,38 @@ switch ($proceso) {
             $xdatos['msg'] = "Esta intentando ingresar un numero de recibo duplicado";
             $xdatos['typeinfo'] = "error";
         }else{
-            $xdatos['msg'] = "EXITO";
+            $servicio = $_POST['servicio'];
+            $servicio = ucwords($servicio);
+            $codigo= $_POST['codigo'];
+            $meses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY idAbono DESC LIMIT 1");
+            $arregloMeses = $meses->fetch_array();
+            $datoscliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");
+            $arreglodatosclientes = $datoscliente->fetch_array();
+            $meses = $_POST['xmeses'];
+            $cuenta = 1;
+            for ($i=0; $i<$meses; $i++) { 
+                if ($arregloMeses['mesCargo']) {
+                    $mesTabla = '01/' . $arregloMeses['mesCargo'];
+                    $date = str_replace('/', '-', $mesTabla);
+                    $date = date('Y-m-d', strtotime($date));
+                    $mesTabla = date('Y-m-d', strtotime("+".$cuenta." month", strtotime($date)));
+                    $mesTabla = date_format(date_create($mesTabla), 'm/Y');
+                    $mes = $mesTabla;
+                } elseif ($arregloMeses['mesCargo'] == NULL) {
+                    $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+                    $mesTabla = date_format(date_create($mesTabla), 'm/Y');
+                    $mes = $mesTabla;
+                }
+                $queryCargos = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND mesCargo='$mes' AND tipoServicio='$servicio'");
+                $cargos = $queryCargos->fetch_array();
+                $cantidadCargos = $queryCargos->num_rows;
+
+                $cuenta +=1;
+            }
+            
+            $xdatos['msg'] = "Se cancelara ".$cantidadCargos." ya generadas";
             $xdatos['typeinfo'] = "success";
+            
         }
         echo json_encode($xdatos);
         break;
