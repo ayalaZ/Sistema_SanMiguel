@@ -192,6 +192,7 @@ function f3(){
             $pdf->Cell(95,8,'Tipo de servicio: '.$row["tipoServicio"],0,1,'R');
         }
 
+        
 
     }
 

@@ -380,9 +380,14 @@ function abono() {
     } else {
         $servicio = 'Internet';
     }
+    if ($("#anularComp").is(':checked')) {
+        $mensajes = 'Esta a punto de anular este recibo';
+    } else {
+        $mensajes = "Esta a punto de abonar " + $total + " del cliente " + $codigo + " " + $nombre + " por el servicio de " + $servicio + " en el recibo numero " + $recibo;
+    }
     swal({
         title: "¿Seguro que deseas continuar?",
-        text: "Esta a punto de abonar " + $total + " del cliente " + $codigo + " " + $nombre + " por el servicio de " + $servicio + " en el recibo numero " + $recibo,
+        text: $mensajes,
         type: "warning",
         showCancelButton: true,
         cancelButtonText: "No",
@@ -410,7 +415,7 @@ function abono() {
                 success: function(datax) {
                     swal('Estado de la operacion', datax.msg, datax.typeinfo);
                     if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
-                        setInterval('location.reload()', 30000000000000000);
+                        setInterval('location.reload()', 3000);
                     }
 
                 }

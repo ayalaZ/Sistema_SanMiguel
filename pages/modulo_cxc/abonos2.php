@@ -131,7 +131,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                     <button class="btn btn-danger float-right" id="estado" name="estado"><i class="fas fa-file-invoice-dollar"></i></button>
                 </div>
                 <div class="card-body">
-                    <form id="frAbonos"  method="POST">
+                    <form id="frAbonos" method="POST">
                         <div class="row">
                             <div class="col-md-2 recibo">
                                 <input type="text" name="ultimoRecibo" id="ultimoRecibo" class="form-control" value="00000">
@@ -167,15 +167,27 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                                 <label for="cobrador">Cobrador</label>
                                 <select name="cobrador" id="cobrador" class="form-control buscador">
                                     <?php
+                                    session_start();
+                                    if (isset($_SESSION['cobrador'])) {
+                                         $codigoC = $_SESSION['cobrador'];
+                                    } else {
+                                        $codigoC = 'null';
+                                    }
                                     while ($datos = $cobradores->fetch_array()) {
-                                        if ($datos['nombreCobrador'] == 'COLECTURIA 1 SAN MIGUEL') {
+                                        if ($datos['codigoCobrador'] == $codigoC) {
                                     ?>
                                             <option value="<?php echo $datos['codigoCobrador'] ?>" selected><?php echo $datos['nombreCobrador'] ?></option>
-                                        <?php
+                                            <?php
                                         } else {
-                                        ?>
-                                            <option value="<?php echo $datos['codigoCobrador'] ?>"><?php echo $datos['nombreCobrador'] ?></option>
+                                            if ($datos['nombreCobrador'] == 'COLECTURIA 1 SAN MIGUEL') {
+                                            ?>
+                                                <option value="<?php echo $datos['codigoCobrador'] ?>" selected><?php echo $datos['nombreCobrador'] ?></option>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <option value="<?php echo $datos['codigoCobrador'] ?>"><?php echo $datos['nombreCobrador'] ?></option>
                                     <?php
+                                            }
                                         }
                                     }
                                     ?>
@@ -285,9 +297,13 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="anularComp">
-                                    <label class="form-check-label" for="anularComp">Anular Comprobante</label>
+                                <div class="form-group clearfix">
+                                    <div class="form-check form-check-inline">
+                                        <div class="icheck-danger d-inline">
+                                            <input type="checkbox" name="anularComp" id="anularComp">
+                                            <label for="anularComp">Anular Comprobante</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -391,8 +407,8 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
             });
         });
     </script>
-     <!-- jquery validate -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <!-- jquery validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="js/abonos2.js"></script>
 
 </body>

@@ -13,7 +13,6 @@ if (!isset($_SESSION)) {
 $database = $_SESSION['db'];
 $mysqli = new mysqli($host, $user, $password, $database);
 $codigo = $_POST['cod'];
-
 $numeroRecibo = $mysqli->query("SELECT numeroAsignador FROM tbl_cobradores WHERE codigoCobrador='$codigo'");
 $arregloNumeroRecibo = $numeroRecibo->fetch_array();
 $nuevoNumero = $arregloNumeroRecibo['numeroAsignador'] + 1;
