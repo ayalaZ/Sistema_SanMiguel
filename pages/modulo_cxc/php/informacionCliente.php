@@ -359,9 +359,6 @@ switch ($proceso) {
                 $meses = $_POST['xmeses'];
                 $codigo = $_POST['codigo'];
                 $nombre = '[Recibo anulado]';
-                $direccion = $_POST['direccion'];
-                $municipio = $_POST['municipio'];
-                $colonia = $_POST['colonia'];
                 $cobrador = $_POST['cobrador'];
                 $fecha = $_POST['fechaAbono'];
                 $queryprefijoCobrador = $mysqli->query("SELECT prefijoCobro FROM tbl_cobradores WHERE codigoCobrador='$cobrador'");
@@ -374,6 +371,11 @@ switch ($proceso) {
                     $tipocomprobante = 1;
                 }
                 $servicio = strtoupper($_POST['servicio']);
+                $querycliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");
+                $datoscliente = $querycliente->fetch_array();
+                $direccion = $datoscliente['direccion'];
+                $municipio = $datoscliente['id_municipio'];
+                $colonia = $datoscliente['id_colonia'];
                 $cuenta = 1;
                 for ($i = 0; $i < $meses; $i++) {
                     if ($arregloMeses['mesCargo']) {
@@ -394,10 +396,10 @@ switch ($proceso) {
                     if ($cantidadCargos > 0) {
                         $factura = $cargos['numeroFactura'];
                     }else{
-                        $factura = 'NULL';
+                        $factura = $mes;
                     }
                     $anularRecibo = $mysqli->query("INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor)
-                     VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','0.00','0.00','0.00','0.00','NULL','NULL','NULL','$fecha','$mes','0','efectivo','$servicio','CANCELADA','0','0.00','0.00','0.00','0.00','0.00','NULL','1','NULL','NULL')");
+                    VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','NULL','0.00','0.00','0.00','NULL','NULL','NULL','$fecha','$mes','0','efectivo','$servicio','CANCELADA','0','0.00','0.00','0.00','0.00','0.00','NULL','1','NULL','NULL')");
                     if ($anularRecibo) {
                         $cuenta +=1;
                     }else{
