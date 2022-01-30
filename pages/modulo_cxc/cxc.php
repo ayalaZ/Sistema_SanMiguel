@@ -2508,7 +2508,7 @@ $tecnicos = [
     <script src="../herramientas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="../herramientas/dist/js/adminlte.js"></script>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/locale/es.js'></script>
+ 
     <script src="js/calendario.js"></script>
     <script>
         $(document).ready(function() {
@@ -2684,7 +2684,7 @@ $tecnicos = [
             });
         });
     </script>
-    <script src="../../dist/js/sb-admin-2.js"></script>
+    <!--<script src="../../dist/js/sb-admin-2.js"></script>-->
     <script src="js/searchab.js"></script>
     <script type="text/javascript">
         // Get the input field
