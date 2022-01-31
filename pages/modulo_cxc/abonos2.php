@@ -256,11 +256,11 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             </div>
                             <div class="col-md-2">
                                 <label for="valor">Valor de la cuota</label>
-                                <input type="text" name="valorCuota" id="valorCuota" class="form-control" disabled>
+                                <input type="text" name="valorCuota" id="valorCuota" class="form-control">
                             </div>
                             <div class="col-md-2">
                                 <label for="cuotaapagar">Cuota a pagar</label>
-                                <input type="text" name="totalPagar" id="totalPagar" class="form-control" disabled>
+                                <input type="text" name="totalPagar" id="totalPagar" class="form-control">
                             </div>
                         </div>
                         <div class="row">
@@ -270,15 +270,15 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             </div>
                             <div class="col-md-2">
                                 <label for="cesc">% CESC</label>
-                                <input type="text" name="porImp" id="porImp" class="form-control" disabled>
+                                <input type="text" name="porImp" id="porImp" class="form-control">
                             </div>
                             <div class="col-md-2">
                                 <label for="impuesto">Impuesto seguridad</label>
-                                <input type="text" name="impSeg" id="impSeg" class="form-control" disabled>
+                                <input type="text" name="impSeg" id="impSeg" class="form-control">
                             </div>
                             <div class="col-md-2">
                                 <label for="conimpuesto">Cuota + Impuesto</label>
-                                <input type="text" name="totalAbonoImpSeg" id="totalAbonoImpSeg" class="form-control" disabled>
+                                <input type="text" name="totalAbonoImpSeg" id="totalAbonoImpSeg" class="form-control">
                             </div>
                         </div>
                         <div class="row">

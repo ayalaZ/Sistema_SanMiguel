@@ -428,16 +428,35 @@ switch ($proceso) {
                 $servicio = $_POST['servicio'];
                 $servicio = ucwords($servicio);
                 $codigo = $_POST['codigo'];
+                $cobrador = $_POST['cobrador'];
+                $numeroRecibo = $_POST['ultimoRecibo'];
                 //obtener el ultimo mes abonado
                 $meses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' ORDER BY idAbono DESC LIMIT 1");
                 $arregloMeses = $meses->fetch_array();
                 $datoscliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");//obtener datos del cliente que esta cancelando
                 $arreglodatosclientes = $datoscliente->fetch_array();
                 $meses = $_POST['xmeses'];
-                $cuota = $_POST['totalAbonoImpSeg'];
+                $cuota = $_POST['valorCuota'];
                 $fechaAbono = $_POST['fechaAbono'];
+                $nombre = $arreglodatosclientes['nombre'];
+                $direccion = $arreglodatosclientes['direccion'];
+                $municipio = $arreglodatosclientes['id_municipio'];
+                $colonia = $arreglodatosclientes['id_colonia'];
+                $creadoPor = $_SESSION['nombres'].' '.$_SESSION['apellidos'];
+                $cargoImpuesto = $_POST['porImp'];
+                $totaImpuesto = $_POST['impSeg'];
+                $totalIva = doubleval((doubleval($cuota) / 1.13) * 0.13);
+
+                if (!empty($_POST['consumidorfinal'])) {//en caso que el cliente de tipo consumidor final
+                    $tipocomprobante = 2;//tipo de comprobante sera el 2
+                }else{//en caso contrario el cliente es de tipo credito fiscal
+                    $tipocomprobante = 1;//y el tipo de comprobante sera 1
+                }
+                $queryprefijoCobrador = $mysqli->query("SELECT prefijoCobro FROM tbl_cobradores WHERE codigoCobrador='$cobrador'");//obteniendo el prefijo para el recibo
+                $prefijocobrador = $queryprefijoCobrador->fetch_array();
+                $recibo = $prefijocobrador['prefijoCobro']."-".$numeroRecibo;//uniendo prefijo con numero de recibo
                 $cuenta = 1;
-                for ($i = 0; $i < $meses; $i++) {
+                for ($i = 0; $i < $meses; $i++) {//ciclo para obtener los meses ya generados del cliente
                     if ($arregloMeses['mesCargo']) {
                         $mesTabla = '01/' . $arregloMeses['mesCargo'];
                         $date = str_replace('/', '-', $mesTabla);
@@ -450,25 +469,70 @@ switch ($proceso) {
                         $mesTabla = date_format(date_create($mesTabla), 'm/Y');
                         $mes = $mesTabla;
                     }
-                    $queryCargos = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND mesCargo='$mes' AND tipoServicio='$servicio'");
+                    $queryCargos = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND mesCargo='$mes' AND tipoServicio='$servicio'");//obtener datos de los meses generados 
                     $cargos = $queryCargos->fetch_array();
-                    $cantidadCargos = $queryCargos->num_rows;
+                    $cantidadCargos = $queryCargos->num_rows;//cantidad de cargos
                     $idcargo = $cargos['idFactura'];
                     $fechaCobro = $cargos['fechaCobro'];
-                    if ($cantidadCargos > 0) {
-                        if ($servicio == 'C') {
-                            $queryActualizarCargo = $mysqli->query("UPDATE tbl_cargos SET saldoCable=saldoCable - $cuota, fechaCobro='$fechaCobro', fechaAbonado='$fechaAbono' WHERE idFactura='idcargo'");    
-                        }else{
-                            $queryActualizarCargo = $mysqli->query("UPDATE tbl_cargos SET saldoInternet=saldoInternet - $cuota, fechaCobro='$fechaCobro', fechaAbonado='$fechaAbono' WHERE idFactura='idcargo'");
-                        }
+
+                   
+                    if ($cantidadCargos > 0) {//si existen cargos ya generados 
+                        $factura = $cargos['numeroFactura'];
+                        $fechaCobro = $cargos['fechaCobro'];
+                        $fechaFactura = $cargos['fechaFactura'];
+                        $fechaVencimiento = $cargos['fechaVencimiento'];
+                    }else{
+                        $factura = $mes;
+                        $fechaCobro = '';
+                        $fechaFactura = '';
+                        $fechaVencimiento = '';
                     }
                     
+                    if ($servicio == 'C') {
+                        $queryIngresarAbono = "INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor)
+                        VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','$cuota','','0','0','$fechaCobro','$fechaFactura','$fechaVencimiento','$fechaAbono','$mes','0','efectivo','$servicio','CANCELADA','0','$cargoImpuesto','$totaImpuesto','0.13','$totalIva','0','','0','$idcargo','$creadoPor')";
+                        $queryActualizarCargo = "UPDATE tbl_cargos SET saldoCable=saldoCable - $cuota, fechaCobro='$fechaCobro', fechaAbonado='$fechaAbono' WHERE idFactura='$idcargo'";//actualizar datos del cargo ya generado si el servicido que cancelara es cable
+                        $actualizarCliente = "UPDATE clientes SET saldoCable = saldoCable - $cuota, fecha_ult_pago=$mes WHERE cod_cliente='$codigo'";
+                    }else{
+                        $queryIngresarAbono = "INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor)
+                        VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','','$cuota','0','0','$fechaCobro','$fechaFactura','$fechaVencimiento','$fechaAbono','$mes','0','efectivo','$servicio','CANCELADA','0','$cargoImpuesto','$totaImpuesto','0.13','$totalIva','0','','0','$idcargo','$creadoPor')";
+                        $queryActualizarCargo = "UPDATE tbl_cargos SET saldoInternet=saldoInternet - $cuota, fechaCobro='$fechaCobro', fechaAbonado='$fechaAbono' WHERE idFactura='$  idcargo'";//actualizar datos del cargo ya generado si el servicio que cancelara es internet
+                        $actualizarCliente = "UPDATE clientes SET saldoInternet = saldoInternet - $cuota, fecha_ult_pago=$mes WHERE cod_cliente='$codigo'";
+                    }
+                    $aumentanumerorecibo = "UPDATE tbl_cobradores SET numeroAsignador=numeroAsignador+1 WHERE codigoCobrador='$cobrador'";
 
+                    $verificarNumeroAsignador = $mysqli->query("SELECT * FROM tbl_cobradores WHERE ('$numeroRecibo' Between desdeNumero And hastaNumero) AND codigoCobrador='$cobrador'");
+                    $CantidadNumeroAsignador = $verificarNumeroAsignador->num_rows;
+                    if ($CantidadNumeroAsignador > 0) {
+                        $ingresarAbono = $mysqli->query($queryIngresarAbono);
+                        if ($ingresarAbono) {
+                            if ($cantidadCargos > 0) {
+                                $actualizarCargo = $mysqli->query($queryActualizarCargo);
+                            }
+                            $QueryactualizarCliente = $mysqli->query($actualizarCliente);
+                            if ($QueryactualizarCliente) {
+                                $queryNumeroAsigandor = $mysqli->query($aumentanumerorecibo);
+                                if ($queryNumeroAsignador) {
+                                    $xdatos['msg'] = "Recibo ingresado correctamente";
+                                    $xdatos['typeinfo'] = "success"; 
+                                }else{
+                                    $xdatos['msg'] = "Error al ingresar abono 0004";
+                                    $xdatos['typeinfo'] = "error"; 
+                                }
+                            }else{
+                                $xdatos['msg'] = "Error al ingresar abono 0003";
+                                $xdatos['typeinfo'] = "error"; 
+                            }
+                        }else{
+                            $xdatos['msg'] = "Error al ingresar abono 0001".$mysqli->error;
+                            $xdatos['typeinfo'] = "error";   
+                        }
+                    }else{
+                        $xdatos['msg'] = "Error al ingresar abono 0002";
+                        $xdatos['typeinfo'] = "error"; 
+                    }
                     $cuenta += 1;
                 }
-
-                $xdatos['msg'] = "Se cancelara " . $cantidadCargos . " ya generadas";
-                $xdatos['typeinfo'] = "success";
             }
         }
         echo json_encode($xdatos);
