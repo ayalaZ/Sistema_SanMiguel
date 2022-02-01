@@ -1,4 +1,5 @@
 <?php
+require_once("../../php/config.php");
 if (!isset($_SESSION)) {
     session_start([
         'cookie_lifetime' => 86400,

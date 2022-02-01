@@ -483,20 +483,20 @@ switch ($proceso) {
                         $fechaVencimiento = $cargos['fechaVencimiento'];
                     }else{
                         $factura = $mes;
-                        $fechaCobro = '';
-                        $fechaFactura = '';
-                        $fechaVencimiento = '';
+                        $fechaCobro = '//';
+                        $fechaFactura = '//';
+                        $fechaVencimiento = '//';
                     }
                     
                     if ($servicio == 'C') {
                         $queryIngresarAbono = "INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor)
-                        VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','$cuota','','0','0','$fechaCobro','$fechaFactura','$fechaVencimiento','$fechaAbono','$mes','0','efectivo','$servicio','CANCELADA','0','$cargoImpuesto','$totaImpuesto','0.13','$totalIva','0','','0','$idcargo','$creadoPor')";
+                        VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','$cuota','0','0','0','$fechaCobro','$fechaFactura','$fechaVencimiento','$fechaAbono','$mes','0','efectivo','$servicio','CANCELADA','0','$cargoImpuesto','$totaImpuesto','0.13','$totalIva','0','','0','$idcargo','$creadoPor')";
                         $queryActualizarCargo = "UPDATE tbl_cargos SET saldoCable=saldoCable - $cuota, fechaCobro='$fechaCobro', fechaAbonado='$fechaAbono' WHERE idFactura='$idcargo'";//actualizar datos del cargo ya generado si el servicido que cancelara es cable
                         $actualizarCliente = "UPDATE clientes SET saldoCable = saldoCable - $cuota, fecha_ult_pago=$mes WHERE cod_cliente='$codigo'";
                     }else{
                         $queryIngresarAbono = "INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor)
-                        VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','','$cuota','0','0','$fechaCobro','$fechaFactura','$fechaVencimiento','$fechaAbono','$mes','0','efectivo','$servicio','CANCELADA','0','$cargoImpuesto','$totaImpuesto','0.13','$totalIva','0','','0','$idcargo','$creadoPor')";
-                        $queryActualizarCargo = "UPDATE tbl_cargos SET saldoInternet=saldoInternet - $cuota, fechaCobro='$fechaCobro', fechaAbonado='$fechaAbono' WHERE idFactura='$  idcargo'";//actualizar datos del cargo ya generado si el servicio que cancelara es internet
+                        VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','0','$cuota','0','0','$fechaCobro','$fechaFactura','$fechaVencimiento','$fechaAbono','$mes','0','efectivo','$servicio','CANCELADA','0','$cargoImpuesto','$totaImpuesto','0.13','$totalIva','0','','0','$idcargo','$creadoPor')";
+                        $queryActualizarCargo = "UPDATE tbl_cargos SET saldoInternet=saldoInternet - $cuota, fechaCobro='$fechaCobro', fechaAbonado='$fechaAbono' WHERE idFactura='$sidcargo'";//actualizar datos del cargo ya generado si el servicio que cancelara es internet
                         $actualizarCliente = "UPDATE clientes SET saldoInternet = saldoInternet - $cuota, fecha_ult_pago=$mes WHERE cod_cliente='$codigo'";
                     }
                     $aumentanumerorecibo = "UPDATE tbl_cobradores SET numeroAsignador=numeroAsignador+1 WHERE codigoCobrador='$cobrador'";
