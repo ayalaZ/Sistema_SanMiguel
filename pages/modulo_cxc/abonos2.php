@@ -243,7 +243,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             </div>
                             <div class="col-md-3">
                                 <label for="formadepago">Forma de Pago</label>
-                                <select class="form-control" type="text" name="formaPago">
+                                <select class="form-control" type="text" name="formaPago" id="formaPago">
                                     <option value="efectivo">Efectivo</option>
                                 </select>
                             </div>
