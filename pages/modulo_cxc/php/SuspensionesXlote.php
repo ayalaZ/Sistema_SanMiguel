@@ -25,6 +25,9 @@ $pdf->Ln(13);
 
 
 while ($datos = $resultado->fetch_array()) {
+    $id = $datos['codigoCliente'];
+    $querycliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$id'");
+    $datoscliente = $querycliente->fetch_array();
     if ($datos["tipoServicio"] == "I") {
         // SQL query para traer datos del servicio de cable de la tabla clientes
         $query1 = "SELECT nombreTecnico FROM tbl_tecnicos_cxc WHERE idTecnico = ".$datos['idTecnico'];
@@ -81,7 +84,10 @@ while ($datos = $resultado->fetch_array()) {
         $pdf->SetTextColor(0,0,0);
         $pdf->Cell(70,3,'Tecnico: '.$tecnico,0,1,'L');
         $pdf->Ln(3);
-
+        $pdf->SetTextColor(239,49,11);
+        $pdf->Cell(70,3,"Telefono: ".$datoscliente['telefonos'],0,1,'L');
+        $pdf->SetTextColor(0,0,0);
+        $pdf->ln(3);
         $pdf->Cell(40,3,'MAC: '.$datos["macModem"],0,0,'L');
         $pdf->Cell(40,3,'Colilla: '.$datos["colilla"],0,1,'L');
         $pdf->Ln(3);
@@ -174,6 +180,10 @@ while ($datos = $resultado->fetch_array()) {
         $pdf->Cell(70,3,'Coordenadas: '.$datos["coordenadas"],0,0,'L');
         $pdf->SetTextColor(0,0,0);
         $pdf->Cell(70,3,'Tecnico: '.$tecnico,0,1,'L');
+        $pdf->Ln(3);
+        $pdf->SetTextColor(239,49,11);
+        $pdf->Cell(70,3,"Telefono: ".$datoscliente['telefonos'],0,1,'L');
+        $pdf->SetTextColor(0,0,0);
         $pdf->Ln(3);
         $pdf->Cell(50,3,'MACTV: '.$datos["mactv"],0,0,'L');
         $pdf->Cell(50,3,'Colilla: '.$datos["colilla"],0,1,'L');

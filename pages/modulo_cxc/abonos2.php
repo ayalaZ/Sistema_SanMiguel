@@ -143,7 +143,13 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                             </div>
                             <div class="col-md-2">
                                 <label for="fechaAbono">Fecha del abono</label>
-                                <input type="date" name="fechaAbono" id="fechaAbono" class="form-control" value="<?php echo date('Y-m-d') ?>">
+                                <input type="date" name="fechaAbono" id="fechaAbono" class="form-control" value="<?php
+                                    if (isset($_SESSION['fecha'])) {
+                                        echo $_SESSION['fecha'];
+                                    }else{
+                                        echo date('Y-m-d');
+                                    }
+                                 ?>">
                             </div>
                             <div class="col-md-3">
                                 <label for="zona">Zona</label>

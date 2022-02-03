@@ -69,31 +69,31 @@ while ($result = $statement->fetch_assoc()) {
               if ($tipoServicio == "C") {
                   //SQL para todas las zonas de cobro
                   if ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] === "todas") {
-                      $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                      $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] === "todas") {
-                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }else {
-                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }
               }elseif ($tipoServicio == "I") {
                   //SQL para todas las zonas de cobro
                   if ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] === "todas") {
-                      $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                      $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] === "todas") {
-                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }else {
-                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                      $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                       $resultado = $mysqli->query($query);
                   }
               }
@@ -211,27 +211,27 @@ while ($result = $statement->fetch_assoc()) {
                           //var_dump($detallado."ENTRAMOS");
                           //SQL para todas las zonas de cobro
                           if ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] === "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE  cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                               
                           }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND codigoCobrador= '".$cobradorR."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND codigoCobrador= '".$cobradorR."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }
                       }elseif ($tipoServicio == "C") {
                           if ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] === "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE  tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }elseif ($_POST["lCobrador"] == "todos" && $_POST["lColonia"] != "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }
                       }elseif ($tipoServicio == "I") {
                           if ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] === "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE  tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }
                       }
@@ -418,26 +418,26 @@ while ($result = $statement->fetch_assoc()) {
                       if($tipoServicio == "A") {
                           //SQL para todas las zonas de cobro
                           if ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] === "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE  cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] != "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }
                       }elseif ($tipoServicio == "C") {
                           if ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] === "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE  tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] != "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }
                       }elseif ($tipoServicio == "I") {
                           if ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] === "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE  tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] != "todas") {
-                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                              $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                               $resultado = $mysqli->query($query);
                           }
                       }
@@ -655,31 +655,31 @@ while ($result = $statement->fetch_assoc()) {
             if ($tipoServicio == "C") {
                 //SQL para todas las zonas de cobro
                 if ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] === "todas") {
-                    $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                    $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] === "todas") {
-                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }else {
-                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }
             }elseif ($tipoServicio == "I") {
                 //SQL para todas las zonas de cobro
                 if ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] === "todas") {
-                    $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                    $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] === "todas") {
-                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }else {
-                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                    $query = "SELECT * FROM tbl_abonos WHERE cobradoPor= '".$codigoCobrador."' AND idColonia= '".$colonia."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                     $resultado = $mysqli->query($query);
                 }
             }
@@ -843,7 +843,7 @@ while ($result = $statement->fetch_assoc()) {
                             $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND codigoCobrador= '".$cobradorR."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND codigoCobrador= '".$cobradorR."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }
                     }elseif ($tipoServicio == "C") {
@@ -851,7 +851,7 @@ while ($result = $statement->fetch_assoc()) {
                             $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }elseif ($_POST["lCobrador"] == "todos" && $_POST["lColonia"] != "todas") {
-                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }
                     }elseif ($tipoServicio == "I") {
@@ -859,7 +859,7 @@ while ($result = $statement->fetch_assoc()) {
                             $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }elseif ($_POST["lCobrador"] === "todos" && $_POST["lColonia"] != "todas") {
-                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }
                     }
@@ -1074,7 +1074,7 @@ while ($result = $statement->fetch_assoc()) {
                             $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] != "todas") {
-                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND codigoCobrador= '".$cobradorR."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND codigoCobrador= '".$cobradorR."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }
                     }elseif ($tipoServicio == "C") {
@@ -1082,7 +1082,7 @@ while ($result = $statement->fetch_assoc()) {
                             $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] != "todas") {
-                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }
                     }elseif ($tipoServicio == "I") {
@@ -1090,7 +1090,7 @@ while ($result = $statement->fetch_assoc()) {
                             $query = "SELECT * FROM tbl_abonos WHERE anulada= '".$anulada."' AND tipoServicio= '".$tipoServicio."' AND cobradoPor= '".$cobradorR."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }elseif ($_POST["lCobrador"] != "todos" && $_POST["lColonia"] != "todas") {
-                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."' AND anulada= '".$anulada."' AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
+                            $query = "SELECT * FROM tbl_abonos WHERE idColonia= '".$colonia."' AND cobradoPor= '".$cobradorR."' AND tipoServicio= '".$tipoServicio."'  AND fechaAbonado BETWEEN '".$desde."' AND '".$hasta."' ORDER BY numeroRecibo ASC";
                             $resultado = $mysqli->query($query);
                         }
                     }

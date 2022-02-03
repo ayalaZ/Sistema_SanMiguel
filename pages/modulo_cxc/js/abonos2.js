@@ -132,6 +132,7 @@ $(document).ready(function() {
                     $("#valorCuota").val(datax.cuota);
                     $("#totalPagar").val(datax.cuota);
                     $("#totalAbonoImpSeg").val(datax.cuota);
+                    $("#meses").val(datax.nuevomes);
                     if (datax.servicio == 'c') {
                         if (datax.filas != 0) {
                             $('#cargos tbody').empty();
