@@ -416,6 +416,19 @@ function abono() {
                 success: function(datax) {
                     swal('Estado de la operacion', datax.msg, datax.typeinfo);
                     if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                        swal({
+                            title: "COMPROBANTE DE PAGO",
+                            text: "¿Desea imprimir el recibo?",
+                            type: "warning",
+                            showCancelButton: true,
+                            cancelButtonText: "No",
+                            confirmButtonText: "Continuar",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
+                        }).then(function() {
+                            window.open("php/comprobantePagox2.php?uaid1=" + datax.Crecibo + "&cod=" + datax.Ccodigo + "&desde=" + datax.Cdesde + "&hasta=" + datax.Chasta + "&tipoServicio=" + datax.Cservicio + "", "_blank");
+                            setInterval('location.reload()', 3000);
+                        });
                         setInterval('location.reload()', 3000);
                     }
 

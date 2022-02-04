@@ -80,7 +80,7 @@ while ($datos = $resultado->fetch_array()) {
         //$pdf->Cell(190,3,'Direccion: '.$datos["direccionCable"],0,1,'L');
         $pdf->MultiCell(190,6,'Direccion: '.utf8_decode($datos["direccion"]),0,'L',0);
         $pdf->SetTextColor(239,49,11);
-        $pdf->Cell(70,3,'Coordenadas: '.$datos["coordenadas"],0,0,'L');
+        $pdf->Cell(70,3,'Coordenadas: '.$datoscliente["coordenadas"],0,0,'L');
         $pdf->SetTextColor(0,0,0);
         $pdf->Cell(70,3,'Tecnico: '.$tecnico,0,1,'L');
         $pdf->Ln(3);
@@ -177,7 +177,7 @@ while ($datos = $resultado->fetch_array()) {
         //$pdf->Cell(190,3,'Direccion: '.$datos["direccionCable"],0,1,'L');
         $pdf->MultiCell(190,6,'Direccion: '.utf8_decode($datos["direccion"]),0,'L',0);
         $pdf->SetTextColor(239,49,11);
-        $pdf->Cell(70,3,'Coordenadas: '.$datos["coordenadas"],0,0,'L');
+        $pdf->Cell(70,3,'Coordenadas: '.$datoscliente["coordenadas"],0,0,'L');
         $pdf->SetTextColor(0,0,0);
         $pdf->Cell(70,3,'Tecnico: '.$tecnico,0,1,'L');
         $pdf->Ln(3);

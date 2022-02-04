@@ -425,9 +425,20 @@ switch ($proceso) {
                     } else {
                         $factura = $mes; //en caso contrario el numero de factura se reemplazara por el mes que se esta cancelando
                     }
+                    if ($i == 0) {
+                        $desde = $mes;
+                    }
+                    if($i == $meses-1){
+                        $hasta = $mes;
+                    }
                     //ingresar el abono
                     $anularRecibo = $mysqli->query("INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor)
                     VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','NULL','0.00','0.00','0.00','NULL','NULL','NULL','$fecha','$mes','0','efectivo','$servicio','CANCELADA','0','0.00','0.00','0.00','0.00','0.00','NULL','1','NULL','$creadoPor')");
+                     $xdatos['Crecibo'] = $recibo;
+                     $xdatos['Ccodigo'] = $codigo;
+                     $xdatos['Cservicio'] = $servicio;
+                     $xdatos['Cdesde'] = $desde;
+                     $xdatos['Chasta'] = $hasta;
                     if ($anularRecibo) {
                         $cuenta += 1; //aunmentar en 1 si el abono se ingreso
                     } else {
@@ -525,6 +536,12 @@ switch ($proceso) {
                         $idcargo = '';
                         $Eanticipado = 0;
                     }
+                    if ($i == 0) {
+                        $desde = $mes;
+                    }
+                    if($i == $meses-1){
+                        $hasta = $mes;
+                    }
 
                     if ($servicio == 'C') {
                         $queryIngresarAbono = "INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor) VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','$cuota','$cero','$cero','$cero','$fechaCobro','$fechaFactura','$fechaVencimiento','$fechaAbono','$mes','$cero','$formaPago','$servicio','$estado','$Eanticipado','$cargoImpuesto','$totaImpuesto','$iva','$totalIva','$cero','s','$cero','$idcargo','$creadoPor')";
@@ -560,6 +577,7 @@ switch ($proceso) {
                         $xdatos['msg'] = "Error al ingresar abono 0002";
                         $xdatos['typeinfo'] = "error";
                     }
+
                 }
 
                 if ($cuenta == $meses + 1) {
@@ -570,6 +588,11 @@ switch ($proceso) {
                         if ($cobrador != '002' || $cobrador != '020') {
                             $_SESSION['fecha'] = $fechaAbono;
                         }
+                        $xdatos['Crecibo'] = $recibo;
+                        $xdatos['Ccodigo'] = $codigo;
+                        $xdatos['Cservicio'] = $servicio;
+                        $xdatos['Cdesde'] = $desde;
+                        $xdatos['Chasta'] = $hasta;
                         $xdatos['msg'] = "Recibo ingresado correctamente";
                         $xdatos['typeinfo'] = "success";
                     } else {
