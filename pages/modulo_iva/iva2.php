@@ -50,7 +50,12 @@ function setMenu($permisosActuales, $permisoRequerido)
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.css" />
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
-
+    <style>
+        .error{
+            color: red;
+            font-family:verdana, Helvetica;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -207,20 +212,18 @@ function setMenu($permisosActuales, $permisoRequerido)
                     <h3>Libro Contribuyentes</h3>
                 </div>
                 <div class="card-body">
-                    <form action="php/pdfCreditoFiscal.php" method="POST" target="_blank">
+                    <form action="php/generar_excel_1.php" method="POST" id="primer_formulario" name="primer_formulario" target="_blank">
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="puntoVentaGenerar">Punto de venta:</label>
                                 <select name="puntoVentaGenerar" id="puntoVentaGenerar" class="form-control form-control-lg">
-                                    <option value="">Seleccione...</option>
-                                    <option value="1">Cable sat</option>
+                                    <option value="1" selected>Cable sat</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="mes">Mes a generar</label>
                                 <select name="mesGenerar" id="mesGenerar" class="form-control form-control-lg">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="1">Enero</option>
+                                    <option value="1" selected>Enero</option>
                                     <option value="2">Febrero</option>
                                     <option value="3">Marzo</option>
                                     <option value="4">Abril</option>
@@ -240,7 +243,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-5">
                                 <div class="form-group clearfix">
                                     <div class="form-check form-check-inline">
                                         <div class="icheck-danger d-inline">
@@ -258,15 +261,15 @@ function setMenu($permisosActuales, $permisoRequerido)
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-5">
                                 <div class="form-group clearfix">
                                     <div class="form-check form-check-inline">
                                         <div class="icheck-danger d-inline">
-                                            <input class="form-check-input" type="radio" name="facturas" id="facturas" value="1">
+                                            <input class="form-check-input" type="radio" name="facturas" id="facturas" value="1" checked>
                                             <label class="form-check-label" for="facturas">Facturas</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
-                                            <input class="form-check-input" type="radio" name="facturas" id="anuladas" value="3">
+                                            <input class="form-check-input" type="radio" name="facturas" id="anuladas" value="2">
                                             <label class="form-check-label" for="anuladas">Anuladas</label>
                                         </div>
                                     </div>
@@ -276,12 +279,113 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <div class="form-group clearfix">
                                     <div class="form-check form-check-inline">
                                         <div class="icheck-danger d-inline">
-                                            <input class="form-check-input" type="radio" name="documento" id="pdf" value="1">
+                                            <input class="form-check-input" type="radio" name="documento" id="pdf" value='1' checked>
                                             <label class="form-check-label" for="pdf">PDF</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
-                                            <input class="form-check-input" type="radio" name="documento" id="excel" value="3">
+                                            <input class="form-check-input" type="radio" name="documento" id="excel" value='2'>
                                             <label class="form-check-label" for="excel">EXCEL</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" name="generar" class="btn btn-danger btn-lg">Generar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card" style="margin: 10px;">
+                <div class="card-header">
+                    <h3>Libro consumidor final</h3>
+                </div>
+                <div class="card-body">
+                    <form action="php/pdfConsumidorFinal.php" method="POST" target="_blank">
+                        <div class="row">
+                            <div class="form-group col-md-4 col-xs-4">
+                                <label for="codigo">Punto de Venta:</label>
+                                <select class="form-control form-control-lg" name="puntoVentaGenerar2" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="1" selected>CABLESAT</option>;
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-xs-4">
+                                <label for="nombre">Mes a generar</label>
+                                <select class="form-control form-control-lg" name="mesGenerar2" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="1">Enero</option>;
+                                    <option value="2">Febrero</option>;
+                                    <option value="3">Marzo</option>;
+                                    <option value="4">Abril</option>;
+                                    <option value="5">Mayo</option>;
+                                    <option value="6">Junio</option>;
+                                    <option value="7">Julio</option>;
+                                    <option value="8">Agosto</option>;
+                                    <option value="9">Septiembre</option>;
+                                    <option value="10">Octubre</option>;
+                                    <option value="11">Noviembre</option>;
+                                    <option value="12">Diciembre</option>;
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-xs-4">
+                                <label for="nombre">Año:</label>
+                                <input type="number" class="form-control form-control-lg" name="anoGenerar2" min="1" max="2500" value="<?php echo date("Y"); ?>" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group clearfix">
+                                    <div class="form-check form-check-inline">
+                                        <div class="icheck-danger d-inline">
+                                            <input type="checkbox" name="encabezados" id="encabezados">
+                                            <label for="encabezados">Encabezados</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="checkbox" name="numPag" id="numPag">
+                                            <label for="numPag">Incluir numero de paginas</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="checkbox" name="libroDetallado" id="libroDetallado">
+                                            <label for="libroDetallado">Imprimir libro con detalles</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group clearfix">
+                                    <div class="form-check form-check-inline">
+                                        <div class="icheck-danger d-inline">
+                                            <input class="form-check-input" type="radio" name="Cfacturas" id="recibosN" value="1">
+                                            <label class="form-check-label" for="recibosN">Recibos</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input class="form-check-input" type="radio" name="Cfacturas" id="facturasN" value="2">
+                                            <label class="form-check-label" for="facturasN">Facturas</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input class="form-check-input" type="radio" name="Cfacturas" id="anuladasN" value="3">
+                                            <label class="form-check-label" for="anuladasN">Anuladas</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input class="form-check-input" type="radio" name="Cfacturas" id="todasN" value="4">
+                                            <label class="form-check-label" for="todasN">Todas</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group clearfix">
+                                    <div class="form-check form-check-inline">
+                                        <div class="icheck-danger d-inline">
+                                            <input class="form-check-input" type="radio" name="documento2" id="pdf2" value="1">
+                                            <label class="form-check-label" for="pdf2">PDF</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input class="form-check-input" type="radio" name="documento2" id="excel2" value="2">
+                                            <label class="form-check-label" for="excel2">EXCEL</label>
                                         </div>
                                     </div>
                                 </div>
@@ -548,6 +652,7 @@ function setMenu($permisosActuales, $permisoRequerido)
 <script src="../herramientas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../herramientas/dist/js/adminlte.js"></script>
+<script src="js/iva.js"></script>
 <script>
     $(document).ready(function() {
         $(".salir").on("click", function(e) {
@@ -567,5 +672,5 @@ function setMenu($permisosActuales, $permisoRequerido)
         });
     });
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 </html>
