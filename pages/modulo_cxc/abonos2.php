@@ -310,6 +310,12 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                                             <label for="anularComp">Anular Comprobante</label>
                                         </div>
                                     </div>
+                                    <div class="form-check form-check-inline">
+                                        <div class="icheck-danger d-inline">
+                                            <input type="checkbox" name="mover" id="mover">
+                                            <label for="mover">Mover Comprobante</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

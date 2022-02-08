@@ -398,12 +398,14 @@ switch ($proceso) {
                 $creadoPor = $_SESSION['nombres'] . ' ' . $_SESSION['apellidos'];
                 $cuenta = 1; //variable para llevar la cuenta de los meses que cancelara 
                 for ($i = 0; $i < $meses; $i++) { //recorriendo si los cargos ya estan generados
-                    if ($servicio == 'I') {
-                        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='I' ORDER BY idAbono DESC LIMIT 1");
-                        $arregloMeses = $querymeses->fetch_array();
-                    }else{
-                        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' ORDER BY idAbono DESC LIMIT 1");
-                        $arregloMeses = $querymeses->fetch_array();
+                    if (empty($_POST['mover'])) {
+                        if ($servicio == 'I') {
+                            $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='I' ORDER BY idAbono DESC LIMIT 1");
+                            $arregloMeses = $querymeses->fetch_array();
+                        } else {
+                            $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' ORDER BY idAbono DESC LIMIT 1");
+                            $arregloMeses = $querymeses->fetch_array();
+                        }
                     }
                     if ($arregloMeses['mesCargo']) { //si el cargo esta generado 
                         $mesTabla = '01/' . $arregloMeses['mesCargo'];
@@ -428,17 +430,17 @@ switch ($proceso) {
                     if ($i == 0) {
                         $desde = $mes;
                     }
-                    if($i == $meses-1){
+                    if ($i == $meses - 1) {
                         $hasta = $mes;
                     }
                     //ingresar el abono
                     $anularRecibo = $mysqli->query("INSERT INTO tbl_abonos(nombre, direccion, idMunicipio, idColonia, numeroFactura, tipoFactura, numeroRecibo, codigoCliente, codigoCobrador, cobradoPor, cuotaCable, cuotaInternet, saldoCable, saldoInternet, fechaCobro, fechaFactura, fechaVencimiento, fechaAbonado, mesCargo, anticipo, formaPago, tipoServicio, estado, anticipado, cargoImpuesto, totalImpuesto, cargoIva, totalIva, recargo, exento, anulada, idFactura, creadoPor)
                     VALUES ('$nombre','$direccion','$municipio','$colonia','$factura','$tipocomprobante','$recibo','$codigo','$cobrador','$cobrador','NULL','0.00','0.00','0.00','NULL','NULL','NULL','$fecha','$mes','0','efectivo','$servicio','CANCELADA','0','0.00','0.00','0.00','0.00','0.00','NULL','1','NULL','$creadoPor')");
-                     $xdatos['Crecibo'] = $recibo;
-                     $xdatos['Ccodigo'] = $codigo;
-                     $xdatos['Cservicio'] = $servicio;
-                     $xdatos['Cdesde'] = $desde;
-                     $xdatos['Chasta'] = $hasta;
+                    $xdatos['Crecibo'] = $recibo;
+                    $xdatos['Ccodigo'] = $codigo;
+                    $xdatos['Cservicio'] = $servicio;
+                    $xdatos['Cdesde'] = $desde;
+                    $xdatos['Chasta'] = $hasta;
                     if ($anularRecibo) {
                         $cuenta += 1; //aunmentar en 1 si el abono se ingreso
                     } else {
@@ -498,12 +500,14 @@ switch ($proceso) {
                 $recibo = $prefijocobrador['prefijoCobro'] . "-" . $numeroRecibo; //uniendo prefijo con numero de recibo
                 $cuenta = 1;
                 for ($i = 0; $i < $meses; $i++) { //ciclo para obtener los meses ya generados del cliente
-                    if ($servicio == 'I') {
-                        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='I' ORDER BY idAbono DESC LIMIT 1");
-                        $arregloMeses = $querymeses->fetch_array();
-                    }else{
-                        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' ORDER BY idAbono DESC LIMIT 1");
-                        $arregloMeses = $querymeses->fetch_array();
+                    if (empty($_POST['mover'])) {
+                        if ($servicio == 'I') {
+                            $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='I' ORDER BY idAbono DESC LIMIT 1");
+                            $arregloMeses = $querymeses->fetch_array();
+                        } else {
+                            $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' ORDER BY idAbono DESC LIMIT 1");
+                            $arregloMeses = $querymeses->fetch_array();
+                        }
                     }
                     if ($arregloMeses['mesCargo']) {
                         $mesTabla = '01/' . $arregloMeses['mesCargo'];
@@ -539,7 +543,7 @@ switch ($proceso) {
                     if ($i == 0) {
                         $desde = $mes;
                     }
-                    if($i == $meses-1){
+                    if ($i == $meses - 1) {
                         $hasta = $mes;
                     }
 
@@ -577,7 +581,6 @@ switch ($proceso) {
                         $xdatos['msg'] = "Error al ingresar abono 0002";
                         $xdatos['typeinfo'] = "error";
                     }
-
                 }
 
                 if ($cuenta == $meses + 1) {
