@@ -252,11 +252,15 @@ function setMenu($permisosActuales, $permisoRequerido)
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input type="checkbox" name="numPag" id="numPag">
-                                            <label for="numPag">Incluir numero de paginas</label>
+                                            <label for="numPag">Numero de paginas</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input type="checkbox" name="libroDetallado" id="libroDetallado" checked>
-                                            <label for="libroDetallado">Imprimir libro con detalles</label>
+                                            <label for="libroDetallado">Detalles</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="checkbox" name="libroResumen" id="libroResumen" checked>
+                                            <label for="libroResumen">Resumen</label>
                                         </div>
                                     </div>
                                 </div>
