@@ -212,7 +212,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                     <h3>Libro Contribuyentes</h3>
                 </div>
                 <div class="card-body">
-                    <form action="php/generar_excel_1.php" method="POST" id="primer_formulario" name="primer_formulario" target="_blank">
+                    <form action="php/Reportes_CreditoFiscal.php" method="POST" id="primer_formulario" name="primer_formulario" target="_blank">
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="puntoVentaGenerar">Punto de venta:</label>
