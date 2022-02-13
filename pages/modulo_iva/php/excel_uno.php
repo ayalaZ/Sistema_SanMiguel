@@ -773,6 +773,17 @@ if ($detallado == 1) {
         $primero = "A" . $numero;
         $segundo = "B" . $numero;
         $tercero = "C".$numero;
+        $cuarto = "D".$numero;
+        $quinto = "E".$numero;
+        $sexto = "F".$numero;
+        $septimo = "G".$numero;
+        $octavo = "H".$numero;
+        $noveno = "I".$numero;
+        $decimo = "J".$numero;
+        $once = "K".$numero;
+        $doce = "L".$numero;
+        $trece = "M".$numero;
+        $catorce = "N".$numero;
 
         if ($tiposComprobantes == 1) {
             $desde = $years . '-' . $mes . '-01';
@@ -781,7 +792,11 @@ if ($detallado == 1) {
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT
                             (SELECT SUM(cuotaCable) from tbl_cargos where tipoServicio='C' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 1 AND anulada=0) as totalCuotaCable,
-                            (SELECT SUM(cuotaInternet) from tbl_cargos where tipoServicio='I' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 1 AND anulada=0) as totalCuotaInter, SUM(totalImpuesto) as totalImp, MIN(numeroFactura) as inFact, MAX(numeroFactura) as finFact, DAY(fechaFactura) as dia FROM tbl_cargos
+                            (SELECT SUM(cuotaInternet) from tbl_cargos where tipoServicio='I' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 1 AND anulada=0) as totalCuotaInter,
+                            SUM(totalImpuesto) as totalImp,
+                            MIN(numeroFactura) as inFact,
+                            MAX(numeroFactura) as finFact,
+                            DAY(fechaFactura) as dia FROM tbl_cargos
                             WHERE DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 1 AND anulada=0";
         }
 
@@ -798,8 +813,32 @@ if ($detallado == 1) {
             }else{
                 $objPHPExcel->getActiveSheet()->setCellValue($segundo, $mes."/".$years);
             }
+            //COLUMNA C
             $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
-            $objPHPExcel->getActiveSheet()->setCellValue($tercero, $datos['intFact']."-".$datos['finFact']);
+            $objPHPExcel->getActiveSheet()->setCellValue($tercero, substr($datos['inFact'],9,7)."-".substr($datos['finFact'],9,7));
+            //COLUMNA D
+            $objPHPExcel->getActiveSheet()->setCellValue($cuarto, "0");
+            //COLUMNA E
+            $objPHPExcel->getActiveSheet()->setCellValue($quinto, "-");
+            //COLUMNA F
+            $objPHPExcel->getActiveSheet()->setCellValue($sexto, "-");
+            
+            $sinIva = doubleval($montoCancelado) - doubleval($totalIva);
+            if ($ex->isExento("")) {
+                //COLUMNA G
+                $objPHPExcel->getActiveSheet()->setCellValue($sexto, $montoCancelado);
+                //COLUMNA H
+                $objPHPExcel->getActiveSheet()->setCellValue($septimo, "0");
+                //COLUMNA I
+                $objPHPExcel->getActiveSheet()->setCellValue($octavo, "0");
+            }else{
+                //COLUMNA G
+                $objPHPExcel->getActiveSheet()->setCellValue($sexto, "0");
+                //COLUMNA H
+                $objPHPExcel->getActiveSheet()->setCellValue($septimo, "0");
+                //COLUMNA I
+                $objPHPExcel->getActiveSheet()->setCellValue($octavo, "0");
+            }
         }
 
         $numero += 1;
