@@ -49,7 +49,7 @@ $documento = $_POST['documento'];
 
 switch ($documento) {
     case '1':
-        # code...
+        include('pdf_uno.php');
         break;
     case '2':
        include('excel_uno.php');

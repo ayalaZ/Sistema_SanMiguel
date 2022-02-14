@@ -252,7 +252,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input type="checkbox" name="numPag" id="numPag">
-                                            <label for="numPag">Numero de paginas</label>
+                                            <label for="numPag">Numeros</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input type="checkbox" name="libroDetallado" id="libroDetallado" checked>
@@ -349,7 +349,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input type="checkbox" name="numPag" id="numPag">
-                                            <label for="numPag">Incluir numero de paginas</label>
+                                            <label for="numPag">Numeros</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input type="checkbox" name="libroDetallado" id="libroDetallado">
@@ -656,7 +656,6 @@ function setMenu($permisosActuales, $permisoRequerido)
 <script src="../herramientas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../herramientas/dist/js/adminlte.js"></script>
-<script src="js/iva.js"></script>
 <script>
     $(document).ready(function() {
         $(".salir").on("click", function(e) {
