@@ -17,6 +17,6 @@ $numeroRecibo = $mysqli->query("SELECT numeroAsignador FROM tbl_cobradores WHERE
 $arregloNumeroRecibo = $numeroRecibo->fetch_array();
 $nuevoNumero = $arregloNumeroRecibo['numeroAsignador'] + 1;
 
-$xdatos['valor'] = substr(str_repeat(0, 4).$nuevoNumero, - 4);
+$xdatos['valor'] = substr(str_repeat(0, 6).$nuevoNumero, - 6);
 
 echo json_encode($xdatos);

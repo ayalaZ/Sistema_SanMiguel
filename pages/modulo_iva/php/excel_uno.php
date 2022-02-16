@@ -526,7 +526,7 @@ if ($detallado == 1) {
         //VENTAS EXENTAS
         $celda += 1;
         $fin = $celda + 6;
-        $objPHPExcel->getActiveSheet()->getStyle("G".$celda.":"."N".$fin)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "N" . $fin)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
         $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "F" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
         $objPHPExcel->getActiveSheet()->mergeCells("A" . $celda . ":" . "F" . $celda);
         $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "F" . $celda)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
@@ -540,7 +540,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("G" . $celda, $totalExentosSinIva);
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $totalExentoSinIvaVentasManualesCompleto = $totalExentoSinIvaVentasManuales + $totalExentoSinIvaVentasManuales2;
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
@@ -549,7 +549,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("I" . $celda, $totalExentoSinIvaVentasManualesCompleto);
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
         $objPHPExcel->getActiveSheet()->mergeCells("L" . $celda . ":" . "N" . $celda);
@@ -557,7 +557,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("L" . $celda, $totalExentoSinIvaAnulados);
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         //ventas netas gravadas
         $celda += 1;
@@ -574,7 +574,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("G" . $celda, $totalGravadasSinIva);
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $totalGravadasSinIvaVentasManualesCompleto = $totalGravadasSinIvaVentasManuales + $totalGravadasSinIvaVentasManuales2;
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
@@ -583,7 +583,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("I" . $celda, $totalGravadasSinIvaVentasManualesCompleto);
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
         $objPHPExcel->getActiveSheet()->mergeCells("L" . $celda . ":" . "N" . $celda);
@@ -591,7 +591,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("L" . $celda, $totalGravadasSinIvaAnulados);
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         //debito Fiscal
         $celda += 1;
@@ -608,7 +608,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("G" . $celda, $totalIvaCredito);
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $totalIvaVentasManualesCompleto = $totalIvaVentasManuales + $totalIvaVentasManuales2;
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
@@ -617,7 +617,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("I" . $celda, $totalIvaVentasManualesCompleto);
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
         $objPHPExcel->getActiveSheet()->mergeCells("L" . $celda . ":" . "N" . $celda);
@@ -625,7 +625,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("L" . $celda, $totalIvaAnulados);
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         //CESC
         $celda += 1;
@@ -642,7 +642,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("G" . $celda, $totalCESCcredito);
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $totalCESCventasmanualesCompleto = $totalCESCventasManuales + $totalCESCventasManuales2;
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
@@ -651,7 +651,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("I" . $celda, $totalCESCventasmanualesCompleto);
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
         $objPHPExcel->getActiveSheet()->mergeCells("L" . $celda . ":" . "N" . $celda);
@@ -659,7 +659,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("L" . $celda, $totalCESCanulados);
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         //exportaciones
         $celda += 1;
@@ -676,7 +676,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("G" . $celda, '0');
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
         $objPHPExcel->getActiveSheet()->mergeCells("I" . $celda . ":" . "K" . $celda);
@@ -684,7 +684,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("I" . $celda, '0');
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
         $objPHPExcel->getActiveSheet()->mergeCells("L" . $celda . ":" . "N" . $celda);
@@ -692,7 +692,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("L" . $celda, '0');
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         //IVA RETENIDO
         $celda += 1;
@@ -744,7 +744,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("G" . $celda, $totalUNO);
         $objPHPExcel->getActiveSheet()->getStyle("G" . $celda . ":" . "H" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $totalDOS = $totalExentoSinIvaVentasManualesCompleto + $totalGravadasSinIvaVentasManualesCompleto + $totalIvaVentasManualesCompleto + $totalCESCventasmanualesCompleto;
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
@@ -753,7 +753,7 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("I" . $celda, $totalDOS);
         $objPHPExcel->getActiveSheet()->getStyle("I" . $celda . ":" . "K" . $celda)->getAlignment()->setWrapText(false);
-        
+
 
         $totalTRES = $totalExentoSinIvaAnulados + $totalGravadasSinIvaAnulados + $totalIvaAnulados + $totalCESCanulados;
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
@@ -762,7 +762,6 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->setCellValue("L" . $celda, $totalTRES);
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setWrapText(false);
-        
     }
 } else {
     //espacio para reporto no detallado
@@ -774,18 +773,18 @@ if ($detallado == 1) {
     for ($i = 0; $i < 31; $i++) {
         $primero = "A" . $numero;
         $segundo = "B" . $numero;
-        $tercero = "C".$numero;
-        $cuarto = "D".$numero;
-        $quinto = "E".$numero;
-        $sexto = "F".$numero;
-        $septimo = "G".$numero;
-        $octavo = "H".$numero;
-        $noveno = "I".$numero;
-        $decimo = "J".$numero;
-        $once = "K".$numero;
-        $doce = "L".$numero;
-        $trece = "M".$numero;
-        $catorce = "N".$numero;
+        $tercero = "C" . $numero;
+        $cuarto = "D" . $numero;
+        $quinto = "E" . $numero;
+        $sexto = "F" . $numero;
+        $septimo = "G" . $numero;
+        $octavo = "H" . $numero;
+        $noveno = "I" . $numero;
+        $decimo = "J" . $numero;
+        $once = "K" . $numero;
+        $doce = "L" . $numero;
+        $trece = "M" . $numero;
+        $catorce = "N" . $numero;
 
         if ($tiposComprobantes == 1) {
             $desde = $years . '-' . $mes . '-01';
@@ -810,41 +809,68 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->setCellValue($primero, $i + 1);
         //COLUMNA B
         while ($datos = $query->fetch_array()) {
-            if (strlen($datos["inFact"]) == 0){
+            if (strlen($datos["inFact"]) == 0) {
                 $objPHPExcel->getActiveSheet()->setCellValue($segundo, "-");
-            }else{
-                $objPHPExcel->getActiveSheet()->setCellValue($segundo, $mes."/".$years);
+            } else {
+                $objPHPExcel->getActiveSheet()->setCellValue($segundo, $mes . "/" . $years);
             }
             //COLUMNA C
             $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
-            $objPHPExcel->getActiveSheet()->setCellValue($tercero, substr($datos['inFact'],9,7)."-".substr($datos['finFact'],9,7));
+            $objPHPExcel->getActiveSheet()->setCellValue($tercero, substr($datos['inFact'], 9, 7) . "-" . substr($datos['finFact'], 9, 7));
             //COLUMNA D
             $objPHPExcel->getActiveSheet()->setCellValue($cuarto, "0");
             //COLUMNA E
             $objPHPExcel->getActiveSheet()->setCellValue($quinto, "-");
             //COLUMNA F
             $objPHPExcel->getActiveSheet()->setCellValue($sexto, "-");
-            
+            $montoCancelado = doubleval($datos["totalCuotaCable"]) + doubleval($datos["totalCuotaInter"]);
+            //IVA
+            $separado = $montoCancelado / 1.13;
+            //var_dump($separado);
+            $totalIva = $separado * 0.13;
+            $totalSoloIva = $totalSoloIva + $totalIva;
             $sinIva = doubleval($montoCancelado) - doubleval($totalIva);
             if ($ex->isExento("")) {
                 //COLUMNA G
-                $objPHPExcel->getActiveSheet()->setCellValue($sexto, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->setCellValue($septimo, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle($septimo)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 //COLUMNA H
-                $objPHPExcel->getActiveSheet()->setCellValue($septimo, "0");
-                //COLUMNA I
                 $objPHPExcel->getActiveSheet()->setCellValue($octavo, "0");
-            }else{
+                $objPHPExcel->getActiveSheet()->getStyle($octavo)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                //COLUMNA I
+                $objPHPExcel->getActiveSheet()->setCellValue($noveno, "0");
+                $objPHPExcel->getActiveSheet()->getStyle($noveno)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+            } else {
                 //COLUMNA G
-                $objPHPExcel->getActiveSheet()->setCellValue($sexto, "0");
-                //COLUMNA H
                 $objPHPExcel->getActiveSheet()->setCellValue($septimo, "0");
+                $objPHPExcel->getActiveSheet()->getStyle($septimo)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                //COLUMNA H
+                $objPHPExcel->getActiveSheet()->setCellValue($octavo, $sinIva);
+                $objPHPExcel->getActiveSheet()->getStyle($octavo)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 //COLUMNA I
-                $objPHPExcel->getActiveSheet()->setCellValue($octavo, "0");
+                if ($datos["totalImp"]) {
+                    $objPHPExcel->getActiveSheet()->setCellValue($noveno, $totalSoloIva);
+                } else {
+                    $objPHPExcel->getActiveSheet()->setCellValue($noveno, "0");
+                }
+                $objPHPExcel->getActiveSheet()->getStyle($noveno)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
             }
+            $totalSoloCesc = $totalSoloCesc + doubleval($datos["totalImp"]);
+            $objPHPExcel->getActiveSheet()->setCellValue($decimo, "0");
+            $objPHPExcel->getActiveSheet()->getStyle($decimo)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+            $objPHPExcel->getActiveSheet()->setCellValue($once, "0");
+            $objPHPExcel->getActiveSheet()->getStyle($once)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+            $objPHPExcel->getActiveSheet()->setCellValue($doce, "0");
+            $objPHPExcel->getActiveSheet()->getStyle($doce)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+            $objPHPExcel->getActiveSheet()->setCellValue($trece, "0");
+            $objPHPExcel->getActiveSheet()->getStyle($trece)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+            $total = $montoCancelado + doubleval($datos["totalImp"]);
+            $objPHPExcel->getActiveSheet()->setCellValue($catorce, $total);
+            $objPHPExcel->getActiveSheet()->getStyle($catorce)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
         }
 
         $numero += 1;
-        $counter +=1;
+        $counter += 1;
     }
 }
 
