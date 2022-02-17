@@ -299,6 +299,85 @@ if ($detallado == 1) {
         $totalTRES = $totalExentoSinIvaAnulados + $totalGravadasSinIvaAnulados + $totalIvaAnulados + $totalCESCanulados;
         $pdf->Cell(45, 6, utf8_decode(number_format($totalTRES, 2)), 0, 1, 'L');
     }
+} else {
+    $numero = 1;
+    $counter = 1;
+    for ($i = 0; $i < 31; $i++) {
+        if ($tiposComprobantes == 1) {
+            $desde = $years . '-' . $mes . '-01';
+            $hasta = $years . '-' . $mes . '-31';
+            $desde = date('Y-m-d', strtotime($desde));
+            $hasta = date('Y-m-d', strtotime($hasta));
+            $sql = "SELECT
+                            (SELECT SUM(cuotaCable) from tbl_cargos where tipoServicio='C' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 1 AND anulada=0) as totalCuotaCable,
+                            (SELECT SUM(cuotaInternet) from tbl_cargos where tipoServicio='I' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 1 AND anulada=0) as totalCuotaInter,
+                            SUM(totalImpuesto) as totalImp,
+                            MIN(numeroFactura) as inFact,
+                            MAX(numeroFactura) as finFact,
+                            DAY(fechaFactura) as dia FROM tbl_cargos
+                            WHERE DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 1 AND anulada=0";
+        }
+        $query = $mysqli->query($sql);
+        $pdf->SetFont('Times', '', 8);
+        $pdf->Cell(10, 6, utf8_decode($i+1), 0, 0, 'C');
+        while ($datos = $query->fetch_array()) {
+            if (strlen($datos["inFact"]) == 0) {
+                $pdf->Cell(20, 6, utf8_decode("-"), 0, 0, 'C');
+            } else {
+                $pdf->Cell(20, 6, utf8_decode($mes."/".$years), 0, 0, 'C');
+            }
+            $pdf->Cell(20, 6, utf8_decode(substr($datos['inFact'], 9, 7) . "-" . substr($datos['finFact'],9,7)), 0, 0, 'C');
+            $pdf->Cell(15, 6, utf8_decode('0'), 0, 0, 'C');
+            $pdf->Cell(60, 6, utf8_decode("-"), 0, 0, 'C');
+            $pdf->Cell(15, 6, utf8_decode("-"), 0, 0, 'C');
+
+            $montoCancelado = doubleval($datos["totalCuotaCable"]) + doubleval($datos["totalCuotaInter"]);
+            //IVA
+            $separado = $montoCancelado / 1.13;
+            //var_dump($separado);
+            $totalIva = $separado * 0.13;
+            $totalSoloIva = $totalSoloIva + $totalIva;
+            $sinIva = doubleval($montoCancelado) - doubleval($totalIva);
+            if ($ex->isExento("")) {
+                $pdf->Cell(12.5, 6, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
+                $pdf->Cell(20, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+                $pdf->Cell(15, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+                $totalConIvaExento = $totalConIvaExento + $montoCancelado;
+                $totalSinIvaExento = $totalSinIvaExento + $sinIva;
+            }else{
+                $pdf->Cell(12.5, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+                $pdf->Cell(20, 6, utf8_decode(number_format($sinIva, 2)), 0, 0, 'C');
+                if ($datos["totalImp"]) {
+                    $pdf->Cell(15, 6, utf8_decode(number_format($totalSoloIva, 2)), 0, 0, 'C');
+                }else{
+                    $pdf->Cell(15, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+                }
+                $totalConIva = $totalConIva + $montoCancelado;
+                $totalSinIva = $totalSinIva + $sinIva;
+                
+            }
+            $pdf->Cell(10, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+            $pdf->Cell(20, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+            $pdf->Cell(17.5, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+            $pdf->Cell(15, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
+            $total = $montoCancelado + doubleval($datos["totalImp"]);
+            $pdf->Cell(15, 6, utf8_decode(number_format($total, 2)), 0, 1, 'C');
+        }
+        $numero += 1;
+        $counter += 1;
+        if (($numero - 1) % 25 == 0) {
+            include('encabezado_tabla.php');
+            $numero = 1;
+        }
+    }
+    if ($resumen == 1) {
+        if ($numero > 12) {
+            $pdf->AddPage('L', 'Letter');
+            $pdf->SetFont('Times', 'B', 8);
+        } else {
+            $pdf->Ln(5);
+        }
+    }
 }
 
 $pdf->Output();

@@ -763,6 +763,22 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->setCellValue("L" . $celda, $totalTRES);
         $objPHPExcel->getActiveSheet()->getStyle("L" . $celda . ":" . "N" . $celda)->getAlignment()->setWrapText(false);
     }
+    $celda +=2;
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+    $objPHPExcel->getActiveSheet()->mergeCells("A" . $celda . ":" . "D" . $celda);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+    $objPHPExcel->getActiveSheet()->setCellValue("A" . $celda, '');
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getAlignment()->setWrapText(false);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->applyFromArray($style2_array);
+
+    $celda +=1;
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+    $objPHPExcel->getActiveSheet()->mergeCells("A" . $celda . ":" . "D" . $celda);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+    $objPHPExcel->getActiveSheet()->setCellValue("A" . $celda, 'Nombre y firma del contador');
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $celda . ":" . "D" . $celda)->getAlignment()->setWrapText(false);
 } else {
     //espacio para reporto no detallado
     $numero = 6;
@@ -808,6 +824,10 @@ if ($detallado == 1) {
         //COLUMNA A
         $objPHPExcel->getActiveSheet()->setCellValue($primero, $i + 1);
         //COLUMNA B
+        $totalConIvaExento = 0; 
+        $totalSinIvaExento = 0;
+        $totalConIva;
+        $totalSinIva;
         while ($datos = $query->fetch_array()) {
             if (strlen($datos["inFact"]) == 0) {
                 $objPHPExcel->getActiveSheet()->setCellValue($segundo, "-");
@@ -830,6 +850,7 @@ if ($detallado == 1) {
             $totalIva = $separado * 0.13;
             $totalSoloIva = $totalSoloIva + $totalIva;
             $sinIva = doubleval($montoCancelado) - doubleval($totalIva);
+           
             if ($ex->isExento("")) {
                 //COLUMNA G
                 $objPHPExcel->getActiveSheet()->setCellValue($septimo, $montoCancelado);
@@ -840,6 +861,8 @@ if ($detallado == 1) {
                 //COLUMNA I
                 $objPHPExcel->getActiveSheet()->setCellValue($noveno, "0");
                 $objPHPExcel->getActiveSheet()->getStyle($noveno)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $totalConIvaExento = $totalConIvaExento + $montoCancelado;
+                $totalSinIvaExento = $totalSinIvaExento + $sinIva;
             } else {
                 //COLUMNA G
                 $objPHPExcel->getActiveSheet()->setCellValue($septimo, "0");
@@ -854,6 +877,8 @@ if ($detallado == 1) {
                     $objPHPExcel->getActiveSheet()->setCellValue($noveno, "0");
                 }
                 $objPHPExcel->getActiveSheet()->getStyle($noveno)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $totalConIva = $totalConIva + $montoCancelado;
+                $totalSinIva = $totalSinIva + $sinIva;
             }
             $totalSoloCesc = $totalSoloCesc + doubleval($datos["totalImp"]);
             $objPHPExcel->getActiveSheet()->setCellValue($decimo, "0");
@@ -872,6 +897,210 @@ if ($detallado == 1) {
         $numero += 1;
         $counter += 1;
     }
+
+
+    if ($resumen == 1) {
+        $numero +=2;
+        //encabezado del resumen
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "F" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, 'RESUMEN');
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setWrapText(false);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->applyFromArray($style2_array);
+
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("G" . $numero . ":" . "I" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("G" . $numero, 'CREDITOS FISCALES GENERADOS');
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getAlignment()->setWrapText(false);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->applyFromArray($style2_array);
+
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("J" . $numero . ":" . "L" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("J" . $numero, 'FACTURAS ANULADAS');
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getAlignment()->setWrapText(false);
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->applyFromArray($style2_array);
+
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("M" . $numero . ":" . "N" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("M" . $numero, 'TOTALES');
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getAlignment()->setWrapText(false);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->applyFromArray($style2_array);
+
+        $numero +=1;
+        //primera fila
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "F" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, 'Ventas exentas');
+
+
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("G" . $numero . ":" . "I" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("G" . $numero, $totalConIvaExento);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("J" . $numero . ":" . "L" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("J" . $numero, '0');
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("M" . $numero . ":" . "N" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("M" . $numero, $totalConIvaExento);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $numero +=1;
+        //segunda fila
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "F" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, 'Ventas netas gravadas');
+
+
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("G" . $numero . ":" . "I" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("G" . $numero, $totalSinIva);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("J" . $numero . ":" . "L" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("J" . $numero, '0');
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("M" . $numero . ":" . "N" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("M" . $numero, $totalSinIva);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $numero +=1;
+        //tercera fila
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "F" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, '13% de IVA');
+
+
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("G" . $numero . ":" . "I" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("G" . $numero, $totalSoloIva);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("J" . $numero . ":" . "L" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("J" . $numero, '0');
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("M" . $numero . ":" . "N" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("M" . $numero, $totalSoloIva);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+
+        $numero +=1;
+        //cuarta fila
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" .   $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "F" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, '5% de CESC');
+
+
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("G" . $numero . ":" . "I" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("G" . $numero, $totalSoloCesc);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("J" . $numero . ":" . "L" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("J" . $numero, '0');
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("M" . $numero . ":" . "N" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("M" . $numero, $totalSoloCesc);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $numero +=1;
+        //quinta fila
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" .   $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "F" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, 'Exportaciones');
+
+
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("G" . $numero . ":" . "I" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("G" . $numero, "0");
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("J" . $numero . ":" . "L" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("J" . $numero, '0');
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("M" . $numero . ":" . "N" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("M" . $numero, "0");
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $numero +=1;
+        //cuarta fila
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" .   $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "F" . $numero);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "F" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, 'Total');
+
+        $total1 = $totalConIvaExento + $totalSinIva + $totalSoloIva + $totalSoloCesc;
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("G" . $numero . ":" . "I" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("G" . $numero, $total1);
+        $objPHPExcel->getActiveSheet()->getStyle("G" . $numero . ":" . "I" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("J" . $numero . ":" . "L" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("J" . $numero, '0');
+        $objPHPExcel->getActiveSheet()->getStyle("J" . $numero . ":" . "L" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+        $objPHPExcel->getActiveSheet()->mergeCells("M" . $numero . ":" . "N" . $numero);
+        $objPHPExcel->getActiveSheet()->setCellValue("M" . $numero, $total1);
+        $objPHPExcel->getActiveSheet()->getStyle("M" . $numero . ":" . "N" . $numero)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+    }
+
+    $numero +=2;
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+    $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "D" . $numero);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+    $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, '');
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getAlignment()->setWrapText(false);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->applyFromArray($style2_array);
+
+    $numero +=1;
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getFont()->setBold(FALSE)->setName('ARIAL')->setSize(12)->getColor()->setRGB('000000');
+    $objPHPExcel->getActiveSheet()->mergeCells("A" . $numero . ":" . "D" . $numero);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+    $objPHPExcel->getActiveSheet()->setCellValue("A" . $numero, 'Nombre y firma del contador');
+    $objPHPExcel->getActiveSheet()->getStyle("A" . $numero . ":" . "D" . $numero)->getAlignment()->setWrapText(false);
+
 }
 
 
