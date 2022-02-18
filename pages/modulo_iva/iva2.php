@@ -307,19 +307,17 @@ function setMenu($permisosActuales, $permisoRequerido)
                     <h3>Libro consumidor final</h3>
                 </div>
                 <div class="card-body">
-                    <form action="php/pdfConsumidorFinal.php" method="POST" target="_blank">
+                    <form action="php/Reportes_ConsumidorFinal.php" method="POST" target="_blank">
                         <div class="row">
                             <div class="form-group col-md-4 col-xs-4">
                                 <label for="codigo">Punto de Venta:</label>
                                 <select class="form-control form-control-lg" name="puntoVentaGenerar2" required>
-                                    <option value="">Seleccionar...</option>
                                     <option value="1" selected>CABLESAT</option>;
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-xs-4">
                                 <label for="nombre">Mes a generar</label>
                                 <select class="form-control form-control-lg" name="mesGenerar2" required>
-                                    <option value="">Seleccionar...</option>
                                     <option value="1">Enero</option>;
                                     <option value="2">Febrero</option>;
                                     <option value="3">Marzo</option>;
@@ -344,16 +342,20 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <div class="form-group clearfix">
                                     <div class="form-check form-check-inline">
                                         <div class="icheck-danger d-inline">
-                                            <input type="checkbox" name="encabezados" id="encabezados">
-                                            <label for="encabezados">Encabezados</label>
+                                            <input type="checkbox" name="encabezados2" id="encabezados2">
+                                            <label for="encabezados2">Encabezados</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
-                                            <input type="checkbox" name="numPag" id="numPag">
-                                            <label for="numPag">Numeros</label>
+                                            <input type="checkbox" name="numPag2" id="numPag2">
+                                            <label for="numPag2">Numeros</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
-                                            <input type="checkbox" name="libroDetallado" id="libroDetallado">
-                                            <label for="libroDetallado">Imprimir libro con detalles</label>
+                                            <input type="checkbox" name="libroDetallado2" id="libroDetallado2" checked>
+                                            <label for="libroDetallado2">Detalles</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="checkbox" name="resumen2" id="resumen2" checked>
+                                            <label for="resumen2">Resumen</label>
                                         </div>
                                     </div>
                                 </div>
@@ -374,7 +376,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                             <label class="form-check-label" for="anuladasN">Anuladas</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
-                                            <input class="form-check-input" type="radio" name="Cfacturas" id="todasN" value="4">
+                                            <input class="form-check-input" type="radio" name="Cfacturas" id="todasN" value="4" checked>
                                             <label class="form-check-label" for="todasN">Todas</label>
                                         </div>
                                     </div>
@@ -384,7 +386,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <div class="form-group clearfix">
                                     <div class="form-check form-check-inline">
                                         <div class="icheck-danger d-inline">
-                                            <input class="form-check-input" type="radio" name="documento2" id="pdf2" value="1">
+                                            <input class="form-check-input" type="radio" name="documento2" id="pdf2" value="1" checked>
                                             <label class="form-check-label" for="pdf2">PDF</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">

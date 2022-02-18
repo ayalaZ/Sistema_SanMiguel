@@ -356,6 +356,7 @@ if ($detallado == 1) {
                 $totalSinIva = $totalSinIva + $sinIva;
                 
             }
+            $totalSoloCesc = $totalSoloCesc + doubleval($datos["totalImp"]);
             $pdf->Cell(10, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
             $pdf->Cell(20, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
             $pdf->Cell(17.5, 6, utf8_decode(number_format("0", 2)), 0, 0, 'C');
@@ -377,6 +378,51 @@ if ($detallado == 1) {
         } else {
             $pdf->Ln(5);
         }
+        //primera fila
+        $pdf->Cell(40, 6, utf8_decode('RESUMEN'), 0, 0, 'L');
+        $pdf->Cell(65, 6, utf8_decode('CREDITOS FISCAL GENERADOS'), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode('FACTURAS ANULADAS'), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode('TOTALES'), 0, 1, 'L');
+        $pdf->Cell(210, 1, utf8_decode(''), "T", 1, 'L');
+
+        //SEGUNDA FILA
+        $pdf->Cell(40, 6, utf8_decode('Ventas exentas'), 0, 0, 'L');
+        $pdf->Cell(65, 6, utf8_decode(number_format($totalConIvaExento,2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format("0",2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format($totalConIvaExento,2)), 0, 1, 'L');
+
+        //TERCERA FILA
+        $pdf->Cell(40, 6, utf8_decode('Ventas netas gravadas'), 0, 0, 'L');
+        $pdf->Cell(65, 6, utf8_decode(number_format($totalSinIva,2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format("0",2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format($totalSinIva,2)), 0, 1, 'L');
+
+        //CUARTA FILA
+        $pdf->Cell(40, 6, utf8_decode('13% de IVA'), 0, 0, 'L');
+        $pdf->Cell(65, 6, utf8_decode(number_format($totalSoloIva,2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format("0",2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloIva,2)), 0, 1, 'L');
+
+        //QUINTA FILA
+        $pdf->Cell(40, 6, utf8_decode('5% de CESC'), 0, 0, 'L');
+        $pdf->Cell(65, 6, utf8_decode(number_format($totalSoloCesc,2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format("0",2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloCesc,2)), 0, 1, 'L');
+
+        //SEXTA FILA
+        $pdf->Cell(40, 6, utf8_decode('Exportaciones'), 0, 0, 'L');
+        $pdf->Cell(65, 6, utf8_decode(number_format("0",2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format("0",2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format("0",2)), 0, 1, 'L');
+        $pdf->Cell(210, 1, utf8_decode(''), "T", 1, 'L');
+
+        //SEPTIMA FILA
+        $total1 = $totalConIvaExento + $totalSinIva + $totalSoloIva + $totalSoloCesc;
+        $pdf->Cell(40, 6, utf8_decode('Total'), 0, 0, 'L');
+        $pdf->Cell(65, 6, utf8_decode(number_format($total1,2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format("0",2)), 0, 0, 'L');
+        $pdf->Cell(45, 6, utf8_decode(number_format($total1,2)), 0, 1, 'L');
+
     }
 }
 

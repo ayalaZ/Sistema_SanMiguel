@@ -94,7 +94,7 @@ if (isset($_POST['bodega'])) {
                 <a href="#" class="nav-link" role="button"><i class="fas fa-ethernet"></i> Inventario de internet</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" role="button" data-toggle="modal" data-target="#Versalidas"><i class="fas fa-info-circle"></i> Salidas</a>
+                <a href="salidas.php" class="nav-link" ><i class="fas fa-info-circle"></i> Salidas</a>
             </li>
         </ul>
         <!-- Right navbar links -->
