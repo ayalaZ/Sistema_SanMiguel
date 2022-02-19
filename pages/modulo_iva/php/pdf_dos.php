@@ -41,4 +41,21 @@ $pdf->AliasNbPages();
 $pdf->AddPage("", 'Letter');
 $pdf->SetFont('Times', '', 10);
 include('encabezado_tabla2.php');
+if($detallado == 1){
+    if ($tiposComprobantes == 1) {
+        $desde = $years . '-' . $mes . '-01';
+        $hasta = $years . '-' . $mes . '-31';
+        $desde = date('Y-m-d', strtotime($desde));
+        $hasta = date('Y-m-d', strtotime($hasta));
+        $sql = "SELECT * FROM tbl_cargos WHERE fechaFactura BETWEEN $desde AND $hasta AND tipoFactura = 2 AND anulada=0";
+    }
+    $contador = 1;
+    $contador2 = 1;
+    $query = $mysqli->query($sql);
+
+    while($datos = $query->fetch_Array()){
+        $pdf->SetFont('Times', '', 8);
+        $pdf->Cell(5,1,utf8_decode(date("d", strtotime($result['fechaFactura']))),0,0,'L');
+    }
+}
 $pdf->Output();
