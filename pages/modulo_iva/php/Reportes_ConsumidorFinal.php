@@ -52,6 +52,6 @@ switch ($documento) {
         include('pdf_dos.php');
         break;
     case '2':
-       
+        include('excel_dos.php');
         break;
 }

@@ -32,3 +32,4 @@ $pdf->Cell(15, 6, utf8_decode('SUB-TOTAL'), 1, 0, 'C');
 $pdf->Cell(10, 6, utf8_decode('CESC'), 1, 0, 'C');
 $pdf->SetFont('Times', 'B', 4);
 $pdf->Cell(15, 6, utf8_decode('VENTAS TOTALES'), 1, 1, 'C');
+$pdf->ln(2);
