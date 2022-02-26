@@ -28,6 +28,32 @@ $objPHPExcel->getActiveSheet()->getStyle('A2:J2')->getFont()->setBold(true)->set
 $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 $objPHPExcel->getActiveSheet()->getStyle('A2:J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $objPHPExcel->getActiveSheet()->setCellValue('A2', $monthName . ' ' . $years . ' (VALORES EXPRESADOS EN US DOLARES)');
+$style_array = [
+    'borders' => [
+        'allborders' => [
+            'style' => \PHPExcel_Style_Border::BORDER_MEDIUM
+        ]
+    ]
+];
+$style2_array = [
+    'borders' => [
+        'bottom' => [
+            'style' => \PHPExcel_Style_Border::BORDER_MEDIUM
+        ]
+    ]
+];
+$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
+$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(45);
+$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+
+include('encabezado_tabla3.php');
 
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
