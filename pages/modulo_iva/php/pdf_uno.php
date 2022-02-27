@@ -15,12 +15,12 @@ class PDF extends FPDF
             // Arial bold 15
             $this->SetFont('Times', 'B', 12);
             // Título
-            $this->Ln(15);
+            $this->Ln(25);
             $this->Cell(260, 6, utf8_decode('LIBRO O REGISTRO DE OPERACIONES CON EMISION DE CREDITO FISCAL'), 0, 0, 'C');
             // Salto de línea
             $this->Ln(5);
         } else {
-            $this->Ln(15);
+            $this->Ln(25);
         }
     }
 

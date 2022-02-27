@@ -53,7 +53,27 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
 $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(10);
 $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
 
-include('encabezado_tabla3.php');
+
+
+function celdas($valor1,$valor2){
+    $objeto = new PHPExcel();
+    $estilo = [
+        'borders' => [
+            'allborders' => [
+                'style' => \PHPExcel_Style_Border::BORDER_MEDIUM
+            ]
+        ]
+    ];
+    $objeto->getActiveSheet()->mergeCells($valor1.':'.$valor2);
+    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
+    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->applyFromArray($estilo);
+
+    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objeto->getActiveSheet()->setCellValue($valor1, 'PRUEBA');
+}
+
+celdas('A3','B4');
 
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
