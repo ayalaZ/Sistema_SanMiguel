@@ -43,38 +43,114 @@ $style2_array = [
     ]
 ];
 $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
-$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(45);
+$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(13);
+$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(45);
+$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
 $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
 $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);
-$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(10);
 $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(10);
 $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
 
+$objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize(8)->setBold(false)->setName('ARIAL');
+$objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+$objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+$objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setWrapText(true);
 
+$objPHPExcel->getActiveSheet()->getStyle('A3:B4')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->mergeCells('A3:B4');
+$objPHPExcel->getActiveSheet()->setCellValue('A3', '');
 
-function celdas($valor1,$valor2){
-    $objeto = new PHPExcel();
-    $estilo = [
-        'borders' => [
-            'allborders' => [
-                'style' => \PHPExcel_Style_Border::BORDER_MEDIUM
-            ]
-        ]
-    ];
-    $objeto->getActiveSheet()->mergeCells($valor1.':'.$valor2);
-    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->getFont()->setBold(false)->setName('ARIAL')->setSize(8)->getColor()->setRGB('000000');
-    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->applyFromArray($estilo);
+$objPHPExcel->getActiveSheet()->getStyle('A5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('A5', 'DIA');
 
-    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-    $objeto->getActiveSheet()->getStyle($valor1.':'.$valor2)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-    $objeto->getActiveSheet()->setCellValue($valor1, 'PRUEBA');
+$objPHPExcel->getActiveSheet()->getStyle('B5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('B5', 'N° DE FACTURA');
+
+$objPHPExcel->getActiveSheet()->getStyle('C3:C5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->mergeCells('C3:C5');
+$objPHPExcel->getActiveSheet()->setCellValue('C3', 'N° DE FORMULARIO UNICO');
+
+$objPHPExcel->getActiveSheet()->getStyle('D3:D4')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->mergeCells('D3:D4');
+$objPHPExcel->getActiveSheet()->setCellValue('D3', '');
+
+$objPHPExcel->getActiveSheet()->getStyle('D5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('D5', 'NOMBRE DEL CLIENTE');
+
+$objPHPExcel->getActiveSheet()->getStyle('E3:G3')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->mergeCells('E3:G3');
+$objPHPExcel->getActiveSheet()->setCellValue('E3', 'VENTAS');
+
+$objPHPExcel->getActiveSheet()->getStyle('E4:E5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->mergeCells('E4:E5');
+$objPHPExcel->getActiveSheet()->setCellValue('E4', 'EXENTAS');
+
+$objPHPExcel->getActiveSheet()->getStyle('F4:G4')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->mergeCells('F4:G4');
+$objPHPExcel->getActiveSheet()->setCellValue('F4', 'GRAVADAS');
+
+$objPHPExcel->getActiveSheet()->getStyle('F5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('F5', 'LOCALES');
+
+$objPHPExcel->getActiveSheet()->getStyle('G5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('G5', 'SERVICIO');
+
+$objPHPExcel->getActiveSheet()->getStyle('H3:J4')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->mergeCells('H3:J4');
+$objPHPExcel->getActiveSheet()->setCellValue('H3', '');
+
+$objPHPExcel->getActiveSheet()->getStyle('H5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('H5', 'SUB-TOTAL');
+
+$objPHPExcel->getActiveSheet()->getStyle('I5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('I5', 'CESC');
+
+$objPHPExcel->getActiveSheet()->getStyle('J5')->applyFromArray($style_array);
+$objPHPExcel->getActiveSheet()->setCellValue('J5', 'VENTAS TOTALES');
+
+if ($detallado == 1) {
+    switch ($tiposComprobantes) {
+        case '1':
+            $desde = $years . '-' . $mes . '-01';
+            $hasta = $years . '-' . $mes . '-31';
+            $desde = date('Y-m-d', strtotime($desde));
+            $hasta = date('Y-m-d', strtotime($hasta));
+            $sql = "SELECT * FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura = 2 AND anulada=0;";
+            $contador = 1;
+            $contador2 = 1;
+            $query = $mysqli->query($sql);
+            $celda = 6;
+            while ($datos = $query->fetch_Array()) {
+                if ($datos["tipoServicio"] == "C") {
+                    $montoCancelado1 = doubleval($datos["cuotaCable"]);
+                    $tipoServ = 'CABLE';
+                } elseif ($datos["tipoServicio"] == "I") {
+                    $montoCancelado1 = doubleval($datos["cuotaInternet"]);
+                    $tipoServ = 'INTERNET';
+                }
+                $a = 'A'.$celda;
+                $objPHPExcel->getActiveSheet()->getStyle($a)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($a, date("d", strtotime($datos['fechaFactura'])));
+
+                $b = 'B'.$celda;
+                $objPHPExcel->getActiveSheet()->getStyle($b)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($b, $datos['numeroFactura']);
+
+                $c = 'C'.$celda;
+                $objPHPExcel->getActiveSheet()->getStyle($c)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($c, '0');
+
+                $d = 'D'.$celda;
+                $objPHPExcel->getActiveSheet()->getStyle($d)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($d, $datos["nombre"]);
+
+                $celda+=1;
+            }
+            break;
+    }
 }
-
-celdas('A3','B4');
-
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Content-Type: application/force-download; charset='utf-8'");

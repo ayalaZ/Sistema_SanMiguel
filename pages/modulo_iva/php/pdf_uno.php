@@ -15,12 +15,12 @@ class PDF extends FPDF
             // Arial bold 15
             $this->SetFont('Times', 'B', 12);
             // Título
-            $this->Ln(25);
+            $this->Ln(20);
             $this->Cell(260, 6, utf8_decode('LIBRO O REGISTRO DE OPERACIONES CON EMISION DE CREDITO FISCAL'), 0, 0, 'C');
             // Salto de línea
             $this->Ln(5);
         } else {
-            $this->Ln(25);
+            $this->Ln(20);
         }
     }
 
@@ -252,7 +252,12 @@ if ($detallado == 1) {
         }
         if ($contador2 > 12) {
             $pdf->AddPage('L', 'Letter');
+            $pdf->SetFont('Times', '', 12);
+            $pdf->Cell(260, 6, utf8_decode(mes . " " . año . " (VALORES EXPRESADOS EN US DOLARES)"), 0, 0, 'C');
+            $pdf->Ln(5);
+            include('encabezado_tabla.php');
             $pdf->SetFont('Times', 'B', 8);
+            
         } else {
             $pdf->Ln(5);
         }
@@ -305,6 +310,10 @@ if ($detallado == 1) {
         $pdf->Cell(65, 6, utf8_decode(number_format($totalDOS, 2)), 0, 0, 'L');
         $totalTRES = $totalExentoSinIvaAnulados + $totalGravadasSinIvaAnulados + $totalIvaAnulados + $totalCESCanulados;
         $pdf->Cell(45, 6, utf8_decode(number_format($totalTRES, 2)), 0, 1, 'L');
+
+        $pdf->Ln(20);
+        $pdf->Cell(70,3,utf8_decode(''),"T",1,'C');
+        $pdf->Cell(40,1,utf8_decode("Nombre y firma del contador:"),"",0,'L');
     }
 } else {
     $numero = 1;
@@ -384,6 +393,7 @@ if ($detallado == 1) {
     if ($resumen == 1) {
         if ($numero > 12) {
             $pdf->AddPage('L', 'Letter');
+            include('encabezado_tabla.php');
             $pdf->SetFont('Times', 'B', 8);
         } else {
             $pdf->Ln(5);
@@ -432,6 +442,10 @@ if ($detallado == 1) {
         $pdf->Cell(65, 6, utf8_decode(number_format($total1, 2)), 0, 0, 'L');
         $pdf->Cell(45, 6, utf8_decode(number_format("0", 2)), 0, 0, 'L');
         $pdf->Cell(45, 6, utf8_decode(number_format($total1, 2)), 0, 1, 'L');
+
+        $pdf->Ln(20);
+        $pdf->Cell(70,3,utf8_decode(''),"T",1,'C');
+        $pdf->Cell(40,1,utf8_decode("Nombre y firma del contador:"),"",0,'L');
     }
 }
 
