@@ -47,11 +47,11 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
 $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(13);
 $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(45);
 $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
-$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
 $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);
-$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
 $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(10);
-$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
 
 $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setSize(8)->setBold(false)->setName('ARIAL');
 $objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
@@ -124,32 +124,186 @@ if ($detallado == 1) {
             $celda = 6;
             while ($datos = $query->fetch_Array()) {
                 if ($datos["tipoServicio"] == "C") {
-                    $montoCancelado1 = doubleval($datos["cuotaCable"]);
+                    $montoCancelado = doubleval($datos["cuotaCable"]);
                     $tipoServ = 'CABLE';
                 } elseif ($datos["tipoServicio"] == "I") {
-                    $montoCancelado1 = doubleval($datos["cuotaInternet"]);
+                    $montoCancelado = doubleval($datos["cuotaInternet"]);
                     $tipoServ = 'INTERNET';
                 }
-                $a = 'A'.$celda;
+                $a = 'A' . $celda;
                 $objPHPExcel->getActiveSheet()->getStyle($a)->applyFromArray($style_array);
                 $objPHPExcel->getActiveSheet()->setCellValue($a, date("d", strtotime($datos['fechaFactura'])));
 
-                $b = 'B'.$celda;
+                $b = 'B' . $celda;
                 $objPHPExcel->getActiveSheet()->getStyle($b)->applyFromArray($style_array);
                 $objPHPExcel->getActiveSheet()->setCellValue($b, $datos['numeroFactura']);
 
-                $c = 'C'.$celda;
+                $c = 'C' . $celda;
                 $objPHPExcel->getActiveSheet()->getStyle($c)->applyFromArray($style_array);
                 $objPHPExcel->getActiveSheet()->setCellValue($c, '0');
 
-                $d = 'D'.$celda;
+                $d = 'D' . $celda;
                 $objPHPExcel->getActiveSheet()->getStyle($d)->applyFromArray($style_array);
                 $objPHPExcel->getActiveSheet()->setCellValue($d, $datos["nombre"]);
 
-                $celda+=1;
+                if ($ex->isExento($datos["codigoCliente"])) {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + $montoCancelado;
+                    $total2 = $total2 + 0;
+                } else {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + 0;
+                    $total2 = $total2 + $montoCancelado;
+                }
+                $h = 'H' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($h, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle($h)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $i = 'I' . $celda;
+                $impuesto = $datos["totalImpuesto"];
+                $objPHPExcel->getActiveSheet()->getStyle($i)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($i, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($i)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $j = 'J' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($j)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($j, $montoCancelado + $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $total3 = $total3 + $montoCancelado;
+                $total4 = $total4 + $impuesto;
+                $total5 = $total5 + $montoCancelado + $impuesto;
+
+                $celda += 1;
             }
             break;
     }
+    $a = 'A' . $celda;
+    $d = 'D' . $celda;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $d);
+    $objPHPExcel->getActiveSheet()->getStyle($a . ':' . $d)->applyFromArray($style_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, 'TOTALES DEL MES');
+
+    $e = 'E' . $celda;
+    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($e, $total1);
+    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $f = 'F' . $celda;
+    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($f, $total2);
+    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $g = 'G' . $celda;
+    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($g, '0');
+    $objPHPExcel->getActiveSheet()->getStyle($g)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $h = 'H' . $celda;
+    $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($h, $total3);
+    $objPHPExcel->getActiveSheet()->getStyle($h)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $i = 'I' . $celda;
+    $objPHPExcel->getActiveSheet()->getStyle($i)->applyFromArray($style_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($i, $total4);
+    $objPHPExcel->getActiveSheet()->getStyle($i)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $j = 'J' . $celda;
+    $objPHPExcel->getActiveSheet()->getStyle($j)->applyFromArray($style_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($j, $total5);
+    $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $celda+=2;
+    $a = 'A' . $celda;
+    $c = 'C' . $celda;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $c);
+    $objPHPExcel->getActiveSheet()->getStyle($a . ':' . $c)->applyFromArray($style2_array);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, 'RESUMEN');
+    $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->applyFromArray($style2_array);
+
+    $celda+=1;
+    $a = 'A' . $celda;
+    $c = 'C' . $celda;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $c);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, 'Ventas exentas');
+    $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$celda, $total1);
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $celda+=1;
+    $a = 'A' . $celda;
+    $c = 'C' . $celda;
+    $resumen2 = $total2 / 1.13;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $c);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, 'Ventas netas gravadas');
+    $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$celda, $resumen2);
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $celda+=1;
+    $a = 'A' . $celda;
+    $c = 'C' . $celda;
+    $resumen3 = $resumen2 * 0.13;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $c);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, '13% IVA');
+    $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$celda, $resumen3);
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $celda+=1;
+    $a = 'A' . $celda;
+    $c = 'C' . $celda;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $c);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, '5% CESC');
+    $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$celda, $total4);
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+    $celda+=1;
+    $a = 'A' . $celda;
+    $c = 'C' . $celda;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $c);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, 'Exportaciones');
+    $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+    $objPHPExcel->getActiveSheet()->getStyle($a . ':' . $c)->applyFromArray($style2_array);
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$celda, '0');
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->applyFromArray($style2_array);
+
+    $celda+=1;
+    $a = 'A' . $celda;
+    $c = 'C' . $celda;
+    $objPHPExcel->getActiveSheet()->mergeCells($a . ':' . $c);
+    $objPHPExcel->getActiveSheet()->setCellValue($a, 'VENTAS TOTALES');
+    $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$celda, $total1 + $resumen2 + $resumen3 + $total4);
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+    
+
+
 }
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

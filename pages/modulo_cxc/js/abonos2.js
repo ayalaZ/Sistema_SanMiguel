@@ -102,6 +102,8 @@ $(document).ready(function() {
                         $('#cargos tbody').empty();
                     }
                 }
+                $select = document.getElementById("xmeses");
+                $select.children[0].selected = true;
             },
             error: function() {
                 swal('Error', 'Ha ocurrido un error al traer la informacion del cliente', 'error');
@@ -228,11 +230,12 @@ $(document).ready(function() {
         $cuota = $("#valorCuota").val();
         $porcentaje = $("#porImp").val();
         $codigo = $("#codigo").val();
+        $servicio = $("#servicio").val();
         $proceso = 'meses',
             $.ajax({
                 type: 'POST',
                 url: 'php/informacionCliente.php',
-                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo },
+                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo, serv: $servicio },
                 dataType: 'Json',
                 success: function(datax) {
                     $("#totalPagar").val(datax.cuota);
