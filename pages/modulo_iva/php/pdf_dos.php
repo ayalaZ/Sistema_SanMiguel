@@ -70,6 +70,7 @@ if ($detallado == 1) {
                 $pdf->Cell(15, 1, utf8_decode(0), 0, 0, 'C');
                 $pdf->SetFont('Times', '', 7);
                 $pdf->Cell(60, 1, utf8_decode($datos["nombre"]), 0, 0, 'L');
+                
                 if ($ex->isExento($datos["codigoCliente"])) {
                     $pdf->Cell(20, 1, utf8_decode(number_format($montoCancelado1, 2)), 0, 0, 'C');
                     $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
@@ -141,11 +142,11 @@ if ($detallado == 1) {
                     $total2 = $total2 + $montoCancelado1;
                 }
                 $pdf->Cell(15, 1, utf8_decode(number_format($montoCancelado1, 2)), 0, 0, 'C');
-                $pdf->Cell(10, 1, utf8_decode(number_format($datos["totalImpuesto"], 2)), 0, 0, 'C');
-                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["totalImpuesto"]), 2)), 0, 0, 'C');
+                $pdf->Cell(10, 1, utf8_decode(number_format($datos["impuesto"], 2)), 0, 0, 'C');
+                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["impuesto"]), 2)), 0, 0, 'C');
                 $total3 = $total3 + $montoCancelado1;
-                $total4 = $total4 + $datos['totalImpuesto'];
-                $total5 = $total5 + $montoCancelado1 + $datos['totalImpuesto'];
+                $total4 = $total4 + $datos['impuesto'];
+                $total5 = $total5 + $montoCancelado1 + $datos['impuesto'];
                 $pdf->Ln(5);
                 $contador += 1;
                 $contador2 += 1;
@@ -198,11 +199,11 @@ if ($detallado == 1) {
                     $total2 = $total2 + $montoCancelado1;
                 }
                 $pdf->Cell(15, 1, utf8_decode(number_format($montoCancelado1, 2)), 0, 0, 'C');
-                $pdf->Cell(10, 1, utf8_decode(number_format($datos["totalImpuesto"], 2)), 0, 0, 'C');
-                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["totalImpuesto"]), 2)), 0, 0, 'C');
+                $pdf->Cell(10, 1, utf8_decode(number_format($datos["impuesto"], 2)), 0, 0, 'C');
+                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["impuesto"]), 2)), 0, 0, 'C');
                 $total3 = $total3 + $montoCancelado1;
-                $total4 = $total4 + $datos['totalImpuesto'];
-                $total5 = $total5 + $montoCancelado1 + $datos['totalImpuesto'];
+                $total4 = $total4 + $datos['impuesto'];
+                $total5 = $total5 + $montoCancelado1 + $datos['impuesto'];
                 $pdf->Ln(5);
                 $contador += 1;
                 $contador2 += 1;
@@ -307,11 +308,11 @@ if ($detallado == 1) {
                     $total2 = $total2 + $montoCancelado1;
                 }
                 $pdf->Cell(15, 1, utf8_decode(number_format($montoCancelado1, 2)), 0, 0, 'C');
-                $pdf->Cell(10, 1, utf8_decode(number_format($datos["totalImpuesto"], 2)), 0, 0, 'C');
-                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["totalImpuesto"]), 2)), 0, 0, 'C');
+                $pdf->Cell(10, 1, utf8_decode(number_format($datos["impuesto"], 2)), 0, 0, 'C');
+                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["impuesto"]), 2)), 0, 0, 'C');
                 $total3 = $total3 + $montoCancelado1;
-                $total4 = $total4 + $datos['totalImpuesto'];
-                $total5 = $total5 + $montoCancelado1 + $datos['totalImpuesto'];
+                $total4 = $total4 + $datos['impuesto'];
+                $total5 = $total5 + $montoCancelado1 + $datos['impuesto'];
                 $pdf->Ln(5);
                 $contador += 1;
                 $contador2 += 1;
@@ -361,11 +362,11 @@ if ($detallado == 1) {
                     $total2 = $total2 - $montoCancelado1;
                 }
                 $pdf->Cell(15, 1, utf8_decode(number_format($montoCancelado1, 2)), 0, 0, 'C');
-                $pdf->Cell(10, 1, utf8_decode(number_format($datos["totalImpuesto"], 2)), 0, 0, 'C');
-                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["totalImpuesto"]), 2)), 0, 0, 'C');
+                $pdf->Cell(10, 1, utf8_decode(number_format($datos["impuesto"], 2)), 0, 0, 'C');
+                $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado1) + doubleval($datos["impuesto"]), 2)), 0, 0, 'C');
                 $total3 = $total3 - $montoCancelado1;
-                $total4 = $total4 - $datos['totalImpuesto'];
-                $total5 = $total5 - $montoCancelado1 + $datos['totalImpuesto'];
+                $total4 = $total4 - $datos['impuesto'];
+                $total5 = $total5 - $montoCancelado1 - $datos['impuesto'];
                 $pdf->Ln(5);
                 $contador += 1;
                 $contador2 += 1;

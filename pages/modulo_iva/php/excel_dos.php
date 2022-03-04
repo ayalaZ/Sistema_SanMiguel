@@ -198,6 +198,452 @@ if ($detallado == 1) {
                 $celda += 1;
             }
             break;
+        case '2':
+            $desde = $years . '-' . $mes . '-01';
+            $hasta = $years . '-' . $mes . '-31';
+            $desde = date('Y-m-d', strtotime($desde));
+            $hasta = date('Y-m-d', strtotime($hasta));
+            $sql = "SELECT * FROM tbl_ventas_manuales WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY idVenta ASC";
+            $contador = 1;
+            $contador2 = 1;
+            $query = $mysqli->query($sql);
+            $celda = 6;
+            while ($datos = $query->fetch_Array()) {
+                if ($datos["montoCable"] > 0 && is_numeric($datos["montoCable"])) {
+                    $tipoServ='CABLE';
+                    $montoCancelado = doubleval($datos["montoCable"]);
+                }elseif ($datos["montoInternet"] > 0 && is_numeric($datos["montoInternet"])) {
+                    $tipoServ='INTERNET';
+                    $montoCancelado = doubleval($datos["montoInternet"]);
+                }else {
+                    $montoCancelado = 0;
+                }
+                $a = 'A' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($a)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($a, date("d", strtotime($datos['fechaComprobante'])));
+
+                $b = 'B' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($b)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($b, $datos['prefijo'] . $datos['numeroComprobante']);
+
+                $c = 'C' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($c)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($c, '0');
+
+                $d = 'D' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($d)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($d, $datos["nombreCliente"]);
+
+                if ($ex->isExento($datos["codigoCliente"])) {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + $montoCancelado;
+                    $total2 = $total2 + 0;
+                } else {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + 0;
+                    $total2 = $total2 + $montoCancelado;
+                }
+                $h = 'H' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($h, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle($h)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $i = 'I' . $celda;
+                $impuesto = $datos["impuesto"];
+                $objPHPExcel->getActiveSheet()->getStyle($i)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($i, $datos["impuesto"]);
+                $objPHPExcel->getActiveSheet()->getStyle($i)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $j = 'J' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($j)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($j, $montoCancelado + $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $total3 = $total3 + $montoCancelado;
+                $total4 = $total4 + $impuesto;
+                $total5 = $total5 + $montoCancelado + $impuesto;
+
+                $celda += 1;
+
+            }
+            break;
+        case '3':
+            $desde = $years . '-' . $mes . '-01';
+            $hasta = $years . '-' . $mes . '-31';
+            $desde = date('Y-m-d', strtotime($desde));
+            $hasta = date('Y-m-d', strtotime($hasta));
+            $sql = "SELECT * FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY numeroComprobante ASC";
+            $contador = 1;
+            $contador2 = 1;
+            $query = $mysqli->query($sql);
+            $celda = 6;
+            while ($datos = $query->fetch_Array()) {
+                if ($datos["totalComprobante"] > 0 && is_numeric($datos["totalComprobante"])) {
+                    $montoCancelado = doubleval($datos["totalComprobante"]);
+                }else {
+                    $montoCancelado = 0;
+                }
+                if ($datos["tipoServicio"] == 'C'){
+                    $tipoServ='CABLE';
+                }else{
+                    $tipoServ='INTERNET';
+                }
+                $a = 'A' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($a)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($a, date("d", strtotime($datos['fechaComprobante'])));
+
+                $b = 'B' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($b)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($b, $datos['prefijo'] . $datos['numeroComprobante']);
+
+                $c = 'C' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($c)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($c, '0');
+
+                $d = 'D' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($d)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($d, $datos["nombreCliente"]);
+
+                if ($ex->isExento($datos["codigoCliente"])) {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + $montoCancelado;
+                    $total2 = $total2 + 0;
+                } else {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + 0;
+                    $total2 = $total2 + $montoCancelado;
+                }
+                $h = 'H' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($h, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle($h)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $i = 'I' . $celda;
+                if($datos['impuesto'] == NULL){
+                    $impuesto = 0;
+                }else{
+                    $impuesto = $datos['impuesto'];
+                }
+                $objPHPExcel->getActiveSheet()->getStyle($i)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($i, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($i)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $j = 'J' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($j)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($j, $montoCancelado + $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $total3 = $total3 + $montoCancelado;
+                $total4 = $total4 + $impuesto;
+                $total5 = $total5 + $montoCancelado + $impuesto;
+
+                $celda += 1;
+            }
+            break;
+        case '4':
+            $desde = $years . '-' . $mes . '-01';
+            $hasta = $years . '-' . $mes . '-31';
+            $desde = date('Y-m-d', strtotime($desde));
+            $hasta = date('Y-m-d', strtotime($hasta));
+            $sql = "SELECT * FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura = 2 AND anulada=0;";
+            $contador = 1;
+            $contador2 = 1;
+            $query = $mysqli->query($sql);
+            $celda = 6;
+            while ($datos = $query->fetch_Array()) {
+                if ($datos["tipoServicio"] == "C") {
+                    $montoCancelado = doubleval($datos["cuotaCable"]);
+                    $tipoServ = 'CABLE';
+                } elseif ($datos["tipoServicio"] == "I") {
+                    $montoCancelado = doubleval($datos["cuotaInternet"]);
+                    $tipoServ = 'INTERNET';
+                }
+                $a = 'A' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($a)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($a, date("d", strtotime($datos['fechaFactura'])));
+
+                $b = 'B' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($b)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($b, $datos['numeroFactura']);
+
+                $c = 'C' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($c)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($c, '0');
+
+                $d = 'D' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($d)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($d, $datos["nombre"]);
+
+                if ($ex->isExento($datos["codigoCliente"])) {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + $montoCancelado;
+                    $total2 = $total2 + 0;
+                } else {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + 0;
+                    $total2 = $total2 + $montoCancelado;
+                }
+                $h = 'H' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($h, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle($h)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $i = 'I' . $celda;
+                $impuesto = $datos["totalImpuesto"];
+                $objPHPExcel->getActiveSheet()->getStyle($i)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($i, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($i)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $j = 'J' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($j)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($j, $montoCancelado + $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $total3 = $total3 + $montoCancelado;
+                $total4 = $total4 + $impuesto;
+                $total5 = $total5 + $montoCancelado + $impuesto;
+
+                $celda += 1;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            $desde = $years . '-' . $mes . '-01';
+            $hasta = $years . '-' . $mes . '-31';
+            $desde = date('Y-m-d', strtotime($desde));
+            $hasta = date('Y-m-d', strtotime($hasta));
+            $sql = "SELECT * FROM tbl_ventas_manuales WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY idVenta ASC";
+            $contador = 1;
+            $contador2 = 1;
+            $query = $mysqli->query($sql);
+            while ($datos = $query->fetch_Array()) {
+                if ($datos["montoCable"] > 0 && is_numeric($datos["montoCable"])) {
+                    $tipoServ='CABLE';
+                    $montoCancelado = doubleval($datos["montoCable"]);
+                }elseif ($datos["montoInternet"] > 0 && is_numeric($datos["montoInternet"])) {
+                    $tipoServ='INTERNET';
+                    $montoCancelado = doubleval($datos["montoInternet"]);
+                }else {
+                    $montoCancelado = 0;
+                }
+                $a = 'A' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($a)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($a, date("d", strtotime($datos['fechaComprobante'])));
+
+                $b = 'B' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($b)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($b, $datos['prefijo'] . $datos['numeroComprobante']);
+
+                $c = 'C' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($c)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($c, '0');
+
+                $d = 'D' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($d)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($d, $datos["nombreCliente"]);
+
+                if ($ex->isExento($datos["codigoCliente"])) {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + $montoCancelado;
+                    $total2 = $total2 + 0;
+                } else {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 + 0;
+                    $total2 = $total2 + $montoCancelado;
+                }
+                $h = 'H' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($h, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle($h)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $i = 'I' . $celda;
+                $impuesto = $datos["impuesto"];
+                $objPHPExcel->getActiveSheet()->getStyle($i)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($i, $datos["impuesto"]);
+                $objPHPExcel->getActiveSheet()->getStyle($i)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $j = 'J' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($j)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($j, $montoCancelado + $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $total3 = $total3 + $montoCancelado;
+                $total4 = $total4 + $impuesto;
+                $total5 = $total5 + $montoCancelado + $impuesto;
+
+                $celda += 1;
+
+            }
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            $desde = $years . '-' . $mes . '-01';
+            $hasta = $years . '-' . $mes . '-31';
+            $desde = date('Y-m-d', strtotime($desde));
+            $hasta = date('Y-m-d', strtotime($hasta));
+            $sql = "SELECT * FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY numeroComprobante ASC";
+            $contador = 1;
+            $contador2 = 1;
+            $query = $mysqli->query($sql);
+            while ($datos = $query->fetch_Array()) {
+                if ($datos["totalComprobante"] > 0 && is_numeric($datos["totalComprobante"])) {
+                    $montoCancelado = doubleval($datos["totalComprobante"]);
+                }else {
+                    $montoCancelado = 0;
+                }
+                if ($datos["tipoServicio"] == 'C'){
+                    $tipoServ='CABLE';
+                }else{
+                    $tipoServ='INTERNET';
+                }
+                $a = 'A' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($a)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($a, date("d", strtotime($datos['fechaComprobante'])));
+
+                $b = 'B' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($b)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($b, $datos['prefijo'] . $datos['numeroComprobante']);
+
+                $c = 'C' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($c)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($c, '0');
+
+                $d = 'D' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($d)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($d, $datos["nombreCliente"]);
+
+                if ($ex->isExento($datos["codigoCliente"])) {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 - $montoCancelado;
+                    $total2 = $total2 - 0;
+                } else {
+                    $e = 'E' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($e, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle($e)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $f = 'F' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($f, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle($f)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                    $g = 'G' . $celda;
+                    $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue($g, $tipoServ);
+                    $total1 = $total1 - 0;
+                    $total2 = $total2 - $montoCancelado;
+                }
+                $h = 'H' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($h, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle($h)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $i = 'I' . $celda;
+                if($datos['impuesto'] == NULL){
+                    $impuesto = 0;
+                }else{
+                    $impuesto = $datos['impuesto'];
+                }
+                $objPHPExcel->getActiveSheet()->getStyle($i)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($i, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($i)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $j = 'J' . $celda;
+                $objPHPExcel->getActiveSheet()->getStyle($j)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue($j, $montoCancelado + $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $total3 = $total3 - $montoCancelado;
+                $total4 = $total4 - $impuesto;
+                $total5 = $total5 - $montoCancelado - $impuesto;
+
+                $celda += 1;
+            }
+            break;
     }
     $a = 'A' . $celda;
     $d = 'D' . $celda;
@@ -217,8 +663,7 @@ if ($detallado == 1) {
 
     $g = 'G' . $celda;
     $objPHPExcel->getActiveSheet()->getStyle($g)->applyFromArray($style_array);
-    $objPHPExcel->getActiveSheet()->setCellValue($g, '0');
-    $objPHPExcel->getActiveSheet()->getStyle($g)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+    $objPHPExcel->getActiveSheet()->setCellValue($g, '-');
 
     $h = 'H' . $celda;
     $objPHPExcel->getActiveSheet()->getStyle($h)->applyFromArray($style_array);
@@ -235,6 +680,7 @@ if ($detallado == 1) {
     $objPHPExcel->getActiveSheet()->setCellValue($j, $total5);
     $objPHPExcel->getActiveSheet()->getStyle($j)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
+  if ($resumen == 1) {
     $celda+=2;
     $a = 'A' . $celda;
     $c = 'C' . $celda;
@@ -301,6 +747,7 @@ if ($detallado == 1) {
     $objPHPExcel->getActiveSheet()->getStyle($a.':'.$c)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
     $objPHPExcel->getActiveSheet()->setCellValue('D'.$celda, $total1 + $resumen2 + $resumen3 + $total4);
     $objPHPExcel->getActiveSheet()->getStyle('D'.$celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+  }
     
 
 
