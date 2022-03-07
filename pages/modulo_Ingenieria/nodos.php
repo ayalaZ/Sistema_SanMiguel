@@ -199,6 +199,23 @@ function setMenu($permisosActuales, $permisoRequerido)
             </nav>
         </div>
     </aside>
+    <div class="content-wrapper">
+    <?php
+        if ($_SESSION["rol"] != "administracion" && $_SESSION["rol"] != "subgerencia" && $_SESSION["rol"] != "jefatura" && $_SESSION["rol"] != "contabilidad") {
+            echo "<script>
+                            swal('Error', 'No tienes permisos para ingresar a esta área. Att: Don Manuel.', 'error');
+                       </script>";
+        } else {
+        ?>
+            <div class="card" style="margin: 10px;">
+                <div class="card-header">
+                    <h3>Listado de nodos</h3>
+                </div>
+            </div>
+        <?php 
+        }
+        ?>
+    </div>
      <!-- extensiones -->
      <?php
     $atencion = [
