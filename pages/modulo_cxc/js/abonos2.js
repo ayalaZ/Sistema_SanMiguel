@@ -1,37 +1,37 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $cobrador = $("#cobrador").val();
     $.ajax({
         type: 'POST',
         url: 'php/obtenerRecibo.php',
         data: { cod: $cobrador },
         dataType: 'Json',
-        success: function(datax) {
+        success: function (datax) {
             $("#ultimoRecibo").val(datax.valor);
             $("#porImp").val(0.00);
             $("#impSeg").val(0.00);
         },
-        error: function() {
+        error: function () {
             swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
         }
     });
 
-    $("#cobrador").change(function() {
+    $("#cobrador").change(function () {
         $cobrador = $(this).val();
         $.ajax({
             type: 'POST',
             url: 'php/obtenerRecibo.php',
             data: { cod: $cobrador },
             dataType: 'Json',
-            success: function(datax) {
+            success: function (datax) {
                 $("#ultimoRecibo").val(datax.valor);
             },
-            error: function() {
+            error: function () {
                 swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
             }
         });
     });
 
-    $("#codigo").change(function() {
+    $("#codigo").change(function () {
         $codigo = $(this).val();
         $proceso = 'codigo';
         $.ajax({
@@ -39,7 +39,7 @@ $(document).ready(function() {
             url: 'php/informacionCliente.php',
             data: { cod: $codigo, proceso: $proceso },
             dataType: 'Json',
-            success: function(datax) {
+            success: function (datax) {
                 $("#nombreCliente").val(datax.nombre);
                 $("#nrc").val(datax.nrc);
                 $("#direccion").val(datax.direccion);
@@ -105,13 +105,13 @@ $(document).ready(function() {
                 $select = document.getElementById("xmeses");
                 $select.children[0].selected = true;
             },
-            error: function() {
+            error: function () {
                 swal('Error', 'Ha ocurrido un error al traer la informacion del cliente', 'error');
             }
         });
     });
 
-    $("#servicio").change(function() {
+    $("#servicio").change(function () {
         $servicio = $(this).val();
         $codigo = $("#codigo").val();
         $proceso = 'servicio';
@@ -120,7 +120,7 @@ $(document).ready(function() {
             url: 'php/informacionCliente.php',
             data: { serv: $servicio, cod: $codigo, proceso: $proceso },
             dataType: 'Json',
-            success: function(datax) {
+            success: function (datax) {
                 if (datax.cuota == 0 || datax.cuota == null) {
                     if (datax.servicio == 'i') {
                         $select = document.getElementById("servicio");
@@ -164,13 +164,13 @@ $(document).ready(function() {
                     }
                 }
             },
-            error: function() {
+            error: function () {
                 swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
             }
         });
     });
 
-    $("#aplicarCesc").change(function() {
+    $("#aplicarCesc").change(function () {
         if (this.checked) {
             $valor = $(this).val();
             $cuota = $("#totalPagar").val();
@@ -180,7 +180,7 @@ $(document).ready(function() {
                     url: 'php/informacionCliente.php',
                     data: { valor: $valor, cuota: $cuota, proceso: $proceso },
                     dataType: 'Json',
-                    success: function(datax) {
+                    success: function (datax) {
                         $("#porImp").val(datax.cesc);
                         $("#impSeg").val(datax.impuesto);
                         $("#totalAbonoImpSeg").val(datax.total);
@@ -188,7 +188,7 @@ $(document).ready(function() {
                 });
         }
     });
-    $("#pospago").change(function() {
+    $("#pospago").change(function () {
         if (this.checked) {
             $valor = $(this).val();
             $cuota = $("#totalPagar").val();
@@ -198,7 +198,7 @@ $(document).ready(function() {
                     url: 'php/informacionCliente.php',
                     data: { valor: $valor, cuota: $cuota, proceso: $proceso },
                     dataType: 'Json',
-                    success: function(datax) {
+                    success: function (datax) {
                         $("#porImp").val(datax.cesc);
                         $("#impSeg").val(datax.impuesto);
                         $("#totalAbonoImpSeg").val(datax.total);
@@ -206,7 +206,7 @@ $(document).ready(function() {
                 });
         }
     });
-    $("#exento").change(function() {
+    $("#exento").change(function () {
         if (this.checked) {
             $valor = $(this).val();
             $cuota = $("#totalPagar").val();
@@ -216,7 +216,7 @@ $(document).ready(function() {
                     url: 'php/informacionCliente.php',
                     data: { valor: $valor, cuota: $cuota, proceso: $proceso },
                     dataType: 'Json',
-                    success: function(datax) {
+                    success: function (datax) {
                         $("#porImp").val(datax.cesc);
                         $("#impSeg").val(datax.impuesto);
                         $("#totalAbonoImpSeg").val(datax.total);
@@ -225,7 +225,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#xmeses").change(function() {
+    $("#xmeses").change(function () {
         $meses = $(this).val();
         $cuota = $("#valorCuota").val();
         $porcentaje = $("#porImp").val();
@@ -237,7 +237,7 @@ $(document).ready(function() {
                 url: 'php/informacionCliente.php',
                 data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo, serv: $servicio },
                 dataType: 'Json',
-                success: function(datax) {
+                success: function (datax) {
                     $("#totalPagar").val(datax.cuota);
                     $("#impSeg").val(datax.impuesto);
                     $("#totalAbonoImpSeg").val(datax.total);
@@ -246,7 +246,7 @@ $(document).ready(function() {
             });
     });
 
-    $("#estado").on("click", function() {
+    $("#estado").on("click", function () {
         $codigo = $("#codigo").val();
         if ($codigo == '' || $codigo == null) {
             swal('Error', 'No ha seleccionado un cliente', 'error');
@@ -368,7 +368,7 @@ $(document).ready(function() {
                 required: "Este dato es necesario",
             },
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             abono();
         }
     });
@@ -379,6 +379,11 @@ function abono() {
     $codigo = $("#codigo").val();
     $nombre = $("#nombreCliente").val();
     $total = $("#totalAbonoImpSeg").val();
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    });
     if ($("#servicio").val() == 'c') {
         $servicio = 'Cable';
     } else {
@@ -387,7 +392,7 @@ function abono() {
     if ($("#anularComp").is(':checked')) {
         $mensajes = 'Esta a punto de anular este recibo';
     } else {
-        $mensajes = "Esta a punto de abonar " + $total + " del cliente " + $codigo + " " + $nombre + " por el servicio de " + $servicio + " en el recibo numero " + $recibo;
+        $mensajes = "Esta a punto de abonar " + formatter.format($total) + " del cliente " + $codigo + " " + $nombre + " por el servicio de " + $servicio + " en el recibo numero " + $recibo;
     }
     swal({
         title: "¿Seguro que deseas continuar?",
@@ -398,7 +403,7 @@ function abono() {
         confirmButtonText: "Continuar",
         closeOnConfirm: false,
         closeOnCancel: true
-    }).then(function() {
+    }).then(function () {
         if ($('#suspendido').is(':checked')) {
             swal('Error', 'No puede realizar el abono por que este cliente esta suspendido', 'error');
         } else {
@@ -416,7 +421,7 @@ function abono() {
                 processData: false,
                 dataType: 'json',
 
-                success: function(datax) {
+                success: function (datax) {
                     swal('Estado de la operacion', datax.msg, datax.typeinfo);
                     if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
                         swal({
@@ -428,7 +433,7 @@ function abono() {
                             confirmButtonText: "Continuar",
                             closeOnConfirm: false,
                             closeOnCancel: true
-                        }).then(function() {
+                        }).then(function () {
                             window.open("php/comprobantePagox2.php?uaid1=" + datax.Crecibo + "&cod=" + datax.Ccodigo + "&desde=" + datax.Cdesde + "&hasta=" + datax.Chasta + "&tipoServicio=" + datax.Cservicio + "", "_blank");
                             setInterval('location.reload()', 3000);
                         });

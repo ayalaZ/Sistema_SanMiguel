@@ -365,11 +365,11 @@ function setMenu($permisosActuales, $permisoRequerido)
                                     <div class="form-check form-check-inline">
                                         <div class="icheck-danger d-inline">
                                             <input class="form-check-input" type="radio" name="Cfacturas" id="recibosN" value="1">
-                                            <label class="form-check-label" for="recibosN">Recibos</label>
+                                            <label class="form-check-label" for="recibosN">Factura Imp</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input class="form-check-input" type="radio" name="Cfacturas" id="facturasN" value="2">
-                                            <label class="form-check-label" for="facturasN">Facturas</label>
+                                            <label class="form-check-label" for="facturasN">Facturas Manual</label>
                                         </div>&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
                                             <input class="form-check-input" type="radio" name="Cfacturas" id="anuladasN" value="3">
