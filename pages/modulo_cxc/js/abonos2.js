@@ -392,11 +392,11 @@ function abono() {
     if ($("#anularComp").is(':checked')) {
         $mensajes = 'Esta a punto de anular este recibo';
     } else {
-        $mensajes = "Esta a punto de abonar " + formatter.format($total) + " del cliente " + $codigo + " " + $nombre + " por el servicio de " + $servicio + " en el recibo numero " + $recibo;
+        $mensajes = "Esta a punto de abonar <mark style='background-color:yellow'>" + formatter.format($total) + "</mark> del cliente <mark style='background-color:yellow'>" + $codigo + " " + $nombre + "</mark> por el servicio de <mark style='background-color:yellow'>" + $servicio + "</mark> en el recibo numero <mark style='background-color:yellow'>" + $recibo +"</mark>";
     }
     swal({
         title: "¿Seguro que deseas continuar?",
-        text: $mensajes,
+        html: $mensajes,
         type: "warning",
         showCancelButton: true,
         cancelButtonText: "No",

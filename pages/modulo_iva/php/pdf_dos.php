@@ -41,8 +41,8 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage("", 'Letter');
 $pdf->SetFont('Times', '', 10);
-include('encabezado_tabla2.php');
 if ($detallado == 1) {
+    include('encabezado_tabla2.php');
     switch ($tiposComprobantes) {
         case '1':
             $desde = $years . '-' . $mes . '-01';
@@ -418,5 +418,7 @@ if ($detallado == 1) {
         $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
         $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador"), "", 0, 'L');
     }
+}else{
+    include('encabezado_tabla3.php');
 }
 $pdf->Output();
