@@ -167,7 +167,7 @@ if ($detallado == 1) {
         $pdf->Cell(15, 5, utf8_decode(number_format($monto, 2)), 0, 1, 'C');
         $contador += 1;
         $contador2 += 1;
-        if ($contador2 == 25 ) {
+        if ($contador2 == 25) {
             $pdf->AddPage("L", 'Letter');
             $pdf->SetFont('Times', '', 12);
             $pdf->Cell(260, 6, utf8_decode(mes . " " . año . " (VALORES EXPRESADOS EN US DOLARES)"), 0, 0, 'C');
@@ -177,6 +177,37 @@ if ($detallado == 1) {
             $contador2 = 1;
         }
     }
+    //NOTA DE CREDITO
+    $desde = $years . '-' . $mes . '-01';
+    $hasta = $years . '-' . $mes . '-31';
+    $desde = date('Y-m-d', strtotime($desde));
+    $hasta = date('Y-m-d', strtotime($hasta));
+    $sqlnuevo = $mysqli->query("SELECT * FROM tbl_abonos WHERE numeroRecibo LIKE 'NC%' AND fechaAbonado BETWEEN '$desde' AND '$hasta'");
+    $cantidad = $sqlnuevo->num_rows;
+    $contador3 = $contador;
+    if ($cantidad > 0) {
+        while ($notaCredito = $sqlnuevo->fetch_Array()) {
+            $pdf->SetFont('Times', '', 8);
+            $pdf->Cell(10, 5, utf8_decode($contador3), 0, 0, 'C');
+            $pdf->Cell(20, 5, utf8_decode($notaCredito['fechaAbonado']), 0, 0, 'C');
+            $pdf->Cell(20, 5, utf8_decode($notaCredito['numeroRecibo']), 0, 0, 'C');
+            $pdf->Cell(15, 5, utf8_decode('0'), 0, 0, 'C');
+            $pdf->SetFont('Times', '', 5.8);
+            $caracteres = strlen($notaCredito["nombre"]);
+            if ($caracteres >= 47) {
+                $recortado = substr($notaCredito["nombre"], 0, 47);
+                $pdf->Cell(60, 5, utf8_decode($recortado), 0, 0, 'L');
+            } else {
+                $pdf->Cell(60, 5, utf8_decode($notaCredito['nombre']), 0, 0, 'L');
+            }
+            $pdf->SetFont('Times', '', 8);
+            $pdf->Cell(15, 5, utf8_decode("-"), 0, 0, 'C');
+            $pdf->Ln(5);
+            $contador3 += 1;
+        }
+    }
+
+    //FIN DE NOTA DE CREDITO
     //suma de totales
     $pdf->Cell(60, 3, utf8_decode(''), 'T', 0, 'C');
     $pdf->Cell(60, 3, utf8_decode('TOTALES DEL MES'), "T", 0, 'C');
@@ -257,7 +288,6 @@ if ($detallado == 1) {
             $pdf->Ln(5);
             include('encabezado_tabla.php');
             $pdf->SetFont('Times', 'B', 8);
-            
         } else {
             $pdf->Ln(5);
         }
@@ -312,8 +342,8 @@ if ($detallado == 1) {
         $pdf->Cell(45, 6, utf8_decode(number_format($totalTRES, 2)), 0, 1, 'L');
 
         $pdf->Ln(20);
-        $pdf->Cell(70,3,utf8_decode(''),"T",1,'C');
-        $pdf->Cell(40,1,utf8_decode("Nombre y firma del contador:"),"",0,'L');
+        $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
+        $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador:"), "", 0, 'L');
     }
 } else {
     $numero = 1;
@@ -444,8 +474,8 @@ if ($detallado == 1) {
         $pdf->Cell(45, 6, utf8_decode(number_format($total1, 2)), 0, 1, 'L');
 
         $pdf->Ln(20);
-        $pdf->Cell(70,3,utf8_decode(''),"T",1,'C');
-        $pdf->Cell(40,1,utf8_decode("Nombre y firma del contador:"),"",0,'L');
+        $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
+        $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador:"), "", 0, 'L');
     }
 }
 
