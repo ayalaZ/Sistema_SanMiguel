@@ -201,8 +201,99 @@ if ($detallado == 1) {
                 $pdf->Cell(60, 5, utf8_decode($notaCredito['nombre']), 0, 0, 'L');
             }
             $pdf->SetFont('Times', '', 8);
-            $pdf->Cell(15, 5, utf8_decode("-"), 0, 0, 'C');
-            $pdf->Ln(5);
+            $codigoo = $notaCredito['codigoCliente'];
+            $nrcquery = $mysqli->query("SELECT num_registro FROM clientes WHERE cod_cliente='$codigoo'");
+            $registroo = $nrcquery->fetch_Array();
+            $pdf->Cell(15, 5, utf8_decode($registroo['num_registro']), 0, 0, 'C');
+            if ($ex->isExento($notaCredito['codigoCliente'])) {
+                if ($notaCredito['tipoServicio'] == 'C') {
+                    $monto = $notaCredito['cuotaCable'];
+                    $montoCancelado = $notaCredito['cuotaCable'];
+                    $separado = ($montoCancelado / 1.13);
+                    $iva = ($separado * 0.13);
+                    $internasGravadas = 0.00;
+                    $debitoFiscal = 0.00;
+                    $internasGravadas2 = 0;
+                    $debitoFiscal2 = 0;
+                    $totalExentosSinIva = $totalExentosSinIva - $monto;
+                    $totalIvaCredito = $totalIvaCredito - $debitoFiscal;
+                    $totalCESCcredito = $totalCESCcredito - $notaCredito['totalImpuesto'];
+                } else {
+                    $monto = $notaCredito['cuotaInternet'];
+                    $montoCancelado = $notaCredito['cuotaInternet'];
+                    $separado = ($montoCancelado / 1.13);
+                    $iva = ($separado * 0.13);
+                    $internasGravadas = 0.00;
+                    $debitoFiscal = 0.00;
+                    $internasGravadas2 = 0;
+                    $debitoFiscal2 = 0;
+                    $totalExentosSinIva = $totalExentosSinIva - $monto;
+                    $totalIvaCredito = $totalIvaCredito - $debitoFiscal;
+                    $totalCESCcredito = $totalCESCcredito - $notaCredito['totalImpuesto'];
+                }
+            } else {
+                if ($notaCredito['tipoServicio'] == 'C') {
+                    $monto = $notaCredito['cuotaCable'];
+                    $montoCancelado = 0.00;
+                    $separado = ($notaCredito['cuotaCable'] / 1.13);
+                    $iva = ($separado * 0.13);
+                    $internasGravadas = ($notaCredito['cuotaCable'] - $iva);
+                    $debitoFiscal = $iva;
+                    $internasGravadas2 = 0;
+                    $debitoFiscal2 = 0;
+                    $totalGravadasSinIva = $totalGravadasSinIva - $internasGravadas;
+                    $totalIvaCredito = $totalIvaCredito - $debitoFiscal;
+                    $totalCESCcredito = $totalCESCcredito - $notaCredito['totalImpuesto'];
+                } else {
+                    $monto = $notaCredito['cuotaInternet'];
+                    $montoCancelado = 0.00;
+                    $separado = ($notaCredito['cuotaInternet'] / 1.13);
+                    $iva = ($separado * 0.13);
+                    $internasGravadas = ($notaCredito['cuotaInternet'] - $iva);
+                    $debitoFiscal = $iva;
+                    $internasGravadas2 = 0;
+                    $debitoFiscal2 = 0;
+                    $totalGravadasSinIva = $totalGravadasSinIva - $internasGravadas;
+                    $totalIvaCredito = $totalIvaCredito - $debitoFiscal;
+                    $totalCESCcredito = $totalCESCcredito - $notaCredito['totalImpuesto'];
+                }
+            }
+            $totalA = $totalA - $montoCancelado;
+            $pdf->Cell(12.5, 5, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
+            $totalB = $totalB - $internasGravadas;
+            $pdf->Cell(20, 5, utf8_decode(number_format("-".$internasGravadas, 2)), 0, 0, 'C');
+            $totalC = $totalC - $debitoFiscal;
+            $pdf->Cell(15, 5, utf8_decode(number_format("-".$debitoFiscal, 2)), 0, 0, 'C');
+            $totalD = $totalD - $montoCancelado;
+            $pdf->Cell(10, 5, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
+            $totalE = $totalE - $internasGravadas2;
+            $pdf->Cell(20, 5, utf8_decode(number_format($internasGravadas2, 2)), 0, 0, 'C');
+            $totalF = $totalF - $debitoFiscal2;
+            $pdf->Cell(17.5, 5, utf8_decode(number_format($debitoFiscal2, 2)), 0, 0, 'C');
+
+            $idcliente = $datos["codigoCliente"];
+            $granContribuyente = $mysqli->query("SELECT id_tipo_cliente FROM clientes WHERE cod_cliente='$idcliente'");
+            $datoscontribuyente = $granContribuyente->fetch_array();
+            if ($datoscontribuyente['id_tipo_cliente'] == '0003') {
+                $ivaretenido = $internasGravadas * 0.01;
+                $totalivaretenido = $totalivaretenido - $ivaretenido;
+                $monto = $monto - $ivaretenido;
+            } else {
+                $ivaretenido = 0.00;
+            }
+            $totalG = $totalG - $ivaretenido;
+            $pdf->Cell(15, 5, utf8_decode(number_format($ivaretenido, 2)), 0, 0, 'C');
+            $totalH = $totalH - $monto;
+            $pdf->Cell(15, 5, utf8_decode(number_format("-".$monto, 2)), 0, 1, 'C');
+            if ($contador3 == 25) {
+                $pdf->AddPage("L", 'Letter');
+                $pdf->SetFont('Times', '', 12);
+                $pdf->Cell(260, 6, utf8_decode(mes . " " . año . " (VALORES EXPRESADOS EN US DOLARES)"), 0, 0, 'C');
+                $pdf->Ln(5);
+                include('encabezado_tabla.php');
+                $pdf->SetFont('Times', '', 7);
+                $contador2 = 1;
+            }
             $contador3 += 1;
         }
     }

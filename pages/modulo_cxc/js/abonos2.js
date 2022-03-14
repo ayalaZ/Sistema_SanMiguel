@@ -14,6 +14,85 @@ $(document).ready(function () {
             swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
         }
     });
+    $codigo = $("#codigo").val();
+    if ($codigo != '') {
+        $proceso = 'codigo';
+        $.ajax({
+            type: 'POST',
+            url: 'php/informacionCliente.php',
+            data: { cod: $codigo, proceso: $proceso },
+            dataType: 'Json',
+            success: function (datax) {
+                $("#nombreCliente").val(datax.nombre);
+                $("#nrc").val(datax.nrc);
+                $("#direccion").val(datax.direccion);
+                $("#municipio").val(datax.municipio);
+                $("#colonia").val(datax.colonia);
+                $("#diaCobro").val(datax.dia);
+                $("#valorCuota").val(datax.cuota);
+                $("#totalPagar").val(datax.cuota);
+                $("#porImp").val("0.00");
+                $("#impSeg").val("0.00");
+                $("#totalAbonoImpSeg").val(datax.cuota);
+                $("#meses").val(datax.meses);
+                if (datax.comprobante == 1) {
+                    $("input[type=checkbox]").prop("checked", false);
+                    $("#creditofiscal").prop("checked", true);
+                } else {
+                    $("input[type=checkbox]").prop("checked", false);
+                    $("#consumidorfinal").prop("checked", true);
+                }
+                if (datax.cambio == 'true') {
+                    document.getElementById("servicio").selectedIndex = 1;
+                    if (datax.estado_internet == 3) {
+                        swal('Error', 'El servicio de este cliente esta suspendido', 'error');
+                        $("#suspendido").prop("checked", false);
+                        $("#suspendido").prop("checked", true);
+                    }
+                    if (datax.filas != 0) {
+                        $('#cargos tbody').empty();
+                        var filas = datax.filas;
+                        for (var i = 0; i < filas; i++) {
+                            var nuevafila = "<tr><td>" +
+                                datax.tabla[i].numeroFactura + "</td><td>" +
+                                datax.tabla[i].mesCargo + "</td><td>" +
+                                datax.tabla[i].cuotaInternet + "</td><td>" +
+                                datax.tabla[i].fechaVencimiento + "</td></tr>";
+                            $("#cargos tbody").append(nuevafila);
+                        }
+                    } else {
+                        $('#cargos tbody').empty();
+                    }
+                } else {
+                    if (datax.estado_cable == 'T') {
+                        swal('Error', 'El servicio de este cliente esta suspendido', 'error');
+                        $("#suspendido").prop("checked", false);
+                        $("#suspendido").prop("checked", true);
+                    }
+                    document.getElementById("servicio").selectedIndex = 0;
+                    if (datax.filas != 0) {
+                        $('#cargos tbody').empty();
+                        var filas = datax.filas;
+                        for (var i = 0; i < filas; i++) {
+                            var nuevafila = "<tr><td>" +
+                                datax.tabla[i].numeroFactura + "</td><td>" +
+                                datax.tabla[i].mesCargo + "</td><td>" +
+                                datax.tabla[i].cuotaCable + "</td><td>" +
+                                datax.tabla[i].fechaVencimiento + "</td></tr>";
+                            $("#cargos tbody").append(nuevafila);
+                        }
+                    } else {
+                        $('#cargos tbody').empty();
+                    }
+                }
+                $select = document.getElementById("xmeses");
+                $select.children[0].selected = true;
+            },
+            error: function () {
+                swal('Error', 'Ha ocurrido un error al traer la informacion del cliente', 'error');
+            }
+        });
+    }
 
     $("#cobrador").change(function () {
         $cobrador = $(this).val();

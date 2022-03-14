@@ -594,6 +594,7 @@ switch ($proceso) {
                     if ($queryNumeroAsigandor) {
                         session_start();
                         $_SESSION['cobrador'] = $cobrador; //crear la variable de sesion cobrador
+                        $_SESSION['codigoCobro'] = $codigo;
                         if ($cobrador != '002' || $cobrador != '020') {
                             $_SESSION['fecha'] = $fechaAbono;
                         }
