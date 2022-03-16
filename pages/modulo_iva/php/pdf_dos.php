@@ -70,7 +70,7 @@ if ($detallado == 1) {
                 $pdf->Cell(15, 1, utf8_decode(0), 0, 0, 'C');
                 $pdf->SetFont('Times', '', 7);
                 $pdf->Cell(60, 1, utf8_decode($datos["nombre"]), 0, 0, 'L');
-                
+
                 if ($ex->isExento($datos["codigoCliente"])) {
                     $pdf->Cell(20, 1, utf8_decode(number_format($montoCancelado1, 2)), 0, 0, 'C');
                     $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
@@ -111,19 +111,19 @@ if ($detallado == 1) {
             $query = $mysqli->query($sql);
             while ($datos = $query->fetch_Array()) {
                 if ($datos["montoCable"] > 0 && is_numeric($datos["montoCable"])) {
-                    $tipoServ='CABLE';
+                    $tipoServ = 'CABLE';
                     $montoCancelado1 = doubleval($datos["montoCable"]);
-                }elseif ($datos["montoInternet"] > 0 && is_numeric($datos["montoInternet"])) {
-                    $tipoServ='INTERNET';
+                } elseif ($datos["montoInternet"] > 0 && is_numeric($datos["montoInternet"])) {
+                    $tipoServ = 'INTERNET';
                     $montoCancelado1 = doubleval($datos["montoInternet"]);
-                }else {
+                } else {
                     $montoCancelado1 = 0;
                 }
 
 
                 $pdf->SetFont('Times', '', 6.4);
                 $pdf->Cell(5, 1, utf8_decode(date("d", strtotime($datos['fechaComprobante']))), 0, 0, 'L');
-                $pdf->Cell(20,1,utf8_decode($datos['prefijo'] . $datos['numeroComprobante']),0,0,'L');
+                $pdf->Cell(20, 1, utf8_decode($datos['prefijo'] . $datos['numeroComprobante']), 0, 0, 'L');
                 $pdf->SetFont('Times', '', 8);
                 $pdf->Cell(15, 1, utf8_decode(0), 0, 0, 'C');
                 $pdf->SetFont('Times', '', 7);
@@ -169,18 +169,18 @@ if ($detallado == 1) {
             while ($datos = $query->fetch_Array()) {
                 if ($datos["totalComprobante"] > 0 && is_numeric($datos["totalComprobante"])) {
                     $montoCancelado1 = doubleval($datos["totalComprobante"]);
-                }else {
+                } else {
                     $montoCancelado1 = 0;
                 }
-                if ($datos["tipoServicio"] == 'C'){
-                    $tipoServ='CABLE';
-                }else{
-                    $tipoServ='INTERNET';
+                if ($datos["tipoServicio"] == 'C') {
+                    $tipoServ = 'CABLE';
+                } else {
+                    $tipoServ = 'INTERNET';
                 }
 
                 $pdf->SetFont('Times', '', 6.4);
                 $pdf->Cell(5, 1, utf8_decode(date("d", strtotime($datos['fechaComprobante']))), 0, 0, 'L');
-                $pdf->Cell(20,1,utf8_decode($datos['prefijo'] . $datos['numeroComprobante']),0,0,'L');
+                $pdf->Cell(20, 1, utf8_decode($datos['prefijo'] . $datos['numeroComprobante']), 0, 0, 'L');
                 $pdf->SetFont('Times', '', 8);
                 $pdf->Cell(15, 1, utf8_decode(0), 0, 0, 'C');
                 $pdf->SetFont('Times', '', 7);
@@ -277,19 +277,19 @@ if ($detallado == 1) {
             $query = $mysqli->query($sql);
             while ($datos = $query->fetch_Array()) {
                 if ($datos["montoCable"] > 0 && is_numeric($datos["montoCable"])) {
-                    $tipoServ='CABLE';
+                    $tipoServ = 'CABLE';
                     $montoCancelado1 = doubleval($datos["montoCable"]);
-                }elseif ($datos["montoInternet"] > 0 && is_numeric($datos["montoInternet"])) {
-                    $tipoServ='INTERNET';
+                } elseif ($datos["montoInternet"] > 0 && is_numeric($datos["montoInternet"])) {
+                    $tipoServ = 'INTERNET';
                     $montoCancelado1 = doubleval($datos["montoInternet"]);
-                }else {
+                } else {
                     $montoCancelado1 = 0;
                 }
 
 
                 $pdf->SetFont('Times', '', 6.4);
                 $pdf->Cell(5, 1, utf8_decode(date("d", strtotime($datos['fechaComprobante']))), 0, 0, 'L');
-                $pdf->Cell(20,1,utf8_decode($datos['prefijo'] . $datos['numeroComprobante']),0,0,'L');
+                $pdf->Cell(20, 1, utf8_decode($datos['prefijo'] . $datos['numeroComprobante']), 0, 0, 'L');
                 $pdf->SetFont('Times', '', 8);
                 $pdf->Cell(15, 1, utf8_decode(0), 0, 0, 'C');
                 $pdf->SetFont('Times', '', 7);
@@ -332,18 +332,18 @@ if ($detallado == 1) {
             while ($datos = $query->fetch_Array()) {
                 if ($datos["totalComprobante"] > 0 && is_numeric($datos["totalComprobante"])) {
                     $montoCancelado1 = doubleval($datos["totalComprobante"]);
-                }else {
+                } else {
                     $montoCancelado1 = 0;
                 }
-                if ($datos["tipoServicio"] == 'C'){
-                    $tipoServ='CABLE';
-                }else{
-                    $tipoServ='INTERNET';
+                if ($datos["tipoServicio"] == 'C') {
+                    $tipoServ = 'CABLE';
+                } else {
+                    $tipoServ = 'INTERNET';
                 }
 
                 $pdf->SetFont('Times', '', 6.4);
                 $pdf->Cell(5, 1, utf8_decode(date("d", strtotime($datos['fechaComprobante']))), 0, 0, 'L');
-                $pdf->Cell(20,1,utf8_decode($datos['prefijo'] . $datos['numeroComprobante']),0,0,'L');
+                $pdf->Cell(20, 1, utf8_decode($datos['prefijo'] . $datos['numeroComprobante']), 0, 0, 'L');
                 $pdf->SetFont('Times', '', 8);
                 $pdf->Cell(15, 1, utf8_decode(0), 0, 0, 'C');
                 $pdf->SetFont('Times', '', 7);
@@ -418,7 +418,53 @@ if ($detallado == 1) {
         $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
         $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador"), "", 0, 'L');
     }
-}else{
+} else {
     include('encabezado_tabla3.php');
+    $numero = 1;
+    $counter = 1;
+    for ($i = 0; $i < 31; $i++) {
+        switch ($tiposComprobantes) {
+            case '1':
+                $desde = $years . '-' . $mes . '-01';
+                $hasta = $years . '-' . $mes . '-31';
+                $desde = date('Y-m-d', strtotime($desde));
+                $hasta = date('Y-m-d', strtotime($hasta));
+                $sql = $mysqli->query("SELECT
+                (SELECT SUM(cuotaCable) from tbl_cargos where tipoServicio='C' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0) as totalCuotaCable,
+                (SELECT SUM(cuotaInternet) from tbl_cargos where tipoServicio='I' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0) as totalCuotaInter, SUM(totalImpuesto) as totalImp, MIN(numeroFactura) as inFact, MAX(numeroFactura) as finFact, DAY(fechaFactura) as dia FROM tbl_cargos
+                WHERE DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0");
+
+                while ($datos = $sql->fetch_Array()) {
+                    $pdf->SetFont('Times', '', 8);
+                    $pdf->Cell(5, 1, utf8_decode($counter), 0, 0, 'L');
+                    $pdf->Cell(30, 1, utf8_decode($datos["inFact"]), 0, 0, 'C');
+                    $pdf->Cell(30, 1, utf8_decode($datos["finFact"]), 0, 0, 'C');
+                    $pdf->Cell(35, 1, utf8_decode(""), 0, 0, 'L');
+
+                    $montoCancelado = doubleval($datos["totalCuotaCable"]) + doubleval($datos["totalCuotaInter"]);
+                    //IVA
+                    $separado = $montoCancelado / 1.13;
+                    //var_dump($separado);
+                    $totalIva = $separado * 0.13;
+                    $sinIva = $montoCancelado - $totalIva;
+                    if ($ex->isExento("")) {
+                        $pdf->Cell(20, 1, utf8_decode($montoCancelado), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
+                    } else {
+                        $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode(number_format($sinIva, 2)), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
+                    }
+                    $pdf->Cell(15, 1, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
+                    $pdf->Cell(10, 1, utf8_decode(number_format($datos["totalImp"], 2)), 0, 0, 'C');
+                    $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado) + doubleval($datos["totalImp"]), 2)), 0, 0, 'C');
+                }
+
+                break;
+        }
+        $pdf->Ln(5);
+        $counter += 1;
+    }
 }
 $pdf->Output();
