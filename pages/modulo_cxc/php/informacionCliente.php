@@ -190,7 +190,7 @@ switch ($proceso) {
         } elseif ($arregloMeses['mesCargo'] == NULL) {
             $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
             $mesTabla = date_format(date_create($mesTabla), 'm/Y');
-            $mes = $$mesTabla;
+            $mes = $mesTabla;
         }
 
         $fechaCompleta = "01/" . $mes;

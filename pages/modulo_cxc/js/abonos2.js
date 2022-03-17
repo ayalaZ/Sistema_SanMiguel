@@ -458,6 +458,7 @@ function abono() {
     $codigo = $("#codigo").val();
     $nombre = $("#nombreCliente").val();
     $total = $("#totalAbonoImpSeg").val();
+    $otromeses = $("#meses").val();
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -471,7 +472,7 @@ function abono() {
     if ($("#anularComp").is(':checked')) {
         $mensajes = 'Esta a punto de anular este recibo';
     } else {
-        $mensajes = "Esta a punto de abonar <mark style='background-color:yellow'>" + formatter.format($total) + "</mark> del cliente <mark style='background-color:yellow'>" + $codigo + " " + $nombre + "</mark> por el servicio de <mark style='background-color:yellow'>" + $servicio + "</mark> en el recibo numero <mark style='background-color:yellow'>" + $recibo +"</mark>";
+        $mensajes = "Esta a punto de abonar <mark style='background-color:yellow'>" + formatter.format($total) + "</mark> del cliente <mark style='background-color:yellow'>" + $codigo + " " + $nombre + "</mark> por el servicio de <mark style='background-color:yellow'>" + $servicio + "</mark> en el recibo numero <mark style='background-color:yellow'>" + $recibo +"</mark> Correspondiente al periodo de <mark style='background-color:yellow'>" + $otromeses +"</mark>";
     }
     swal({
         title: "¿Seguro que deseas continuar?",
@@ -512,6 +513,7 @@ function abono() {
                             confirmButtonText: "Continuar",
                             closeOnConfirm: false,
                             closeOnCancel: true
+
                         }).then(function () {
                             window.open("php/comprobantePagox2.php?uaid1=" + datax.Crecibo + "&cod=" + datax.Ccodigo + "&desde=" + datax.Cdesde + "&hasta=" + datax.Chasta + "&tipoServicio=" + datax.Cservicio + "", "_blank");
                             setInterval('location.reload()', 3000);
