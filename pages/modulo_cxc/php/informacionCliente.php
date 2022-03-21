@@ -176,10 +176,17 @@ switch ($proceso) {
         $xdatos['cuota'] = round($totalApagar, 2);
         $xdatos['impuesto'] = round($impuesto, 2);
         $xdatos['total'] = round($total, 2);
-
-
-        $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='$sservicio' ORDER BY idAbono DESC LIMIT 1");
-        $arregloMeses = $querymeses->fetch_array();
+        if ($_POST['mover'] == 0) {
+            if ($sservicio == 'I') {
+                $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='I' ORDER BY idAbono DESC LIMIT 1");
+                $arregloMeses = $querymeses->fetch_array();
+            } else {
+                $querymeses = $mysqli->query("SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' ORDER BY idAbono DESC LIMIT 1");
+                $arregloMeses = $querymeses->fetch_array();
+            }
+        } else {
+            $arregloMeses['merCargo'] == NULL;
+        }
         if ($arregloMeses['mesCargo']) {
             $mesTabla = '01/' . $arregloMeses['mesCargo'];
             $date = str_replace('/', '-', $mesTabla);
@@ -612,6 +619,16 @@ switch ($proceso) {
                 }
             }
         }
+        echo json_encode($xdatos);
+        break;
+    case 'mover':
+        $codigo = $_POST['codigo'];
+        $datoscliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'"); //obtener datos del cliente que esta cancelando
+        $arreglodatosclientes = $datoscliente->fetch_array();
+        $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+        $mesTabla = date_format(date_create($mesTabla), 'm/Y');
+        $mes = $mesTabla;
+        $xdatos['meses'] = $mes;
         echo json_encode($xdatos);
         break;
 }

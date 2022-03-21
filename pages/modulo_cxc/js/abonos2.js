@@ -267,6 +267,25 @@ $(document).ready(function () {
                 });
         }
     });
+
+    $("#mover").change(function(){
+        if(this.checked){
+            $mover = 1;
+            $proceso = 'mover';
+            $codigo = $("#codigo").val();
+            document.getElementById("xmeses").selectedIndex = 0;
+            $.ajax({
+                type:'POST',
+                url: 'php/informacionCliente.php',
+                data:{mover: $mover, proceso:$proceso, codigo:$codigo},
+                dataType:'Json',
+                success:function(datax){
+                    $("#meses").val(datax.meses);
+                }
+            });
+        }
+    });
+
     $("#pospago").change(function () {
         if (this.checked) {
             $valor = $(this).val();
@@ -310,11 +329,16 @@ $(document).ready(function () {
         $porcentaje = $("#porImp").val();
         $codigo = $("#codigo").val();
         $servicio = $("#servicio").val();
+        if ($("#mover").is(':checked')) {
+            $mov = 1;
+        }else{
+            $mov = 0;
+        }
         $proceso = 'meses',
             $.ajax({
                 type: 'POST',
                 url: 'php/informacionCliente.php',
-                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo, serv: $servicio },
+                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo, serv: $servicio,mover:$mov },
                 dataType: 'Json',
                 success: function (datax) {
                     $("#totalPagar").val(datax.cuota);
@@ -491,6 +515,7 @@ function abono() {
             var formdata = false;
             if (window.FormData) {
                 formdata = new FormData(form[0]);
+
             }
             $.ajax({
                 type: 'POST',

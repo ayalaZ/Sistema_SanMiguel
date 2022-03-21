@@ -649,25 +649,45 @@ if ($detallado == 1) {
     $pdf->Cell(45, 6, utf8_decode(number_format($totalConIvaEx, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalConIvaEx2, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalConIvaEx3, 2)), 0, 0, 'C');
-    $pdf->Cell(20, 6, utf8_decode(number_format($totalConIvaEx + $totalConIvaEx2 + $totalConIvaEx3, 2)), 0, 1, 'C');
+    if ($tiposComprobantes == 3) {
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalConIvaEx + $totalConIvaEx2 + $totalConIvaEx3, 2)), 0, 1, 'C');
+    }else{
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalConIvaEx + $totalConIvaEx2 - $totalConIvaEx3, 2)), 0, 1, 'C');
+    }
+    
 
     $pdf->Cell(40, 6, utf8_decode('Ventas netas gravadas'), 0, 0, 'L');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSinIva, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSinIva2, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSinIva3, 2)), 0, 0, 'C');
-    $pdf->Cell(20, 6, utf8_decode(number_format($totalSinIva + $totalSinIva2 + $totalSinIva3, 2)), 0, 1, 'C');
+    if ($tiposComprobantes == 3) {
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalSinIva + $totalSinIva2 + $totalSinIva3, 2)), 0, 1, 'C');
+    }else{
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalSinIva + $totalSinIva2 - $totalSinIva3, 2)), 0, 1, 'C');
+    }
+    
 
     $pdf->Cell(40, 6, utf8_decode('13% de IVA'), 0, 0, 'L');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloIva, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloIva2, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloIva3, 2)), 0, 0, 'C');
-    $pdf->Cell(20, 6, utf8_decode(number_format($totalSoloIva + $totalSoloIva2 + $totalSoloIva3, 2)), 0, 1, 'C');
+    if ($tiposComprobantes == 3) {
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalSoloIva + $totalSoloIva2 + $totalSoloIva3, 2)), 0, 1, 'C');
+    }else{
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalSoloIva + $totalSoloIva2 - $totalSoloIva3, 2)), 0, 1, 'C');
+    }
+    
 
     $pdf->Cell(40, 6, utf8_decode('5% CESC'), 0, 0, 'L');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloCesc, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloCesc2, 2)), 0, 0, 'C');
     $pdf->Cell(45, 6, utf8_decode(number_format($totalSoloCesc3, 2)), 0, 0, 'C');
-    $pdf->Cell(20, 6, utf8_decode(number_format($totalSoloCesc + $totalSoloCesc2 + $totalSoloCesc3, 2)), 0, 1, 'C');
+    if ($tiposComprobantes == 3) {
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalSoloCesc + $totalSoloCesc2 + $totalSoloCesc3, 2)), 0, 1, 'C');
+    }else{
+        $pdf->Cell(20, 6, utf8_decode(number_format($totalSoloCesc + $totalSoloCesc2 - $totalSoloCesc3, 2)), 0, 1, 'C');
+    }
+    
 
     $pdf->Cell(40, 6, utf8_decode('Exportaciones'), 0, 0, 'L');
     $pdf->Cell(45, 6, utf8_decode(number_format(0, 2)), 0, 0, 'C');
@@ -684,7 +704,12 @@ if ($detallado == 1) {
     $pdf->Cell(45,6,utf8_decode(number_format($total1,2)),0,0,'C');
     $pdf->Cell(45,6,utf8_decode(number_format($total2,2)),0,0,'C');
     $pdf->Cell(45,6,utf8_decode(number_format($total3,2)),0,0,'C');
-    $pdf->Cell(20,6,utf8_decode(number_format(($total1 + $total2 + $total3),2)),0,1,'C');
+    if ($tiposComprobantes == 3) {
+        $pdf->Cell(20,6,utf8_decode(number_format(($total1 + $total2 + $total3),2)),0,1,'C');
+    }else{
+        $pdf->Cell(20,6,utf8_decode(number_format(($total1 + $total2 - $total3),2)),0,1,'C');
+    }
+    
 
     $pdf->Ln(20);
     $pdf->Cell(70,3,utf8_decode(''),"T",1,'C');
