@@ -208,9 +208,6 @@ if ($detallado == 1) {
             if ($ex->isExento($notaCredito['codigoCliente'])) {
                 if ($notaCredito['tipoServicio'] == 'C') {
                     $monto = $notaCredito['cuotaCable'];
-                    $montoCancelado = $notaCredito['cuotaCable'];
-                    $separado = ($montoCancelado / 1.13);
-                    $iva = ($separado * 0.13);
                     $internasGravadas = 0.00;
                     $debitoFiscal = 0.00;
                     $internasGravadas2 = 0;
@@ -220,11 +217,6 @@ if ($detallado == 1) {
                     $totalCESCcredito = $totalCESCcredito - $notaCredito['totalImpuesto'];
                 } else {
                     $monto = $notaCredito['cuotaInternet'];
-                    $montoCancelado = $notaCredito['cuotaInternet'];
-                    $separado = ($montoCancelado / 1.13);
-                    $iva = ($separado * 0.13);
-                    $internasGravadas = 0.00;
-                    $debitoFiscal = 0.00;
                     $internasGravadas2 = 0;
                     $debitoFiscal2 = 0;
                     $totalExentosSinIva = $totalExentosSinIva - $monto;
@@ -235,9 +227,8 @@ if ($detallado == 1) {
                 if ($notaCredito['tipoServicio'] == 'C') {
                     $monto = $notaCredito['cuotaCable'];
                     $montoCancelado = 0.00;
-                    $separado = ($notaCredito['cuotaCable'] / 1.13);
-                    $iva = ($separado * 0.13);
-                    $internasGravadas = ($notaCredito['cuotaCable'] - $iva);
+                    $iva = ($monto / 1.13) * 0.13;
+                    $internasGravadas = $monto - $iva;
                     $debitoFiscal = $iva;
                     $internasGravadas2 = 0;
                     $debitoFiscal2 = 0;
@@ -247,9 +238,8 @@ if ($detallado == 1) {
                 } else {
                     $monto = $notaCredito['cuotaInternet'];
                     $montoCancelado = 0.00;
-                    $separado = ($notaCredito['cuotaInternet'] / 1.13);
-                    $iva = ($separado * 0.13);
-                    $internasGravadas = ($notaCredito['cuotaInternet'] - $iva);
+                    $iva = ($monto / 1.13) * 0.13;
+                    $internasGravadas = $monto - $iva;
                     $debitoFiscal = $iva;
                     $internasGravadas2 = 0;
                     $debitoFiscal2 = 0;
@@ -261,9 +251,11 @@ if ($detallado == 1) {
             $totalA = $totalA - $montoCancelado;
             $pdf->Cell(12.5, 5, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
             $totalB = $totalB - $internasGravadas;
-            $pdf->Cell(20, 5, utf8_decode(number_format("-".$internasGravadas, 2)), 0, 0, 'C');
+            $internasGravadas = number_format($internasGravadas,2);
+            $pdf->Cell(20, 5, utf8_decode("-".$internasGravadas), 0, 0, 'C');
             $totalC = $totalC - $debitoFiscal;
-            $pdf->Cell(15, 5, utf8_decode(number_format("-".$debitoFiscal, 2)), 0, 0, 'C');
+            $debitoFiscal = number_format($debitoFiscal,2);
+            $pdf->Cell(15, 5, utf8_decode("-".$debitoFiscal), 0, 0, 'C');
             $totalD = $totalD - $montoCancelado;
             $pdf->Cell(10, 5, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
             $totalE = $totalE - $internasGravadas2;
@@ -284,7 +276,7 @@ if ($detallado == 1) {
             $totalG = $totalG - $ivaretenido;
             $pdf->Cell(15, 5, utf8_decode(number_format($ivaretenido, 2)), 0, 0, 'C');
             $totalH = $totalH - $monto;
-            $pdf->Cell(15, 5, utf8_decode(number_format("-".$monto, 2)), 0, 1, 'C');
+            $pdf->Cell(15, 5, utf8_decode(number_format('-'.$monto, 2)), 0, 1, 'C');
             if ($contador3 == 25) {
                 $pdf->AddPage("L", 'Letter');
                 $pdf->SetFont('Times', '', 12);

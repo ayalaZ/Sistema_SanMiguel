@@ -542,8 +542,9 @@ function abono() {
                         }).then(function () {
                             window.open("php/comprobantePagox2.php?uaid1=" + datax.Crecibo + "&cod=" + datax.Ccodigo + "&desde=" + datax.Cdesde + "&hasta=" + datax.Chasta + "&tipoServicio=" + datax.Cservicio + "", "_blank");
                             setInterval('location.reload()', 3000);
+                        }).catch(function(){
+                            setInterval('location.reload()', 3000);
                         });
-                        setInterval('location.reload()', 3000);
                     }
 
                 }
