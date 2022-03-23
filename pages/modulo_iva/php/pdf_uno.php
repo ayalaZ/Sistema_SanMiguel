@@ -50,7 +50,11 @@ include('encabezado_tabla.php');
 if ($detallado == 1) {
     if ($tiposComprobantes == 1) {
         $desde = $years . '-' . $mes . '-01';
-        $hasta = $years . '-' . $mes . '-31';
+        if ($mes == 2) {
+            $hasta = $years . '-' . $mes . '-28';
+        } else {
+            $hasta = $years . '-' . $mes . '-31';
+        }
         $desde = date('Y-m-d', strtotime($desde));
         $hasta = date('Y-m-d', strtotime($hasta));
         $sql = "SELECT *, (SELECT num_registro FROM clientes WHERE clientes.cod_cliente=tbl_cargos.codigoCliente) AS nRegistro FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura =1 ORDER BY idFactura";
@@ -179,7 +183,11 @@ if ($detallado == 1) {
     }
     //NOTA DE CREDITO
     $desde = $years . '-' . $mes . '-01';
-    $hasta = $years . '-' . $mes . '-31';
+    if ($mes == 2) {
+        $hasta = $years . '-' . $mes . '-28';
+    } else {
+        $hasta = $years . '-' . $mes . '-31';
+    }
     $desde = date('Y-m-d', strtotime($desde));
     $hasta = date('Y-m-d', strtotime($hasta));
     $sqlnuevo = $mysqli->query("SELECT * FROM tbl_abonos WHERE numeroRecibo LIKE 'NC%' AND fechaAbonado BETWEEN '$desde' AND '$hasta'");
@@ -251,11 +259,11 @@ if ($detallado == 1) {
             $totalA = $totalA - $montoCancelado;
             $pdf->Cell(12.5, 5, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
             $totalB = $totalB - $internasGravadas;
-            $internasGravadas = number_format($internasGravadas,2);
-            $pdf->Cell(20, 5, utf8_decode("-".$internasGravadas), 0, 0, 'C');
+            $internasGravadas = number_format($internasGravadas, 2);
+            $pdf->Cell(20, 5, utf8_decode("-" . $internasGravadas), 0, 0, 'C');
             $totalC = $totalC - $debitoFiscal;
-            $debitoFiscal = number_format($debitoFiscal,2);
-            $pdf->Cell(15, 5, utf8_decode("-".$debitoFiscal), 0, 0, 'C');
+            $debitoFiscal = number_format($debitoFiscal, 2);
+            $pdf->Cell(15, 5, utf8_decode("-" . $debitoFiscal), 0, 0, 'C');
             $totalD = $totalD - $montoCancelado;
             $pdf->Cell(10, 5, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
             $totalE = $totalE - $internasGravadas2;
@@ -276,7 +284,7 @@ if ($detallado == 1) {
             $totalG = $totalG - $ivaretenido;
             $pdf->Cell(15, 5, utf8_decode(number_format($ivaretenido, 2)), 0, 0, 'C');
             $totalH = $totalH - $monto;
-            $pdf->Cell(15, 5, utf8_decode(number_format('-'.$monto, 2)), 0, 1, 'C');
+            $pdf->Cell(15, 5, utf8_decode(number_format('-' . $monto, 2)), 0, 1, 'C');
             if ($contador3 == 25) {
                 $pdf->AddPage("L", 'Letter');
                 $pdf->SetFont('Times', '', 12);
@@ -423,18 +431,21 @@ if ($detallado == 1) {
         $pdf->Cell(65, 6, utf8_decode(number_format($totalDOS, 2)), 0, 0, 'L');
         $totalTRES = $totalExentoSinIvaAnulados + $totalGravadasSinIvaAnulados + $totalIvaAnulados + $totalCESCanulados;
         $pdf->Cell(45, 6, utf8_decode(number_format($totalTRES, 2)), 0, 1, 'L');
-
-        $pdf->Ln(20);
-        $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
-        $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador:"), "", 0, 'L');
     }
+    $pdf->Ln(20);
+    $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
+    $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador:"), "", 0, 'L');
 } else {
     $numero = 1;
     $counter = 1;
     for ($i = 0; $i < 31; $i++) {
         if ($tiposComprobantes == 1) {
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT
@@ -555,11 +566,11 @@ if ($detallado == 1) {
         $pdf->Cell(65, 6, utf8_decode(number_format($total1, 2)), 0, 0, 'L');
         $pdf->Cell(45, 6, utf8_decode(number_format("0", 2)), 0, 0, 'L');
         $pdf->Cell(45, 6, utf8_decode(number_format($total1, 2)), 0, 1, 'L');
-
-        $pdf->Ln(20);
-        $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
-        $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador:"), "", 0, 'L');
     }
+
+    $pdf->Ln(20);
+    $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
+    $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador:"), "", 0, 'L');
 }
 
 $pdf->Output();

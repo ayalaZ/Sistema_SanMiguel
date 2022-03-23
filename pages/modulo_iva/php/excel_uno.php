@@ -169,7 +169,11 @@ if ($detallado == 1) {
     $celda = 6;
     if ($tiposComprobantes == 1) {
         $desde = $years . '-' . $mes . '-01';
-        $hasta = $years . '-' . $mes . '-31';
+        if ($mes == 2) {
+            $hasta = $years . '-' . $mes . '-28';
+        }else{
+            $hasta = $years . '-' . $mes . '-31';
+        }
         $desde = date('Y-m-d', strtotime($desde));
         $hasta = date('Y-m-d', strtotime($hasta));
         $sql = "SELECT *, (SELECT num_registro FROM clientes WHERE clientes.cod_cliente=tbl_cargos.codigoCliente) AS nRegistro FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura =1 ORDER BY idFactura";
@@ -804,7 +808,11 @@ if ($detallado == 1) {
 
         if ($tiposComprobantes == 1) {
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT

@@ -46,7 +46,11 @@ if ($detallado == 1) {
     switch ($tiposComprobantes) {
         case '1':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura = 2 AND anulada=0;";
@@ -102,7 +106,11 @@ if ($detallado == 1) {
             break;
         case '2':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_manuales WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY idVenta ASC";
@@ -159,7 +167,11 @@ if ($detallado == 1) {
             break;
         case '3':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY numeroComprobante ASC";
@@ -216,7 +228,11 @@ if ($detallado == 1) {
             break;
         case '4':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura = 2 AND anulada=0;";
@@ -270,7 +286,11 @@ if ($detallado == 1) {
             }
             ////////////////////////////////////////////////////////////
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_manuales WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY idVenta ASC";
@@ -324,7 +344,11 @@ if ($detallado == 1) {
             }
             ///////////////////////////////////////////////////////////////////////
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY numeroComprobante ASC";
@@ -426,7 +450,11 @@ if ($detallado == 1) {
         switch ($tiposComprobantes) {
             case '1':
                 $desde = $years . '-' . $mes . '-01';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
                 $hasta = $years . '-' . $mes . '-31';
+            }
                 $desde = date('Y-m-d', strtotime($desde));
                 $hasta = date('Y-m-d', strtotime($hasta));
                 $sql = $mysqli->query("SELECT
@@ -459,7 +487,7 @@ if ($detallado == 1) {
                         $totalSinIva = $totalSinIva + $sinIva;
                         $totalSoloIva = $totalSoloIva + $totalIva;
                     }
-                    $totalSoloCesc = $totalSoloCesc + doubleval($result["totalImp"]);
+                    $totalSoloCesc = $totalSoloCesc + doubleval($datos["totalImp"]);
                     $pdf->Cell(15, 1, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
                     $pdf->Cell(10, 1, utf8_decode(number_format($datos["totalImp"], 2)), 0, 0, 'C');
                     $pdf->Cell(15, 1, utf8_decode(number_format(doubleval($montoCancelado) + doubleval($datos["totalImp"]), 2)), 0, 0, 'C');
@@ -468,7 +496,11 @@ if ($detallado == 1) {
                 break;
             case '2':
                 $desde = $years . '-' . $mes . '-01';
-                $hasta = $years . '-' . $mes . '-31';
+                if ($mes == 2) {
+                    $hasta = $years . '-' . $mes . '-28';
+                }else{
+                    $hasta = $years . '-' . $mes . '-31';
+                }
                 $desde = date('Y-m-d', strtotime($desde));
                 $hasta = date('Y-m-d', strtotime($hasta));
                 $sql = $mysqli->query("SELECT SUM(montoCable) as totalCable, SUM(montoInternet) as totalInter, SUM(impuesto) as totalImp, MIN(numeroComprobante) as inFact, MAX(numeroComprobante) as finFact, DAY(fechaComprobante) as dia FROM tbl_ventas_manuales
@@ -507,7 +539,11 @@ if ($detallado == 1) {
                 break;
             case '3':
                 $desde = $years . '-' . $mes . '-01';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
                 $hasta = $years . '-' . $mes . '-31';
+            }
                 $desde = date('Y-m-d', strtotime($desde));
                 $hasta = date('Y-m-d', strtotime($hasta));
                 $sql = $mysqli->query("SELECT SUM(totalComprobante) as totalComprobante, MIN(numeroComprobante) as inFact, MAX(numeroComprobante) as finFact, DAY(fechaComprobante) as dia FROM tbl_ventas_anuladas
@@ -550,7 +586,11 @@ if ($detallado == 1) {
                 break;
             case '4':
                 $desde = $years . '-' . $mes . '-01';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            }else{
                 $hasta = $years . '-' . $mes . '-31';
+            }
                 $desde = date('Y-m-d', strtotime($desde));
                 $hasta = date('Y-m-d', strtotime($hasta));
                 $sql = $mysqli->query("SELECT

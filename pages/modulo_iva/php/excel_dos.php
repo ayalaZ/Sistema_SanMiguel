@@ -115,7 +115,11 @@ if ($detallado == 1) {
     switch ($tiposComprobantes) {
         case '1':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            } else {
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura = 2 AND anulada=0;";
@@ -201,7 +205,11 @@ if ($detallado == 1) {
             break;
         case '2':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            } else {
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_manuales WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY idVenta ASC";
@@ -289,7 +297,11 @@ if ($detallado == 1) {
             break;
         case '3':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            } else {
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY numeroComprobante ASC";
@@ -382,7 +394,11 @@ if ($detallado == 1) {
             break;
         case '4':
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            } else {
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_cargos WHERE fechaFactura BETWEEN '$desde' AND '$hasta' AND tipoFactura = 2 AND anulada=0;";
@@ -467,7 +483,11 @@ if ($detallado == 1) {
             }
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            } else {
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_manuales WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY idVenta ASC";
@@ -553,7 +573,11 @@ if ($detallado == 1) {
             }
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             $desde = $years . '-' . $mes . '-01';
-            $hasta = $years . '-' . $mes . '-31';
+            if ($mes == 2) {
+                $hasta = $years . '-' . $mes . '-28';
+            } else {
+                $hasta = $years . '-' . $mes . '-31';
+            }
             $desde = date('Y-m-d', strtotime($desde));
             $hasta = date('Y-m-d', strtotime($hasta));
             $sql = "SELECT * FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoComprobante = 2 ORDER BY numeroComprobante ASC";
@@ -748,9 +772,10 @@ if ($detallado == 1) {
         $objPHPExcel->getActiveSheet()->getStyle('D' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
     }
 } else {
+    //ENCABEZADO DE LA TABLA
     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
     $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
     $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
     $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
@@ -805,6 +830,628 @@ if ($detallado == 1) {
 
     $objPHPExcel->getActiveSheet()->getStyle('J5')->applyFromArray($style_array);
     $objPHPExcel->getActiveSheet()->setCellValue('J5', 'VENTAS TOTALES');
+    //FIN DE EL ENCABEZADO DE LA TABLA
+    //INICIO DE CONTENIDO DE LA TABLA
+    $numero = 1;
+    $counter = 1;
+    $celda = 6;
+    $totalConIvaEx = 0;
+    $totalConIvaEx2 = 0;
+    $totalConIvaEx3 = 0;
+    $totalSinIva = 0;
+    $totalSinIva2 = 0;
+    $totalSinIva3 = 0;
+    $totalSoloIva = 0;
+    $totalSoloIva2 = 0;
+    $totalSoloIva3 = 0;
+    $totalSoloCesc = 0;
+    $totalSoloCesc2 = 0;
+    $totalSoloCesc3 = 0;
+    for ($i = 0; $i < 31; $i++) {
+        switch ($tiposComprobantes) {
+            case '1':
+                $desde = $years . '-' . $mes . '-01';
+                if ($mes == 2) {
+                    $hasta = $years . '-' . $mes . '-28';
+                } else {
+                    $hasta = $years . '-' . $mes . '-31';
+                }
+                $desde = date('Y-m-d', strtotime($desde));
+                $hasta = date('Y-m-d', strtotime($hasta));
+                $sql = $mysqli->query("SELECT
+                (SELECT SUM(cuotaCable) from tbl_cargos where tipoServicio='C' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0) as totalCuotaCable,
+                (SELECT SUM(cuotaInternet) from tbl_cargos where tipoServicio='I' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0) as totalCuotaInter, SUM(totalImpuesto) as totalImp, MIN(numeroFactura) as inFact, MAX(numeroFactura) as finFact, DAY(fechaFactura) as dia FROM tbl_cargos
+                WHERE DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0");
+
+                $datos = $sql->fetch_Array();
+
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, $counter);
+
+                $objPHPExcel->getActiveSheet()->getStyle('B' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $celda, $datos["inFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $datos["finFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('D' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $celda, '');
+
+                $montoCancelado = doubleval($datos["totalCuotaCable"]) + doubleval($datos["totalCuotaInter"]);
+                //IVA
+                $separado = $montoCancelado / 1.13;
+                //var_dump($separado);
+                $totalIva = $separado * 0.13;
+                $sinIva = $montoCancelado - $totalIva;
+                if ($ex->isExento("")) {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalConIvaEx = $totalConIvaEx + $montoCancelado;
+                } else {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalSinIva = $totalSinIva + $sinIva;
+                    $totalSoloIva = $totalSoloIva + $totalIva;
+                }
+
+                $totalSoloCesc = $totalSoloCesc + doubleval($datos["totalImp"]);
+                $impuesto = $datos['totalImp'];
+                $total = $impuesto + $montoCancelado;
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $celda, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $celda, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                break;
+            case '2':
+                $desde = $years . '-' . $mes . '-01';
+                if ($mes == 2) {
+                    $hasta = $years . '-' . $mes . '-28';
+                } else {
+                    $hasta = $years . '-' . $mes . '-31';
+                }
+                $desde = date('Y-m-d', strtotime($desde));
+                $hasta = date('Y-m-d', strtotime($hasta));
+                $sql = $mysqli->query("SELECT SUM(montoCable) as totalCable, SUM(montoInternet) as totalInter, SUM(impuesto) as totalImp, MIN(numeroComprobante) as inFact, MAX(numeroComprobante) as finFact, DAY(fechaComprobante) as dia FROM tbl_ventas_manuales
+                WHERE DAY(fechaComprobante) =" . $counter . " AND MONTH(fechaComprobante)=" . $mes . " AND YEAR(fechaComprobante)=" . $years . " AND tipoComprobante = 2");
+
+                $datos = $sql->fetch_Array();
+
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, $counter);
+
+                $objPHPExcel->getActiveSheet()->getStyle('B' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $celda, $datos["inFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $datos["finFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('D' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $celda, '');
+
+                $montoCancelado2 = doubleval($datos["totalCable"]) + doubleval($datos["totalInter"]);
+                //IVA
+                $separado = $montoCancelado2 / 1.13;
+                //var_dump($separado);
+                $totalIva = $separado * 0.13;
+                $sinIva = $montoCancelado2 - $totalIva;
+                if ($ex->isExento("")) {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $montoCancelado2);
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalConIvaEx2 = $totalConIvaEx2 + $montoCancelado2;
+                } else {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalSinIva2 = $totalSinIva2 + $sinIva;
+                    $totalSoloIva2 = $totalSoloIva2 + $totalIva;
+                }
+
+                $totalSoloCesc2 = $totalSoloCesc2 + doubleval($datos["totalImp"]);
+                $impuesto = $datos['totalImp'];
+                $total = $impuesto + $montoCancelado2;
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $celda, $montoCancelado2);
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $celda, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                break;
+            case '3':
+                $desde = $years . '-' . $mes . '-01';
+                if ($mes == 2) {
+                    $hasta = $years . '-' . $mes . '-28';
+                } else {
+                    $hasta = $years . '-' . $mes . '-31';
+                }
+                $desde = date('Y-m-d', strtotime($desde));
+                $hasta = date('Y-m-d', strtotime($hasta));
+                $sql = $mysqli->query("SELECT SUM(totalComprobante) as totalComprobante, MIN(numeroComprobante) as inFact, MAX(numeroComprobante) as finFact, DAY(fechaComprobante) as dia FROM tbl_ventas_anuladas
+                WHERE DAY(fechaComprobante) =" . $counter . " AND MONTH(fechaComprobante)=" . $mes . " AND YEAR(fechaComprobante)=" . $years . " AND tipoComprobante = 2");
+
+                $datos = $sql->fetch_Array();
+
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, $counter);
+
+                $objPHPExcel->getActiveSheet()->getStyle('B' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $celda, $datos["inFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $datos["finFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('D' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $celda, '');
+
+                if (doubleval($datos["totalComprobante"]) > 0 && is_numeric(doubleval($datos["totalComprobante"]))) {
+                    $montoCancelado3 = doubleval($datos["totalComprobante"]);
+                } else {
+                    $montoCancelado3 = 0;
+                }
+                //IVA
+                $separado = $montoCancelado3 / 1.13;
+                //var_dump($separado);
+                $totalIva = $separado * 0.13;
+                $sinIva = $montoCancelado3 - $totalIva;
+                if ($ex->isExento("")) {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $montoCancelado3);
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalConIvaEx3 = $totalConIvaEx3 + $montoCancelado3;
+                } else {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalSinIva3 = $totalSinIva3 + $sinIva;
+                    $totalSoloIva3 = $totalSoloIva3 + $totalIva;
+                }
+
+                $totalSoloCesc3 = $totalSoloCesc3 + doubleval($datos["totalImp"]);
+                $impuesto = $datos['totalImp'];
+                $total = $impuesto + $montoCancelado3;
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $celda, $montoCancelado3);
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $celda, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                break;
+            case '4':
+                $desde = $years . '-' . $mes . '-01';
+                if ($mes == 2) {
+                    $hasta = $years . '-' . $mes . '-28';
+                } else {
+                    $hasta = $years . '-' . $mes . '-31';
+                }
+                $desde = date('Y-m-d', strtotime($desde));
+                $hasta = date('Y-m-d', strtotime($hasta));
+                $sql = $mysqli->query("SELECT
+                (SELECT SUM(cuotaCable) from tbl_cargos where tipoServicio='C' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0) as totalCuotaCable,
+                (SELECT SUM(cuotaInternet) from tbl_cargos where tipoServicio='I' and DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0) as totalCuotaInter, SUM(totalImpuesto) as totalImp, MIN(numeroFactura) as inFact, MAX(numeroFactura) as finFact, DAY(fechaFactura) as dia FROM tbl_cargos
+                WHERE DAY(fechaFactura) =" . $counter . " AND MONTH(fechaFactura)=" . $mes . " AND YEAR(fechaFactura)=" . $years . " AND tipoFactura = 2 AND anulada=0");
+
+                $datos = $sql->fetch_Array();
+
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, $counter);
+
+                $objPHPExcel->getActiveSheet()->getStyle('B' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $celda, $datos["inFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $datos["finFact"]);
+
+                $objPHPExcel->getActiveSheet()->getStyle('D' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $celda, '');
+
+                $montoCancelado = doubleval($datos["totalCuotaCable"]) + doubleval($datos["totalCuotaInter"]);
+                //IVA
+                $separado = $montoCancelado / 1.13;
+                //var_dump($separado);
+                $totalIva = $separado * 0.13;
+                $sinIva = $montoCancelado - $totalIva;
+                if ($ex->isExento("")) {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $montoCancelado);
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalConIvaEx = $totalConIvaEx + $montoCancelado;
+                } else {
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
+                    $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+                    $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                    $totalSinIva = $totalSinIva + $sinIva;
+                    $totalSoloIva = $totalSoloIva + $totalIva;
+                }
+
+                $totalSoloCesc = $totalSoloCesc + doubleval($datos["totalImp"]);
+                $impuesto = $datos['totalImp'];
+                $total = $impuesto + $montoCancelado;
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $celda, $montoCancelado);
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $impuesto);
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->applyFromArray($style_array);
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $celda, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                $desde = $years . '-' . $mes . '-01';
+                if ($mes == 2) {
+                    $hasta = $years . '-' . $mes . '-28';
+                } else {
+                    $hasta = $years . '-' . $mes . '-31';
+                }
+                $desde = date('Y-m-d', strtotime($desde));
+                $hasta = date('Y-m-d', strtotime($hasta));
+                $sql = $mysqli->query("SELECT SUM(montoCable) as totalCable, SUM(montoInternet) as totalInter, SUM(impuesto) as totalImp, MIN(numeroComprobante) as inFact, MAX(numeroComprobante) as finFact, DAY(fechaComprobante) as dia FROM tbl_ventas_manuales
+                WHERE DAY(fechaComprobante) =" . $counter . " AND MONTH(fechaComprobante)=" . $mes . " AND YEAR(fechaComprobante)=" . $years . " AND tipoComprobante = 2");
+
+                $datos = $sql->fetch_Array();
+                $montoCancelado2 = doubleval($datos["totalCable"]) + doubleval($datos["totalInter"]);
+                //IVA
+                $separado = $montoCancelado2 / 1.13;
+                //var_dump($separado);
+                $totalIva = $separado * 0.13;
+                $sinIva = $montoCancelado2 - $totalIva;
+                if ($ex->isExento("")) {
+                    $totalConIvaEx2 = $totalConIvaEx2 + $montoCancelado2;
+                } else {
+                    $totalSinIva2 = $totalSinIva2 + $sinIva;
+                    $totalSoloIva2 = $totalSoloIva2 + $totalIva;
+                }
+
+                $totalSoloCesc2 = $totalSoloCesc2 + doubleval($datos["totalImp"]);
+                $impuesto = $datos['totalImp'];
+                $total = $impuesto + $montoCancelado2;
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                $desde = $years . '-' . $mes . '-01';
+                if ($mes == 2) {
+                    $hasta = $years . '-' . $mes . '-28';
+                } else {
+                    $hasta = $years . '-' . $mes . '-31';
+                }
+                $desde = date('Y-m-d', strtotime($desde));
+                $hasta = date('Y-m-d', strtotime($hasta));
+                $sql = $mysqli->query("SELECT SUM(totalComprobante) as totalComprobante, MIN(numeroComprobante) as inFact, MAX(numeroComprobante) as finFact, DAY(fechaComprobante) as dia FROM tbl_ventas_anuladas
+                WHERE DAY(fechaComprobante) =" . $counter . " AND MONTH(fechaComprobante)=" . $mes . " AND YEAR(fechaComprobante)=" . $years . " AND tipoComprobante = 2");
+
+                $datos = $sql->fetch_Array();
+                if (doubleval($datos["totalComprobante"]) > 0 && is_numeric(doubleval($datos["totalComprobante"]))) {
+                    $montoCancelado3 = doubleval($datos["totalComprobante"]);
+                } else {
+                    $montoCancelado3 = 0;
+                }
+                //IVA
+                $separado = $montoCancelado3 / 1.13;
+                //var_dump($separado);
+                $totalIva = $separado * 0.13;
+                $sinIva = $montoCancelado3 - $totalIva;
+                if ($ex->isExento("")) {
+                    $totalConIvaEx3 = $totalConIvaEx3 + $montoCancelado3;
+                } else {
+                    $totalSinIva3 = $totalSinIva3 + $sinIva;
+                    $totalSoloIva3 = $totalSoloIva3 + $totalIva;
+                }
+
+                $totalSoloCesc3 = $totalSoloCesc3 + doubleval($datos["totalImp"]);
+                $impuesto = $datos['totalImp'];
+                $total = $impuesto + $montoCancelado3;
+                break;
+        }
+        $celda += 1;
+        $counter += 1;
+    }
+
+    if ($resumen == 1) {
+        $celda += 1;
+        $objPHPExcel->getActiveSheet()->mergeCells('A' . $celda . ':B' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, 'RESUMEN');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('C' . $celda . ':D' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, 'FACTURAS GENERADAS');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('E' . $celda . ':F' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, 'FACTURAS MANUALES');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G' . $celda . ':H' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, 'FACTURAS ANULADAS');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('I' . $celda . ':J' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, 'TOTALES');
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $celda += 1;
+        $objPHPExcel->getActiveSheet()->mergeCells('A' . $celda . ':B' . $celda);;
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, 'Ventas exentas');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('C' . $celda . ':D' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $totalConIvaEx);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('E' . $celda . ':F' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $totalConIvaEx2);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G' . $celda . ':H' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, $totalConIvaEx3);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        if ($tiposComprobantes == 3) {
+            $totalA = $totalConIvaEx + $totalConIvaEx2 + $totalConIvaEx3;
+        } else {
+            $totalA = $totalConIvaEx + $totalConIvaEx2 - $totalConIvaEx3;
+        }
+
+        $objPHPExcel->getActiveSheet()->mergeCells('I' . $celda . ':J' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $totalA);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $celda += 1;
+        $objPHPExcel->getActiveSheet()->mergeCells('A' . $celda . ':B' . $celda);;
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, 'Ventas netas gravadas');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('C' . $celda . ':D' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $totalSinIva);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('E' . $celda . ':F' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $totalSinIva2);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G' . $celda . ':H' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, $totalSinIva3);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        if ($tiposComprobantes == 3) {
+            $totalB = $totalSinIva + $totalSinIva2 + $totalSinIva3;
+        } else {
+            $totalB = $totalSinIva + $totalSinIva2 - $totalSinIva3;
+        }
+
+        $objPHPExcel->getActiveSheet()->mergeCells('I' . $celda . ':J' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $totalB);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $celda += 1;
+        $objPHPExcel->getActiveSheet()->mergeCells('A' . $celda . ':B' . $celda);;
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, '13% de IVA');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('C' . $celda . ':D' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $totalSoloIva);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('E' . $celda . ':F' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $totalSoloIva2);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G' . $celda . ':H' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, $totalSoloIva3);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        if ($tiposComprobantes == 3) {
+            $totalC = $totalSoloIva + $totalSoloIva2 + $totalSoloIva3;
+        } else {
+            $totalC = $totalSoloIva + $totalSoloIva2 - $totalSoloIva3;
+        }
+
+        $objPHPExcel->getActiveSheet()->mergeCells('I' . $celda . ':J' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $totalC);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $celda += 1;
+        $objPHPExcel->getActiveSheet()->mergeCells('A' . $celda . ':B' . $celda);;
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, '5% CESC');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('C' . $celda . ':D' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $totalSoloCesc);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('E' . $celda . ':F' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $totalSoloCesc2);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G' . $celda . ':H' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, $totalSoloCesc3);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        if ($tiposComprobantes == 3) {
+            $totalD = $totalSoloCesc + $totalSoloCesc2 + $totalSoloCesc3;
+        } else {
+            $totalD = $totalSoloCesc + $totalSoloCesc2 - $totalSoloCesc3;
+        }
+
+        $objPHPExcel->getActiveSheet()->mergeCells('I' . $celda . ':J' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $totalD);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $celda += 1;
+        $objPHPExcel->getActiveSheet()->mergeCells('A' . $celda . ':B' . $celda);;
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, 'Exportaciones');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('C' . $celda . ':D' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, '0');
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('E' . $celda . ':F' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, '0');
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G' . $celda . ':H' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('I' . $celda . ':J' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->applyFromArray($style2_array);
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, '0');
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $celda += 1;
+        $total1 = $totalConIvaEx + $totalSinIva + $totalSoloIva + $totalSoloCesc;
+        $total2 = $totalConIvaEx2 + $totalSinIva2 + $totalSoloIva2 + $totalSoloCesc2;
+        $total3 = $totalConIvaEx3 + $totalSinIva3 + $totalSoloIva3 + $totalSoloCesc3;
+
+        $objPHPExcel->getActiveSheet()->mergeCells('A' . $celda . ':B' . $celda);;
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $celda . ':B' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('A' . $celda, '');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('C' . $celda . ':D' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda . ':D' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('C' . $celda, $total1);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('E' . $celda . ':F' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda . ':F' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('E' . $celda, $total2);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G' . $celda . ':H' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda . ':H' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, $total3);
+        $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+
+        if ($tiposComprobantes == 3) {
+            $totalE = $total1 + $total2 + $total3;
+        } else {
+            $totalE = $total1 + $total2 - $total3;
+        }
+
+        $objPHPExcel->getActiveSheet()->mergeCells('I' . $celda . ':J' . $celda);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda . ':J' . $celda)->getFont()->setSize(10)->setBold(true)->setName('ARIAL');
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $celda, $totalE);
+        $objPHPExcel->getActiveSheet()->getStyle('I' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+    }
 }
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
