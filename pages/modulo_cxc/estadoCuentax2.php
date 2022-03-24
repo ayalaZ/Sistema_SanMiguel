@@ -1,626 +1,692 @@
 <?php
-
-if(!isset($_SESSION))
-{
+require_once("../../php/config.php");
+if (!isset($_SESSION)) {
     session_start([
         'cookie_lifetime' => 86400,
     ]);
 }
-
-require("php/getData.php");
-require("php/GetAllInfo.php");
-require_once 'php/getSaldoReal.php';
-$dataInfo = new GetAllInfo();
-$arrMunicipios = $dataInfo->getData('tbl_municipios_cxc');
-$data = new OrdersInfo();
-//$client = new GetClient();
-$arrayTecnicos = $data->getTecnicos();
-$arrayVendedores = $data->getVendedores();
-$arrayActividadesC = $data->getActividadesCable();
-$arrayActividadesI = $data->getActividadesInter();
-$arrayVelocidades = $data->getVelocidades();
-$arrUanC = $dataInfo->getDataUanC($_GET['codigoCliente']);
-$arrUanI = $dataInfo->getDataUanI($_GET['codigoCliente']);
-
-if (isset($_POST['submit'])) {
-    $desde = $_POST["desde"];
-    $hasta = $_POST["hasta"];
-    //var_dump("Con SUBMIT");
-    $arrCargos = $dataInfo->getDataCargosBy('tbl_cargos', $_GET['codigoCliente'], 'C', $desde, $hasta);
-    $arrAbonos = $dataInfo->getDataAbonosBy('tbl_abonos', $_GET['codigoCliente'], 'C', 'CANCELADA', $desde, $hasta);
-
-    $arrCargosI = $dataInfo->getDataCargosBy('tbl_cargos', $_GET['codigoCliente'], 'I', $desde, $hasta);
-    $arrAbonosI = $dataInfo->getDataAbonosBy('tbl_abonos', $_GET['codigoCliente'], 'I', 'CANCELADA', $desde, $hasta);
-
-    $arrEstado = $dataInfo->getDataEstadoCable($_GET['codigoCliente'],'C');
-    //var_dump($arrCargos);
-}else {
-    //var_dump("SIN submit, no legaste");
-    $arrCargosCable = $dataInfo->getDataCargosGlobal($_GET['codigoCliente'], 'C', 'pendiente');
-    $arrCargosInter = $dataInfo->getDataCargosGlobal($_GET['codigoCliente'], 'I', 'pendiente');
-    $arrAbonosCable = $dataInfo->getDataAbonosGlobal($_GET['codigoCliente'], 'C', 'CANCELADA');
-    $arrAbonosInter = $dataInfo->getDataAbonosGlobal($_GET['codigoCliente'], 'I', 'CANCELADA');
-
-    $arrCargosI = $dataInfo->getDataCargos('tbl_cargos', $_GET['codigoCliente'], 'I');
-    $arrAbonosI = $dataInfo->getDataAbonos('tbl_abonos', $_GET['codigoCliente'], 'I', 'CANCELADA');
-
-    $arrEstadoCable = $dataInfo->getDataEstadoCable($_GET['codigoCliente'],'C');
-    $arrEstadoInter = $dataInfo->getDataEstadoInter($_GET['codigoCliente'],'I');
+if (!isset($_SESSION["user"])) {
+    header('Location: ../login.php');
 }
+const ADMINISTRADOR = 1;
+const CONTABILIDAD = 2;
+const PLANILLA = 4;
+const ACTIVOFIJO = 8;
+const INVENTARIO = 16;
+const IVA = 32;
+const BANCOS = 64;
+const CXC = 128;
+const CXP = 256;
 
-
-$getSaldoReal = new GetSaldoReal();
-$saldoRealCable = number_format(($getSaldoReal->getSaldoCable($_GET['codigoCliente'])),2);
-$saldoRealInter = number_format(($getSaldoReal->getSaldoInter($_GET['codigoCliente'])),2);
-
-$totalCobrarCable = number_format(($getSaldoReal->getTotalCobrarCable($_GET['codigoCliente'])),2);
-$totalCobrarInter = number_format(($getSaldoReal->getTotalCobrarInter($_GET['codigoCliente'])),2);
-
-//include database connection
-require_once('../../php/connection.php');
-$precon = new ConectionDB($_SESSION['db']);
-$con = $precon->ConectionDB($_SESSION['db']);
-/**************************************************/
-if (isset($_GET['codigoCliente'])) {
-
-    // get passed parameter value, in this case, the record ID
-    // isset() is a PHP function used to verify if a value is there or not
-    $id=isset($_GET['codigoCliente']) ? $_GET['codigoCliente'] : die('ERROR: Record no encontrado.');
-
-    // read current record's data
-    try {
-        // prepare select query
-        $query = "SELECT cod_cliente, nombre, direccion, telefonos, dia_cobro, fecha_ult_pago, id_municipio, prepago, saldo_actual, telefonos, dire_cable, dia_cobro, dire_internet, mactv, mac_modem, serie_modem, id_velocidad, dire_telefonia, recep_modem, trans_modem, ruido_modem, colilla, marca_modem, tecnologia, saldoCable, saldoInternet FROM clientes WHERE cod_cliente = ? LIMIT 0,1";
-        $stmt = $con->prepare( $query );
-
-        // this is the first question mark
-        $stmt->bindParam(1, $id);
-
-        // execute our query
-        $stmt->execute();
-
-        // store retrieved row to a variable
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        /****************** DATOS GENERALES ***********************/
-        date_default_timezone_set('America/El_Salvador');
-        //$fechaOrdenTrabajo = date_format(date_create(date('Y-m-d')), 'd/m/Y');
-        //$idOrdenTrabajo = "";
-        //$tipoOrden = "Técnica";
-        $diaCobro = $row["dia_cobro"];
-        $telefonos = $row["telefonos"];
-        $codigoCliente = $row["cod_cliente"];
-        $nombreCliente = $row['nombre'];
-        $direccion = $row['direccion'];
-        $diaCobro = $row['dia_cobro'];
-        $fechaUltPago = $row['fecha_ult_pago'];
-        $idMunicipio = $row["id_municipio"];
-        $saldoCable = $row["saldoCable"];
-        $saldoInter = $row["saldoInternet"];
-        $direccionCable = $row["dire_cable"];
-        $mactv = $row['mactv'];
-        $direccionInter = $row["dire_internet"];
-        $macModem = $row['mac_modem'];
-        $serieModem = $row['serie_modem'];
-        $idVelocidad = $row['id_velocidad'];
-        $rx = $row['recep_modem'];
-        $tx = $row['trans_modem'];
-        $snr = $row['ruido_modem'];
-        $velocidad = $row['id_velocidad'];
-        $colilla = $row['colilla'];
-        $marcaModelo = $row['marca_modem'];
-        $tecnologia = $row['tecnologia'];
-        $fechaTrabajo = "";
-        $hora = "";
-        $fechaProgramacion = "";
-        $coordenadas = "";
-        $observaciones = "";
-        $nodo = $row['dire_telefonia'];
-        $idVendedor = "";
-        $recepcionTv = "";
-
-    }
-
-        // show error
-    catch(PDOException $exception){
-        die('ERROR: ' . $exception->getMessage());
-    }
+$host = DB_HOST;
+$user = DB_USER;
+$password = DB_PASSWORD;
+$database = $_SESSION['db'];
+$mysqli = new mysqli($host, $user, $password, $database);
+function setMenu($permisosActuales, $permisoRequerido)
+{
+    return ((intval($permisosActuales) & intval($permisoRequerido)) == 0) ? false : true;
 }
-
+$codigo = '03215';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
     <title>Cablesat</title>
-    <link rel="shortcut icon" href="../images/cablesat.png" />
-    <!-- Bootstrap Core CSS -->
-    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../herramientas/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../herramientas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../herramientas/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
 
-    <!-- MetisMenu CSS -->
-    <link href="../../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="../herramientas/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../herramientas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../herramientas/dist/js/adminlte.js"></script>
 
-    <!-- Font awesome CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <!-- SWEETALERT -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
+    <style>
+        .error {
+            color: red;
+            font-family: verdana, Helvetica;
+        }
+    </style>
 
-    <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="../dist/css/custom-principal.css">
-
-    <!-- Morris Charts CSS -->
-    <link href="../../vendor/morrisjs/morris.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="../../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-
+    <!-- DataTables CSS library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
+    <!-- DataTables JS library -->
+    <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables JBootstrap -->
+    <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
 </head>
 
-<body style="background-color:#eeeeee;">
-
-<?php
-// session_start();
-if(!isset($_SESSION["user"])) {
-    header('Location: ../login.php');
-}
-?>
-<div id="wrapper">
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.php">Cablesat</a>
-        </div>
-        <!-- /.navbar-header -->
-
-        <ul class="nav navbar-top-links navbar-right">
-            <!-- /.dropdown -->
-            <li class="dropdown" style="padding:5px;">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <?php echo "<i class='far fa-user'></i>"." ".$_SESSION['nombres']." ".$_SESSION['apellidos'] ?> <i class="fas fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="perfil.php"><i class="fas fa-user-circle"></i> Perfil</a>
-                    </li>
-                    <li><a href="config.php"><i class="fas fa-cog"></i> Configuración</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="../../php/logout.php"><i class="fas fa-sign-out-alt"></i></i> Salir</a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-user -->
+<body class="sidebar-mini layout-fixed sidebar-collapse">
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="../herramientas/dist/img/logo.png" alt="Cabesat" height="60" width="60">
+    </div>
+    <!-- Menu superior -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-            <!-- /.dropdown -->
         </ul>
-        <!-- /.navbar-top-links -->
-        <!-- /.navbar-static-side -->
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <!-- Navbar Search -->
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" data-target="#modalayuda"><i class="fas fa-question"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                    <i class="fas fa-phone-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link salir" role="button">
+                    <i class="fas fa-power-off"></i>
+                </a>
+            </li>
+        </ul>
     </nav>
-
-    <!-- Page Content -->
-    <div id="page-wrapper">
-        <div class="container-fluid">
+    <!-- menu lateral -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="../index.php" class="brand-link">
+            <img src="../herramientas/dist/img/logo.png" alt="Cable sat" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">Cable Sat</span>
+        </a>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <span class="badge bg-danger"><i class="fas fa-user-tie"></i></span>
+                    <!--<img src="herramientas/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">-->
+                </div>
+                <div class="info">
+                    <a href="../index.php"><?php echo $_SESSION['nombres'] ?></a>
+                </div>
+            </div>
+            <!-- menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php
+                    if (setMenu($_SESSION['permisosTotalesModulos'], ADMINISTRADOR)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_administrar/administrar.php" class="nav-link"><i class='fas fa-key'></i>
+                                <p> Administrar</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], CONTABILIDAD)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_contabilidad/contabilidad.php" class="nav-link"><i class='fas fa-money-check-alt'></i>
+                                <p> Contabilidad</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], PLANILLA)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_planillas/planillas.php" class="nav-link"><i class='fas fa-file-signature'></i>
+                                <p> Planilla</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], ACTIVOFIJO)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_activoFijo/activoFijo.php" class="nav-link"><i class='fas fa-building'></i>
+                                <p> Activo fijo</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], INVENTARIO)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../moduloInventario.php" class="nav-link"><i class='fas fa-scroll'></i>
+                                <p> Inventario</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], IVA)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_iva/iva.php" class="nav-link"><i class='fas fa-file-invoice-dollar'></i>
+                                <p> Iva</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], BANCOS)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_bancos/bancos.php" class="nav-link"><i class='fas fa-university'></i>
+                                <p> Bancos</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], CXC)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_cxc/cxc.php" class="nav-link"><i class='fas fa-hand-holding-usd'></i>
+                                <p> Cuentas por cobrar</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    if (setMenu($_SESSION['permisosTotalesModulos'], CXP)) {
+                    ?>
+                        <li class="nav-item">
+                            <a href="../modulo_cxp/cxp.php" class="nav-link"><i class='fas fa-money-bill-wave'></i>
+                                <p> Cuentas por pagar</p>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                    ?>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="content-wrapper">
+        <?php
+        if ($_SESSION["rol"] != "administracion" && $_SESSION["rol"] != "subgerencia" && $_SESSION["rol"] != "jefatura" && $_SESSION["rol"] != "contabilidad") {
+            echo "<script>
+                            swal('Error', 'No tienes permisos para ingresar a esta área. Att: Don Manuel.', 'error');
+                       </script>";
+        } else {
+            $sql = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");
+            $query = $mysqli->query("SELECT tbl_velocidades.nombreVelocidad FROM clientes INNER JOIN tbl_velocidades ON clientes.id_velocidad = tbl_velocidades.idVelocidad WHERE cod_cliente = '$codigo'");
+            $datos = $sql->fetch_array();
+            $megas = $query->fetch_array();
+            $CsusServido = $datos['servicio_suspendido'];
+            $CsinServicio = $datos['sin_servicio'];
+            if ($CsusServido == "T" && $CsinServicio == "F") {
+                $estadoCable = '1';
+            } elseif ($CsusServido != "T" && $CsinServicio == "T") {
+                $estadoCable = '2';
+            } elseif ($CsusServido != "T" && $CsinServicio == "F") {
+                $estadoCable = '3';
+            }
+            $estado = $datos["estado_cliente_in"];
+            if ($estado == 2) {
+                $estadoInternet = '1';
+            } elseif ($estado == 3) {
+                $estadoInternet = '2';
+            } elseif ($estado == 1) {
+                $estadoInternet = '3';
+            }
+        ?>
+            <h3 style="text-align: center;margin-top:5px;"><b>ESTADO DE CUENTA</b></h3>
             <div class="row">
-                <div class="col-lg-12">
-                    <h3 class="page-header text-center" style="border: none;"><b>Estado de cuenta</b></h3>
-                    <table class="table table-responsive table-condensed" style="border: none; font-size:12px;">
-                        <tbody class="">
+                <div class="col-md-9">
+                    <table style="margin-left: 15px; font-size:large;">
                         <tr>
-                            <th>Código</th>
-                            <td><span class="label label-primary" style="font-size: 12px;"><?php echo $_GET['codigoCliente']; ?></span></td>
+                            <td><b>Codigo:</b></td>
+                            <td style="color: red;"><?php echo $codigo ?></td>
                         </tr>
                         <tr>
-                            <th>Nombre</th>
-                            <td><?php echo $nombreCliente; ?></td>
-                            <th>Fecha</th>
-                            <td><?php date_default_timezone_set('America/El_Salvador'); echo date('d/m/Y H:i:s') ?></td>
+                            <td><b>Nombre:</b></td>
+                            <td style="color: red;"><?php echo $datos['nombre'] ?></td>
                         </tr>
                         <tr>
-                            <th>Domicilio</th>
-                            <td><?php echo $direccion; ?></td>
-                            <th>Día de cobro</th>
-                            <td><?php echo $diaCobro; ?></td>
+                            <td><b>Direccion:</b></td>
+                            <td style="color: red;"><?php echo $datos['direccion'] ?></td>
                         </tr>
                         <tr>
-                            <th>Teléfonos</th>
-                            <td><?php echo $telefonos?></td>
-                            <th>última fecha de pago</th>
-                            <td><span class="label label-danger" style="font-size:12px;"><?php echo $fechaUltPago ?></span></td>
+                            <td><b>Telefono:</b></td>
+                            <td style="color: red;"><?php echo $datos['telefonos'] ?></td>
                         </tr>
+                        <tr>
+                            <td><b>Megas:</b></td>
+                            <td style="color: red;"><?php echo $megas['nombreVelocidad'] ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <table style="margin-left: 15px; font-size:large;">
+                        <tr>
+                            <td><b>Cable:</b></td>
+                            <?php
+                            switch ($estadoCable) {
+                                case '1':
+                            ?>
+                                    <td style="padding: 10px;font-size:x-large;"><i class="fas fa-times-circle" style="color: red;"></i></td>
+                                <?php
+                                    break;
+                                case '2':
+                                ?>
+                                    <td style="padding: 10px;font-size:x-large;"><i class="fas fa-user-slash" style="color: gray;"></i></td>
+                                <?php
+                                    break;
+                                case '3':
+                                ?>
+                                    <td style="padding: 10px;font-size:x-large;"><i class="fas fa-check-circle" style="color: green;"></i></td>
+                            <?php
+                                    break;
+                            }
+                            ?>
+                            <td><b>Internet:</b></td>
+                            <?php
+                            switch ($estadoInternet) {
+                                case '1':
+                            ?>
+                                    <td style="padding: 10px;font-size:x-large;"><i class="fas fa-times-circle" style="color: red;"></i></td>
+                                <?php
+                                    break;
+                                case '2':
+                                ?>
+                                    <td style="padding: 10px;font-size:x-large;"><i class="fas fa-user-slash" style="color: gray;"></i></td>
+                                <?php
+                                    break;
+                                case '3':
+                                ?>
+                                    <td style="padding: 10px;font-size:x-large;"><i class="fas fa-check-circle" style="color: green;"></i></td>
+                            <?php
+                                    break;
+                            }
+                            ?>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b>Fecha:</b></td>
+                            <td colspan="2"><?php date_default_timezone_set('America/El_Salvador');
+                                            echo date('d/m/Y H:i:s') ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b>Dia de cobro:</b></td>
+                            <td colspan="2"><?php echo $datos['dia_cobro'] ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b>Ultimo mes cancelado:</b></td>
+                            <td colspan="2"><?php echo $datos['fecha_ult_pago'] ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div style="margin-left:5px;" class="col-md-12">
+                    <table class="table tabla">
+                        <thead>
+                            <tr>
+                                <th>N° Recibo</th>
+                                <th>Tipo Servicio</th>
+                                <th>N° Comprobante</th>
+                                <th>Mes de servicio</th>
+                                <th>Aplicacion</th>
+                                <th>Vencimiento</th>
+                                <th>Cargo</th>
+                                <th>Abono</th>
+                                <th>CESC cargo</th>
+                                <th>CESC abono</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $abonos = $mysqli->query("SELECT * FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' ORDER BY mesCargo DESC");
+                            while ($datosAbono = $abonos->fetch_array()) {
+                            ?>
+                                <tr class="table-success">
+                                    <td><?php echo $datosAbono['numeroRecibo'] ?></td>
+                                    <td><?php echo $datosAbono['tipoServicio'] ?></td>
+                                    <td><?php echo $datosAbono['numeroFactura'] ?></td>
+                                    <td><?php echo $datosAbono['mesCargo'] ?></td>
+                                    <td><?php echo $datosAbono['fechaVencimiento'] ?></td>
+                                    <td><?php echo $datosAbono['fechaAbonado'] ?></td>
+                                    <td><?php echo number_format('0.00',2) ?></td>
+                                    <td><?php echo number_format($datosAbono['cuotaCable'],2) ?></td>
+                                    <td><?php echo number_format('0.00',2) ?></td>
+                                    <td><?php echo number_format($datosAbono['totalImpuesto'],2) ?></td>
+                                    <td><?php echo number_format($datosAbono['cuotaCable'],2) ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
                         </tbody>
                     </table>
-                    <ul class="nav nav-tabs nav-justified mt-5" id="pills-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#cable" role="tab" aria-controls="pills-home" aria-selected="true"><b>CABLE</b></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#internet" role="tab" aria-controls="pills-profile" aria-selected="true"><b>INTERNET</b></a>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content mt-3 mb-3" id="pills-tabContent" style="font-size: 14px;">
-                        <div class="tab-pane fade active" id="cable" role="tabpanel" aria-labelledby="pills-home-tab">
-                            <br>
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">Resumen estado de cuenta cable, <b>saldo actual: <?php echo $saldoRealCable; ?></b></div>
-                                <div class="panel-body">
-                                    <table id="tablaecc" class="table table-striped table-hover">
-                                        <thead>
-                                        <th>N° recibo</th>
-                                        <th>Tipo servicio</th>
-                                        <th>N° comprobante</th>
-                                        <th>Mes de servicio</th>
-                                        <th>Aplicación</th>
-                                        <th>Vencimiento</th>
-                                        <th>Cargo</th>
-                                        <th>Abono</th>
-                                        <th>CESC cargo</th>
-                                        <th>CESC abono</th>
-                                        <th>TOTAL</th>
-                                        </thead>
-                                        <tbody>
-                                        <div class="row">
-                                            <form class="" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'].'?codigoCliente='.$_GET['codigoCliente']); ?>" method="POST">
-                                                <div class="col-md-7">
-                                                    <div class="col-md-3">
-                                                        <button class="btn btn-default btn-block" data-toggle="modal" data-target="#uanC" type="button" name="uan"><i class="fas fa-print"> imprimir</i></button>
-                                                        <br>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <input class="form-control" type="text" name="desde" placeholder="Desde mes/año">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <input class="form-control" type="text" name="hasta" placeholder="Hasta mes/año">
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <input class="btn btn-info btn-block" type="submit" name="submit" value="ver">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <?php
-                                        foreach ($arrAbonosCable as $abonoC) {
-
-                                            echo "<tr><td class='text-success success'>";
-                                            echo $abonoC['numeroRecibo']."</td><td class='text-success success'>";
-                                            echo $abonoC['tipoServicio']."</td><td class='text-success success'>";
-                                            echo $abonoC['numeroFactura']."</td><td class='text-success success'>";
-                                            echo "<span class='label label-primary'>".$abonoC['mesCargo']."</span>"."</td><td class='text-success success'>";
-                                            echo "<span class='label label-success'>".$abonoC['fechaAbonado']."</span>"."</td><td class='text-success success'>";
-                                            echo "<span class='label label-danger'>".$abonoC['fechaVencimiento']."</span>"."</td><td class='text-success success'>";
-                                            echo "0.00"."</td><td class='text-success success'>";
-                                            echo $abonoC['cuotaCable']."</td><td class='text-success success'>";
-                                            echo "0.00"."</td><td class='text-success success'>";
-                                            echo $abonoC['totalImpuesto']."</td><td class='text-success success'>";
-                                            echo number_format((doubleval($abonoC['cuotaCable'])+doubleval($abonoC['totalImpuesto'])),2)."</td></tr>";
-                                            //$control = $abonoC['mesCargo'];
-                                            //break;
-                                        }
-                                        foreach ($arrCargosCable as $cargoC) {
-
-                                            echo "<tr><td class='text-danger danger'>";
-                                            echo $cargoC['numeroRecibo']."</td><td class='text-danger danger'>";
-                                            echo $cargoC['tipoServicio']."</td><td class='text-danger danger'>";
-                                            echo $cargoC['numeroFactura']."</td><td class='text-danger danger'>";
-                                            echo "<span class='label label-primary'>".$cargoC['mesCargo']."</span>"."</td><td class='text-danger danger'>";
-                                            echo "<span class='label label-success'>".$cargoC['fechaFactura']."</span>"."</td><td class='text-danger danger'>";
-                                            echo "<span class='label label-danger'>".$cargoC['fechaVencimiento']."</span>"."</td><td class='text-danger danger'>";
-                                            echo $cargoC['cuotaCable']."</td><td class='text-danger danger'>";
-                                            echo "0.00"."</td><td class='text-danger danger'>";
-                                            echo $cargoC['totalImpuesto']."</td><td class='text-danger danger'>";
-                                            echo "0.00"."</td><td class='text-danger danger'>";
-
-                                            echo number_format((doubleval($cargoC['cuotaCable'])+doubleval($cargoC['totalImpuesto'])),2)."</td></tr>";
-                                            //$control = $abonoC['mesCargo'];
-                                            //break;
-                                        }
-                                        foreach ($arrEstadoCable as $estado){
-                                            //$control = $estado['cargoAbono'];
-                                            if ($estado['estadoCargo'] == 'CANCELADA' && $estado['estadoAbono'] == 'CANCELADA'){
-
-                                                echo "<tr><td class='text-danger danger'>";
-                                                echo $estado['reciboCargo']."</td><td class='text-danger danger'>";
-                                                echo $estado['servicioCargo']."</td><td class='text-danger danger'>";
-                                                echo $estado['facturaCargo']."</td><td class='text-danger danger'>";
-                                                echo "<span class='label label-primary'>".$estado['cargoCargo']."</span>"."</td><td class='text-danger danger'>";
-                                                echo "<span class='label label-success'>".$estado['fechaFacturaCargo']."</span>"."</td><td class='text-danger danger'>";
-                                                echo "<span class='label label-danger'>".$estado['fechaVencimientoCargo']."</span>"."</td><td class='text-danger danger'>";
-                                                echo $estado['cuotaCableCargo']."</td><td class='text-danger danger'>";
-                                                echo "0.00"."</td><td class='text-danger danger'>";
-                                                echo $estado['totalImpuestoCargo']."</td><td class='text-danger danger'>";
-
-                                                echo "0.00"."</td><td class='text-danger danger'>";
-                                                echo number_format((doubleval($estado['cuotaCableCargo'])+doubleval($estado['totalImpuestoCargo'])),2)."</td></tr>";
-                                                /*********************************SEPARACIÓN***************************************/
-                                                echo "<tr><td class='text-success success'>";
-                                                echo $estado['reciboAbono']."</td><td class='text-success success'>";
-                                                echo $estado['servicioAbono']."</td><td class='text-success success'>";
-                                                echo $estado['facturaAbono']."</td><td class='text-success success'>";
-                                                echo "<span class='label label-primary'>".$estado['cargoAbono']."</span>"."</td><td class='text-success success'>";
-                                                echo "<span class='label label-success'>".$estado['fechaAbonadoAbono']."</span>"."</td><td class='text-success success'>";
-                                                echo "<span class='label label-danger'>".$estado['fechaVencimientoAbono']."</span>"."</td><td class='text-success success'>";
-                                                echo "0.00"."</td><td class='text-success success'>";
-                                                echo $estado['cuotaCableAbono']."</td><td class='text-success success'>";
-                                                echo "0.00"."</td><td class='text-success success'>";
-                                                echo $estado['totalImpuestoAbono']."</td><td class='text-success success'>";
-                                                echo number_format((doubleval($estado['cuotaCableAbono'])+doubleval($estado['totalImpuestoAbono'])),2)."</td></tr>";
-                                            }
-                                        }
-                                        ?>
-                                        </tbody>
-                                    </table>
-                                    <?php echo "<div class='well pull-right'><strong>TOTAL A COBRAR: $".$totalCobrarCable."</strong></div>"; ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="internet" role="tabpanel" aria-labelledby="pills-profile-tab">
-                            <br>
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">Resumen estado de cuenta internet, <b>saldo actual: <?php echo $saldoRealInter; ?></b></div>
-                                <div class="panel-body">
-                                    <table id="tablaeci" class="table table-striped">
-                                        <thead>
-                                        <th>N° recibo</th>
-                                        <th>Tipo servicio</th>
-                                        <th>N° comprobante</th>
-                                        <th>Mes de servicio</th>
-                                        <th>Aplicación</th>
-                                        <th>Vencimiento</th>
-                                        <th>Cargo</th>
-                                        <th>Abono</th>
-                                        <th>CESC cargo</th>
-                                        <th>CESC abono</th>
-                                        <th>TOTAL</th>
-
-                                        </thead>
-                                        <tbody>
-                                        <div class="row">
-                                            <form class="" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'].'?codigoCliente='.$_GET['codigoCliente']); ?>" method="POST">
-                                                <div class="col-md-7">
-                                                    <div class="col-md-3">
-                                                        <button class="btn btn-default btn-block" data-toggle="modal" data-target="#uanI" type="button" name="uan"><i class="fas fa-print"> imprimir</i></button>
-                                                        <br>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <input class="form-control" type="text" name="desde" placeholder="Desde mes/año">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <input class="form-control" type="text" name="hasta" placeholder="Hasta mes/año">
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <input class="btn btn-info btn-block" type="submit" name="submit" value="ver">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <?php
-                                        foreach ($arrAbonosInter as $abonoI) {
-
-                                            echo "<tr><td class='text-success success'>";
-                                            echo $abonoI['numeroRecibo']."</td><td class='text-success success'>";
-                                            echo $abonoI['tipoServicio']."</td><td class='text-success success'>";
-                                            echo $abonoI['numeroFactura']."</td><td class='text-success success'>";
-                                            echo "<span class='label label-primary'>".$abonoI['mesCargo']."</span>"."</td><td class='text-success success'>";
-                                            echo "<span class='label label-success'>".$abonoI['fechaAbonado']."</span>"."</td><td class='text-success success'>";
-                                            echo "<span class='label label-danger'>".$abonoI['fechaVencimiento']."</span>"."</td><td class='text-success success'>";
-                                            echo "0.00"."</td><td class='text-success success'>";
-                                            echo $abonoI['cuotaInternet']."</td><td class='text-success success'>";
-                                            echo "0.00"."</td><td class='text-success success'>";
-                                            echo $abonoI['totalImpuesto']."</td><td class='text-success success'>";
-                                            echo number_format((doubleval($abonoI['cuotaInternet'])+doubleval($abonoI['totalImpuesto'])),2)."</td></tr>";
-                                            //$control = $abonoC['mesCargo'];
-                                            //break;
-                                        }
-                                        foreach ($arrCargosInter as $cargoI) {
-
-                                            echo "<tr><td class='text-danger danger'>";
-                                            echo $cargoI['numeroRecibo']."</td><td class='text-danger danger'>";
-                                            echo $cargoI['tipoServicio']."</td><td class='text-danger danger'>";
-                                            echo $cargoI['numeroFactura']."</td><td class='text-danger danger'>";
-                                            echo "<span class='label label-primary'>".$cargoI['mesCargo']."</span>"."</td><td class='text-danger danger'>";
-                                            echo "<span class='label label-success'>".$cargoI['fechaFactura']."</span>"."</td><td class='text-danger danger'>";
-                                            echo "<span class='label label-danger'>".$cargoI['fechaVencimiento']."</span>"."</td><td class='text-danger danger'>";
-                                            echo $cargoI['cuotaInternet']."</td><td class='text-danger danger'>";
-                                            echo "0.00"."</td><td class='text-danger danger'>";
-                                            echo $cargoI['totalImpuesto']."</td><td class='text-danger danger'>";
-                                            echo "0.00"."</td><td class='text-danger danger'>";
-
-                                            echo number_format((doubleval($cargoI['cuotaInternet'])+doubleval($cargoI['totalImpuesto'])),2)."</td></tr>";
-                                            //$control = $abonoC['mesCargo'];
-                                            //break;
-                                        }
-                                        foreach ($arrEstadoInter as $estado){
-                                            //$control = $estado['cargoAbono'];
-                                            if ($estado['estadoCargo'] == 'CANCELADA' && $estado['estadoAbono'] == 'CANCELADA'){
-
-                                                echo "<tr><td class='text-danger danger'>";
-                                                echo $estado['reciboCargo']."</td><td class='text-danger danger'>";
-                                                echo $estado['servicioCargo']."</td><td class='text-danger danger'>";
-                                                echo $estado['facturaCargo']."</td><td class='text-danger danger'>";
-                                                echo "<span class='label label-primary'>".$estado['cargoCargo']."</span>"."</td><td class='text-danger danger'>";
-                                                echo "<span class='label label-success'>".$estado['fechaFacturaCargo']."</span>"."</td><td class='text-danger danger'>";
-                                                echo "<span class='label label-danger'>".$estado['fechaVencimientoCargo']."</span>"."</td><td class='text-danger danger'>";
-                                                echo $estado['cuotaInterCargo']."</td><td class='text-danger danger'>";
-                                                echo "0.00"."</td><td class='text-danger danger'>";
-                                                echo $estado['totalImpuestoCargo']."</td><td class='text-danger danger'>";
-
-                                                echo "0.00"."</td><td class='text-danger danger'>";
-                                                echo number_format((doubleval($estado['cuotaInterCargo'])+doubleval($estado['totalImpuestoCargo'])),2)."</td></tr>";
-                                                /*********************************SEPARACIÓN***************************************/
-                                                echo "<tr><td class='text-success success'>";
-                                                echo $estado['reciboAbono']."</td><td class='text-success success'>";
-                                                echo $estado['servicioAbono']."</td><td class='text-success success'>";
-                                                echo $estado['facturaAbono']."</td><td class='text-success success'>";
-                                                echo "<span class='label label-primary'>".$estado['cargoAbono']."</span>"."</td><td class='text-success success'>";
-                                                echo "<span class='label label-success'>".$estado['fechaAbonadoAbono']."</span>"."</td><td class='text-success success'>";
-                                                echo "<span class='label label-danger'>".$estado['fechaVencimientoAbono']."</span>"."</td><td class='text-success success'>";
-                                                echo "0.00"."</td><td class='text-success success'>";
-                                                echo $estado['cuotaInterAbono']."</td><td class='text-success success'>";
-                                                echo "0.00"."</td><td class='text-success success'>";
-                                                echo $estado['totalImpuestoAbono']."</td><td class='text-success success'>";
-                                                echo number_format((doubleval($estado['cuotaInterAbono'])+doubleval($estado['totalImpuestoAbono'])),2)."</td></tr>";
-                                            }
-                                        }
-                                        ?>
-                                        </tbody>
-                                    </table>
-                                    <?php echo "<div class='well pull-right'><strong>TOTAL A COBRAR: $".$totalCobrarInter."</strong></div>"; ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Modal -->
-                    <div id="uanC" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg">
-
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Próximamente</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div id="datos">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Modal -->
-                    <div id="uanI" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg">
-
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Próximamente</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div id="datos">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
+        <?php
+        }
+        ?>
     </div>
-    <!-- /#page-wrapper -->
-
-</div>
-<!-- /#wrapper -->
-
-<!-- jQuery -->
-<script src="../../vendor/jquery/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
-
-<!-- Metis Menu Plugin JavaScript -->
-<script src="../../vendor/metisMenu/metisMenu.min.js"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="../../dist/js/sb-admin-2.js"></script>
-
-<!-- DataTables JavaScript -->
-<script src="../../vendor/datatables/js/dataTables.bootstrap.js"></script>
-<script src="../../vendor/datatables/js/jquery.dataTables.min.js"></script>
-<script src="../../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-<script src="../../vendor/datatables-responsive/dataTables.responsive.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $('#tablaecc').DataTable({
-            pageLength : 6,
-            lengthMenu: [[6, 10, 20, -1], [6, 10, 20, 'Todos']],
-            "searching": false,
-            "ordering": false,
-            responsive: false,
-            "paging": true,
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ registros por página",
-                "zeroRecords": "No se encontró ningún registro",
-                "info": "Mostrando _TOTAL_ de _MAX_ Registros",
-                "infoEmpty": "No se encontró ningún registro",
-                "search": "Buscar: ",
-                "searchPlaceholder": "",
-                "infoFiltered": "(de un total de _MAX_ registros)",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Siguiente",
-
+    <!-- extensiones -->
+    <?php
+    $atencion = [
+        ['Colecturia', '8412'],
+        ['Atencion1', '8400/8403'],
+        ['Atencion2', '8401'],
+        ['Atencion3', '8415'],
+    ];
+    $contabilidad = [
+        ['Edgar/Fernando', '8409'],
+    ];
+    $informatica = [
+        ['Xiomara', '8402'],
+        ['Carolina', '8416'],
+        ['Rafael Moreira', '8419 (7859-2403)'],
+        ['Kerin Aparicio', '8421 (413)'],
+        ['Adalberto Machado', '8422 (410)'],
+        ['Melvin Diaz', '8418 (402)'],
+    ];
+    $renovaciones = [
+        ['Noe Vargas', '8414'],
+        ['Marcela', '8437'],
+    ];
+    $facturacion = [
+        ['Sarita', '8406'],
+    ];
+    $administrativa = [
+        ['Jenifer Zelaya', '8404 (401)'],
+        ['Susana Reyes', '8435 (409)'],
+        ['Manuel Mejia', '8408 (407)'],
+        ['Roberto Milla', '8405 (408)'],
+        ['Osmar Milla', '8424'],
+    ];
+    $cobros = [
+        ['Janice', '8411 (412)'],
+    ];
+    $call = [
+        ['Angelica', '8407'],
+        ['Esmeralda', '8428'],
+        ['Elsy Duran', '8410'],
+        ['Vacia', '8423'],
+        ['Durjan', '8427'],
+        ['Anita', '8433'],
+        ['Julio', '8434'],
+    ];
+    $sanmiguel = [
+        ['Manuel', '8451 (7860-7367)'],
+        ['Julissa', '8452'],
+        ['Vanessa', '8450'],
+        ['Omar', '8453'],
+    ];
+    $santiago = [
+        ['Julio Giron', '8430'],
+        ['Edith Cisnero', '8431'],
+        ['Zenon Ayala', '(414)'],
+    ];
+    $tecnicos = [
+        ['Planta Santa Maria', '8420'],
+        ['Gerson Argueta', '7861-5406 (102)'],
+        ['Don Wilfredo', '7803-2388 (104)'],
+        ['Hugo Ganuza', '7861-5410 (105)'],
+        ['Julio Baires', '7856-4985 (106)'],
+        ['Orlando Castillo', '7600-8199 (108)'],
+        ['Luis Campillo', '7852-6451 (110)'],
+        ['Osmar Milla', '7856-7295 (111)'],
+        ['Carlos Alexander', '7803-2688 (112)'],
+        ['Ramon Marin', '7731-7464/7259-6128 (114)'],
+        ['Victor', '7084-5629'],
+        ['Ever', '7986-6103/7211-3128'],
+        ['Rolando', '7915-0673/7556-4182'],
+        ['Franklin', '7541-0343'],
+        ['Willian Dominguez', '7893-6483'],
+        ['Jorge', '7745-2856'],
+        ['Francisco', '6062-9228/7199-9229'],
+        ['Gonzalo', '7860-6874'],
+        ['Efrain', '6311-6237'],
+        ['Dimas', '7790-6157 (109)'],
+        ['Antonio', '7084-9663/6300-7910'],
+        ['Willian', '7552-4683'],
+        ['Alfredo', '7859-8739'],
+        ['Nain', '7644-1328'],
+        ['Ramon Alvarez', '7856-4592'],
+        ['Mauricio', '7965-6890'],
+        ['Francisco Miranda', '7049-9913/7600-8199'],
+        ['Luis Gonzalez', '7583-2565'],
+        ['Alberto', '7134-2982'],
+        ['Miguel', '7120-7850'],
+        ['Alexis', '7604-8428 (113)'],
+        ['Dennis', '7084-6548'],
+        ['Anibal', '7712-9463']
+    ];
+    ?>
+    <aside class="control-sidebar control-sidebar-dark">
+        <div class="p-3 control-sidebar-content">
+            <h5>Telefonos y Extensiones</h5>
+            <hr class="mb-2">
+            <table>
+                <tr>
+                    <th colspan="2">ATENCION AL CLIENTE</th>
+                </tr>
+                <?php
+                foreach ($atencion as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
                 }
-            }
-
-        });
-
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        $('#tablaeci').DataTable({
-            pageLength : 6,
-            lengthMenu: [[6, 10, 20, -1], [6, 10, 20, 'Todos']],
-            "searching": false,
-            "ordering": false,
-            responsive: false,
-            "paging": true,
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ registros por página",
-                "zeroRecords": "No se encontró ningún registro",
-                "info": "Mostrando _TOTAL_ de _MAX_ Registros",
-                "infoEmpty": "No se encontró ningún registro",
-                "search": "Buscar: ",
-                "searchPlaceholder": "",
-                "infoFiltered": "(de un total de _MAX_ registros)",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Siguiente",
-
+                ?>
+                <tr>
+                    <th colspan="2">ATENCION DE CONTABILIDAD</th>
+                </tr>
+                <?php
+                foreach ($contabilidad as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
                 }
-            }
-
-        });
-
-    });
-</script>
-
+                ?>
+                <tr>
+                    <th colspan="2">INFORMATICA</th>
+                </tr>
+                <?php
+                foreach ($informatica as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">RENOVACIONES</th>
+                </tr>
+                <?php
+                foreach ($renovaciones as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">FACTURACION</th>
+                </tr>
+                <?php
+                foreach ($facturacion as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">AREA ADMINISTRATIVA</th>
+                </tr>
+                <?php
+                foreach ($administrativa as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">JEFA DE COBROS</th>
+                </tr>
+                <?php
+                foreach ($cobros as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">CALL CENTER</th>
+                </tr>
+                <?php
+                foreach ($call as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">OFICINA SAN MIGUEL</th>
+                </tr>
+                <?php
+                foreach ($sanmiguel as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">OFICINA SANTIAGO DE MARIA</th>
+                </tr>
+                <?php
+                foreach ($santiago as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                <tr>
+                    <th colspan="2">AREA TECNICA</th>
+                </tr>
+                <?php
+                foreach ($tecnicos as list($area, $extension)) {
+                ?>
+                    <tr>
+                        <td><?php echo $area ?></td>
+                        <td><?php echo $extension ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+            </table>
+        </div>
+    </aside>
+    <!-- Modal SUSPENSIONES AUTOMATICAS -->
+    <div id="modalayuda" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div style="background-color: #d32f2f; color:white;" class="modal-header">
+                    <h4 class="modal-title">Ayuda!</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li style="font-size: x-large;"><i class="fas fa-times-circle" style="color: red;"></i> Servicio suspendido</li>
+                        <li style="font-size: x-large;"><i class="fas fa-user-slash" style="color: gray;"></i> Sin servicio</li>
+                        <li style="font-size: x-large;"><i class="fas fa-check-circle" style="color: green;"></i> Servicio activo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div><!-- Fin Modal SUSPENSIONES AUTOMATICAS -->
 </body>
+<script>
+    $(document).ready(function() {
+        $(".salir").on("click", function(e) {
+            e.preventDefault();
+            swal({
+                title: "SALIR",
+                text: "Seguro deseas salir de CSATWEB",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "No",
+                confirmButtonText: "Continuar",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }).then(function() {
+                window.location.replace("../../php/logout.php");
+            });
+        });
+
+        $('.tabla').DataTable({
+            dom: 'Pfrtip',
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+        });
+    });
+</script>
 
 </html>
