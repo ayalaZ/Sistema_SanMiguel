@@ -27,7 +27,7 @@ function setMenu($permisosActuales, $permisoRequerido)
 {
     return ((intval($permisosActuales) & intval($permisoRequerido)) == 0) ? false : true;
 }
-$codigo = '03215';
+$codigo = '02250';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@ $codigo = '03215';
     <link rel="stylesheet" href="../herramientas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../herramientas/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="../herramientas/plugins/jquery/jquery.min.js"></script>
@@ -73,6 +73,7 @@ $codigo = '03215';
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <!-- DataTables JBootstrap -->
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-collapse">
@@ -354,16 +355,40 @@ $codigo = '03215';
                         </thead>
                         <tbody>
                             <?php
-                            $abonos = $mysqli->query("SELECT * FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' ORDER BY mesCargo DESC");
+                             $cargos = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND tipoServicio='C' AND anulada='0' ORDER BY mesCargo");
+                             while ($datosCargos = $cargos->fetch_array()) {
+                                $mesTabla = '01/' . $datosCargos['mesCargo'];
+                                $date = str_replace('/', '-', $mesTabla);
+                                $date = date('Ymd', strtotime($date));
+                                 ?>
+                                     <tr class="table-danger">
+                                     <td><?php echo $datosCargos['numeroRecibo'] ?></td>
+                                     <td><?php echo $datosCargos['tipoServicio'] ?></td>
+                                     <td><?php echo $datosCargos['numeroFactura'] ?></td>
+                                     <td><span style="display: none;"><?php echo $date ?></span><?php echo $datosCargos['mesCargo'] ?></td>
+                                     <td><?php echo $datosCargos['fechaFactura'] ?></td>
+                                     <td><?php echo $datosCargos['fechaVencimiento'] ?></td>
+                                     <td><?php echo number_format($datosCargos['cuotaCable'],2) ?></td>
+                                     <td><?php echo number_format('0.00',2) ?></td>
+                                     <td><?php echo number_format($datosCargos['totalImpuesto'],2) ?></td>
+                                     <td><?php echo number_format('0.00',2) ?></td>
+                                     <td><?php echo number_format($datosCargos['cuotaCable'],2) ?></td>
+                                 </tr>
+                                 <?php
+                             }
+                            $abonos = $mysqli->query("SELECT * FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' AND anulada='0' ORDER BY mesCargo");
                             while ($datosAbono = $abonos->fetch_array()) {
+                                $mesTabla = '01/' . $datosAbono['mesCargo'];
+                                $date = str_replace('/', '-', $mesTabla);
+                                $date = date('Ymd', strtotime($date));
                             ?>
                                 <tr class="table-success">
                                     <td><?php echo $datosAbono['numeroRecibo'] ?></td>
                                     <td><?php echo $datosAbono['tipoServicio'] ?></td>
                                     <td><?php echo $datosAbono['numeroFactura'] ?></td>
-                                    <td><?php echo $datosAbono['mesCargo'] ?></td>
-                                    <td><?php echo $datosAbono['fechaVencimiento'] ?></td>
+                                    <td><span style="display: none;"><?php echo $date ?></span><?php echo $datosAbono['mesCargo'] ?></td>
                                     <td><?php echo $datosAbono['fechaAbonado'] ?></td>
+                                    <td><?php echo $datosAbono['fechaVencimiento'] ?></td>
                                     <td><?php echo number_format('0.00',2) ?></td>
                                     <td><?php echo number_format($datosAbono['cuotaCable'],2) ?></td>
                                     <td><?php echo number_format('0.00',2) ?></td>
@@ -685,6 +710,7 @@ $codigo = '03215';
                     "previous": "Anterior"
                 }
             },
+            "order": [[ 3, "desc" ]],
         });
     });
 </script>
