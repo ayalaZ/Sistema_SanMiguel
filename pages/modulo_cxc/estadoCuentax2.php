@@ -27,7 +27,8 @@ function setMenu($permisosActuales, $permisoRequerido)
 {
     return ((intval($permisosActuales) & intval($permisoRequerido)) == 0) ? false : true;
 }
-$codigo = '02250';
+$servicio = $_SESSION['servicio'];
+$codigo = '03215';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +47,7 @@ $codigo = '02250';
     <link rel="stylesheet" href="../herramientas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../herramientas/dist/css/adminlte.min.css">
-    
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="../herramientas/plugins/jquery/jquery.min.js"></script>
@@ -73,6 +74,8 @@ $codigo = '02250';
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <!-- DataTables JBootstrap -->
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
 </head>
 
@@ -220,7 +223,7 @@ $codigo = '02250';
             </nav>
         </div>
     </aside>
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="overflow: hidden;">
         <?php
         if ($_SESSION["rol"] != "administracion" && $_SESSION["rol"] != "subgerencia" && $_SESSION["rol"] != "jefatura" && $_SESSION["rol"] != "contabilidad") {
             echo "<script>
@@ -272,6 +275,10 @@ $codigo = '02250';
                         <tr>
                             <td><b>Megas:</b></td>
                             <td style="color: red;"><?php echo $megas['nombreVelocidad'] ?></td>
+                        </tr>
+                        <tr>
+                            <td><b>Servicio:</b></td>
+                            <td><input type="checkbox" id="servicio" checked data-toggle="toggle" data-on="Cable" data-off="Internet" data-onstyle="danger" data-offstyle="danger"></td>
                         </tr>
                     </table>
                 </div>
@@ -336,8 +343,9 @@ $codigo = '02250';
                 </div>
             </div>
             <div class="row">
-                <div style="margin-left:5px;" class="col-md-12">
-                    <table class="table tabla">
+                <input type="hidden" name="codigo" id="codigo" value="<?php echo $codigo ?>">
+                <div class="col-md-12">
+                    <table class="table tabla" id="tabla_estado">
                         <thead>
                             <tr>
                                 <th>N° Recibo</th>
@@ -355,28 +363,28 @@ $codigo = '02250';
                         </thead>
                         <tbody>
                             <?php
-                             $cargos = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND tipoServicio='C' AND anulada='0' ORDER BY mesCargo");
-                             while ($datosCargos = $cargos->fetch_array()) {
+                            $cargos = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND tipoServicio='$servicio' AND anulada='0' ORDER BY mesCargo");
+                            while ($datosCargos = $cargos->fetch_array()) {
                                 $mesTabla = '01/' . $datosCargos['mesCargo'];
                                 $date = str_replace('/', '-', $mesTabla);
                                 $date = date('Ymd', strtotime($date));
-                                 ?>
-                                     <tr class="table-danger">
-                                     <td><?php echo $datosCargos['numeroRecibo'] ?></td>
-                                     <td><?php echo $datosCargos['tipoServicio'] ?></td>
-                                     <td><?php echo $datosCargos['numeroFactura'] ?></td>
-                                     <td><span style="display: none;"><?php echo $date ?></span><?php echo $datosCargos['mesCargo'] ?></td>
-                                     <td><?php echo $datosCargos['fechaFactura'] ?></td>
-                                     <td><?php echo $datosCargos['fechaVencimiento'] ?></td>
-                                     <td><?php echo number_format($datosCargos['cuotaCable'],2) ?></td>
-                                     <td><?php echo number_format('0.00',2) ?></td>
-                                     <td><?php echo number_format($datosCargos['totalImpuesto'],2) ?></td>
-                                     <td><?php echo number_format('0.00',2) ?></td>
-                                     <td><?php echo number_format($datosCargos['cuotaCable'],2) ?></td>
-                                 </tr>
-                                 <?php
-                             }
-                            $abonos = $mysqli->query("SELECT * FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='C' AND anulada='0' ORDER BY mesCargo");
+                            ?>
+                                <tr class="table-danger">
+                                    <td><?php echo $datosCargos['numeroRecibo'] ?></td>
+                                    <td><?php echo $datosCargos['tipoServicio'] ?></td>
+                                    <td><?php echo $datosCargos['numeroFactura'] ?></td>
+                                    <td><span style="display: none;"><?php echo $date ?></span><?php echo $datosCargos['mesCargo'] ?></td>
+                                    <td><?php echo $datosCargos['fechaFactura'] ?></td>
+                                    <td><?php echo $datosCargos['fechaVencimiento'] ?></td>
+                                    <td><?php echo number_format($datosCargos['cuotaCable'], 2) ?></td>
+                                    <td><?php echo number_format('0.00', 2) ?></td>
+                                    <td><?php echo number_format($datosCargos['totalImpuesto'], 2) ?></td>
+                                    <td><?php echo number_format('0.00', 2) ?></td>
+                                    <td><?php echo number_format($datosCargos['cuotaCable'], 2) ?></td>
+                                </tr>
+                            <?php
+                            }
+                            $abonos = $mysqli->query("SELECT * FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='$servicio' AND anulada='0' ORDER BY mesCargo");
                             while ($datosAbono = $abonos->fetch_array()) {
                                 $mesTabla = '01/' . $datosAbono['mesCargo'];
                                 $date = str_replace('/', '-', $mesTabla);
@@ -389,11 +397,11 @@ $codigo = '02250';
                                     <td><span style="display: none;"><?php echo $date ?></span><?php echo $datosAbono['mesCargo'] ?></td>
                                     <td><?php echo $datosAbono['fechaAbonado'] ?></td>
                                     <td><?php echo $datosAbono['fechaVencimiento'] ?></td>
-                                    <td><?php echo number_format('0.00',2) ?></td>
-                                    <td><?php echo number_format($datosAbono['cuotaCable'],2) ?></td>
-                                    <td><?php echo number_format('0.00',2) ?></td>
-                                    <td><?php echo number_format($datosAbono['totalImpuesto'],2) ?></td>
-                                    <td><?php echo number_format($datosAbono['cuotaCable'],2) ?></td>
+                                    <td><?php echo number_format('0.00', 2) ?></td>
+                                    <td><?php echo number_format($datosAbono['cuotaCable'], 2) ?></td>
+                                    <td><?php echo number_format('0.00', 2) ?></td>
+                                    <td><?php echo number_format($datosAbono['totalImpuesto'], 2) ?></td>
+                                    <td><?php echo number_format($datosAbono['cuotaCable'], 2) ?></td>
                                 </tr>
                             <?php
                             }
@@ -687,7 +695,6 @@ $codigo = '02250';
                 window.location.replace("../../php/logout.php");
             });
         });
-
         $('.tabla').DataTable({
             dom: 'Pfrtip',
             language: {
@@ -710,9 +717,56 @@ $codigo = '02250';
                     "previous": "Anterior"
                 }
             },
-            "order": [[ 3, "desc" ]],
+            "order": [
+                [3, "desc"]
+            ],
         });
     });
+    $("#servicio").change(function(){
+            $valorServicio = $(this).prop('checked');
+            $proceso = 'servicio';
+            $codigo = $("#codigo").val();
+            $.ajax({
+                type : 'POST',
+                url : 'php/estado.php',
+                data:{proceso:$proceso,valor:$valorServicio,cod:$codigo},
+                dataType:'Json',
+                success:function(datax){
+                    if (datax.filas !=0 && datax.filas2 !=0) {
+                        $("#tabla_estado tbody").empty();
+                        var filas = datax.filas;
+                        for (var i = 0; i < filas; i++) {
+                            var nuevafila = "<tr class='table-danger'><td>" +
+                                datax.tabla[i].numeroRecibo + "</td><td>" +
+                                datax.tabla[i].tipoServicio + "</td><td>" +
+                                datax.tabla[i].numeroFactura + "</td><td><span style='display:none;'>" +
+                                datax.tabla[i].fecha + "</span>"+datax.tabla[i].mesCargo+"</td><td>"+
+                                datax.tabla[i].fechaFactura+"</td><td>"+
+                                datax.tabla[i].fechaVencimiento+"</td><td>"+
+                                datax.tabla[i].cuota+"</td><td>0.00</td><td>"+
+                                datax.tabla[i].totalImpuesto+"</td><td>0.00</td><td>"+
+                                datax.tabla[i].cuota+"</td></tr>";
+                            $("#tabla_estado tbody").append(nuevafila);
+                        }
+                        /////////////////////////////////////////////////////////////////////////////////
+                        var filas2 = datax.filas2;
+                        for (var i = 0; i < filas2; i++) {
+                            var nuevafila = "<tr class='table-success'><td>" +
+                                datax.tabla2[i].numeroRecibo + "</td><td>" +
+                                datax.tabla2[i].tipoServicio + "</td><td>" +
+                                datax.tabla2[i].numeroFactura + "</td><td><span style='display:none;'>" +
+                                datax.tabla2[i].fecha + "</span>"+datax.tabla2[i].mesCargo+"</td><td>"+
+                                datax.tabla2[i].fechaAbonado+"</td><td>"+
+                                datax.tabla2[i].fechaVencimiento+"</td><td>0.00</td><td>"+
+                                datax.tabla2[i].cuota+"</td><td>0.00</td><td>"+
+                                datax.tabla2[i].totalImpuesto+"</td><td>"+
+                                datax.tabla2[i].cuota+"</td></tr>";
+                            $("#tabla_estado tbody").append(nuevafila);
+                        }
+                    }
+                }
+            }); 
+        });
 </script>
 
 </html>
