@@ -27,7 +27,11 @@ function setMenu($permisosActuales, $permisoRequerido)
 {
     return ((intval($permisosActuales) & intval($permisoRequerido)) == 0) ? false : true;
 }
-$servicio = $_SESSION['servicio'];
+if (isset($_SESSION['servicio'])) {
+    $servicio = $_SESSION['servicio'];
+} else {
+    $servicio = 'C';
+}
 $codigo = '03215';
 ?>
 <!DOCTYPE html>
@@ -254,7 +258,7 @@ $codigo = '03215';
         ?>
             <h3 style="text-align: center;margin-top:5px;"><b>ESTADO DE CUENTA</b></h3>
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-8">
                     <table style="margin-left: 15px; font-size:large;">
                         <tr>
                             <td><b>Codigo:</b></td>
@@ -278,11 +282,23 @@ $codigo = '03215';
                         </tr>
                         <tr>
                             <td><b>Servicio:</b></td>
-                            <td><input type="checkbox" id="servicio" checked data-toggle="toggle" data-on="Cable" data-off="Internet" data-onstyle="danger" data-offstyle="danger"></td>
+                            <td>
+                                <?php
+                                if ($servicio == 'C') {
+                                ?>
+                                    <input type="checkbox" id="servicio" checked data-toggle="toggle" data-on="Cable" data-off="Internet" data-onstyle="danger" data-offstyle="danger">
+                                <?php
+                                } else {
+                                ?>
+                                    <input type="checkbox" id="servicio" data-toggle="toggle" data-on="Cable" data-off="Internet" data-onstyle="danger" data-offstyle="danger">
+                                <?php
+                                }
+                                ?>
+                            </td>
                         </tr>
                     </table>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <table style="margin-left: 15px; font-size:large;">
                         <tr>
                             <td><b>Cable:</b></td>
@@ -338,6 +354,21 @@ $codigo = '03215';
                         <tr>
                             <td colspan="2"><b>Ultimo mes cancelado:</b></td>
                             <td colspan="2"><?php echo $datos['fecha_ult_pago'] ?></td>
+                        </tr>
+                        <tr>
+                            <form action="php/impresionEstadoCuenta.php" method="POST" style="display: inline;" target="_blank">
+                                <td><input type="text" name="desde" id="desde" class="form-control" placeholder="Desde" onfocus="(this.type='date')"></td>
+                                <td><input type="text" name="hasta" id="hasta" class="form-control" placeholder="Hasta" onfocus="(this.type='date')"></td>
+                                <input type="hidden" name="codigo" id="codigo" value="<?php echo $codigo ?>">
+                                <input type="hidden" name="servicio" id="servicio" value="<?php echo $servicio ?>">
+                                <td style="padding: 10px;">
+                                    <input type="hidden" name="documento" id="documento" value='true'>
+                                    <input type="checkbox" id="estrategia" name='estrategia' checked data-toggle="toggle" data-on="<i class='fas fa-file-pdf'></i>" data-off="<i class='fas fa-file-excel'></i>" data-onstyle='danger' data-offstyle='success'>
+                                </td>
+                                <td style="padding: 10px;">
+                                    <button type="submit" class="btn btn-success">Imprimir</button>
+                                </td>
+                            </form>
                         </tr>
                     </table>
                 </div>
@@ -721,52 +752,30 @@ $codigo = '03215';
                 [3, "desc"]
             ],
         });
-    });
-    $("#servicio").change(function(){
-            $valorServicio = $(this).prop('checked');
-            $proceso = 'servicio';
-            $codigo = $("#codigo").val();
+        $("#servicio").change(function() {
             $.ajax({
-                type : 'POST',
-                url : 'php/estado.php',
-                data:{proceso:$proceso,valor:$valorServicio,cod:$codigo},
-                dataType:'Json',
-                success:function(datax){
-                    if (datax.filas !=0 && datax.filas2 !=0) {
-                        $("#tabla_estado tbody").empty();
-                        var filas = datax.filas;
-                        for (var i = 0; i < filas; i++) {
-                            var nuevafila = "<tr class='table-danger'><td>" +
-                                datax.tabla[i].numeroRecibo + "</td><td>" +
-                                datax.tabla[i].tipoServicio + "</td><td>" +
-                                datax.tabla[i].numeroFactura + "</td><td><span style='display:none;'>" +
-                                datax.tabla[i].fecha + "</span>"+datax.tabla[i].mesCargo+"</td><td>"+
-                                datax.tabla[i].fechaFactura+"</td><td>"+
-                                datax.tabla[i].fechaVencimiento+"</td><td>"+
-                                datax.tabla[i].cuota+"</td><td>0.00</td><td>"+
-                                datax.tabla[i].totalImpuesto+"</td><td>0.00</td><td>"+
-                                datax.tabla[i].cuota+"</td></tr>";
-                            $("#tabla_estado tbody").append(nuevafila);
-                        }
-                        /////////////////////////////////////////////////////////////////////////////////
-                        var filas2 = datax.filas2;
-                        for (var i = 0; i < filas2; i++) {
-                            var nuevafila = "<tr class='table-success'><td>" +
-                                datax.tabla2[i].numeroRecibo + "</td><td>" +
-                                datax.tabla2[i].tipoServicio + "</td><td>" +
-                                datax.tabla2[i].numeroFactura + "</td><td><span style='display:none;'>" +
-                                datax.tabla2[i].fecha + "</span>"+datax.tabla2[i].mesCargo+"</td><td>"+
-                                datax.tabla2[i].fechaAbonado+"</td><td>"+
-                                datax.tabla2[i].fechaVencimiento+"</td><td>0.00</td><td>"+
-                                datax.tabla2[i].cuota+"</td><td>0.00</td><td>"+
-                                datax.tabla2[i].totalImpuesto+"</td><td>"+
-                                datax.tabla2[i].cuota+"</td></tr>";
-                            $("#tabla_estado tbody").append(nuevafila);
-                        }
-                    }
+                url: 'php/estado.php',
+                type: 'POST',
+                data: {
+                    serv: $(this).prop('checked')
+                },
+                success: function(data) {
+                    location.reload();
                 }
-            }); 
+            });
         });
+
+        $("#estrategia").change(function(){
+            $valor = $(this).prop('checked');
+            if ($valor == 'false') {
+                alert($valor);
+                document.getElementById("documento").value = $(this).prop('checked');
+            }else{
+                alert($valor);
+                document.getElementById("documento").value = $(this).prop('checked');
+            }
+        });
+    });
 </script>
 
 </html>
