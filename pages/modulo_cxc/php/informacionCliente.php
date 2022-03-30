@@ -583,15 +583,15 @@ switch ($proceso) {
                             if ($QueryactualizarCliente) {
                                 $cuenta += 1;
                             } else {
-                                $xdatos['msg'] = "Error al ingresar abono 0003";
+                                $xdatos['msg'] = "No se actualizo informacion del cliente 0003";
                                 $xdatos['typeinfo'] = "error";
                             }
                         } else {
-                            $xdatos['msg'] = "Error al ingresar abono 0001";
+                            $xdatos['msg'] = $mysqli->error;
                             $xdatos['typeinfo'] = "error";
                         }
                     } else {
-                        $xdatos['msg'] = "Error al ingresar abono 0002";
+                        $xdatos['msg'] = "Recibo duplicado 0002";
                         $xdatos['typeinfo'] = "error";
                     }
                 }

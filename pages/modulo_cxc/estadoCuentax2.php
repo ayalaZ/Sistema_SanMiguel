@@ -768,10 +768,8 @@ $codigo = '03215';
         $("#estrategia").change(function(){
             $valor = $(this).prop('checked');
             if ($valor == 'false') {
-                alert($valor);
                 document.getElementById("documento").value = $(this).prop('checked');
             }else{
-                alert($valor);
                 document.getElementById("documento").value = $(this).prop('checked');
             }
         });
