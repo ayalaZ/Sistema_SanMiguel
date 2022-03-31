@@ -81,7 +81,11 @@ switch ($proceso) {
             $mesPendiente = date_format(date_create($mesPendiente), 'm/Y');
             $xdatos['meses'] = $mesPendiente;
         } elseif ($arregloMeses['mesCargo'] == NULL) {
-            $mesPendiente = $arreglodatosclientes['fecha_primer_factura'];
+            if ($servicio == 'C') {
+                $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+            }else{
+                $mesTabla = $arreglodatosclientes['fecha_primer_factura_in'];
+            }
             $mesPendiente = date_format(date_create($mesPendiente), 'm/Y');
             $xdatos['meses'] = $mesPendiente;
         }
@@ -136,7 +140,11 @@ switch ($proceso) {
             $mesTabla = date_format(date_create($mesTabla), 'm/Y');
             $mes = $mesTabla;
         } elseif ($arregloMeses['mesCargo'] == NULL) { //en caso de que el mes aun no se habra generado
-            $mesTabla = $arreglodatosclientes['fecha_primer_factura']; //el mes que se canceara es el indicado en la fecha de primer factura
+            if ($servicio == 'C') {
+                $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+            }else{
+                $mesTabla = $arreglodatosclientes['fecha_primer_factura_in'];
+            }
             $mesTabla = date_format(date_create($mesTabla), 'm/Y');
             $mes = $mesTabla;
         }
@@ -195,7 +203,11 @@ switch ($proceso) {
             $mesTabla = date_format(date_create($mesTabla), 'm/Y');
             $mes = $mesTabla;
         } elseif ($arregloMeses['mesCargo'] == NULL) {
-            $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+            if ($servicio == 'C') {
+                $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+            }else{
+                $mesTabla = $arreglodatosclientes['fecha_primer_factura_in'];
+            }
             $mesTabla = date_format(date_create($mesTabla), 'm/Y');
             $mes = $mesTabla;
         }
@@ -428,7 +440,11 @@ switch ($proceso) {
                         $mesTabla = date_format(date_create($mesTabla), 'm/Y');
                         $mes = $mesTabla;
                     } elseif ($arregloMeses['mesCargo'] == NULL) { //en caso de que el mes aun no se habra generado
-                        $mesTabla = $arreglodatosclientes['fecha_primer_factura']; //el mes que se canceara es el indicado en la fecha de primer factura
+                        if ($servicio == 'C') {
+                            $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+                        }else{
+                            $mesTabla = $arreglodatosclientes['fecha_primer_factura_in'];
+                        }
                         $mesTabla = date_format(date_create($mesTabla), 'm/Y');
                         $mes = $mesTabla;
                     }
@@ -530,7 +546,11 @@ switch ($proceso) {
                         $mesTabla = date_format(date_create($mesTabla), 'm/Y');
                         $mes = $mesTabla;
                     } elseif ($arregloMeses['mesCargo'] == NULL) {
-                        $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+                        if ($servicio == 'C') {
+                            $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+                        }else{
+                            $mesTabla = $arreglodatosclientes['fecha_primer_factura_in'];
+                        }
                         $mesTabla = date_format(date_create($mesTabla), 'm/Y');
                         $mes = $mesTabla;
                     }
@@ -625,7 +645,11 @@ switch ($proceso) {
         $codigo = $_POST['codigo'];
         $datoscliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'"); //obtener datos del cliente que esta cancelando
         $arreglodatosclientes = $datoscliente->fetch_array();
-        $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+        if ($servicio == 'C') {
+            $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+        }else{
+            $mesTabla = $arreglodatosclientes['fecha_primer_factura_in'];
+        }
         $mesTabla = date_format(date_create($mesTabla), 'm/Y');
         $mes = $mesTabla;
         $xdatos['meses'] = $mes;
