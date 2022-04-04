@@ -263,23 +263,23 @@ if (isset($_SESSION['servicio'])) {
                 <table style="margin-left: 15px; font-size:large;">
                     <tr>
                         <td><b>Codigo:</b></td>
-                        <td style="color: red;"><?php echo $codigo ?></td>
+                        <td><?php echo $codigo ?></td>
                     </tr>
                     <tr>
                         <td><b>Nombre:</b></td>
-                        <td style="color: red;"><?php echo $datos['nombre'] ?></td>
+                        <td><?php echo $datos['nombre'] ?></td>
                     </tr>
                     <tr>
                         <td><b>Direccion:</b></td>
-                        <td style="color: red;"><?php echo $datos['direccion'] ?></td>
+                        <td><?php echo $datos['direccion'] ?></td>
                     </tr>
                     <tr>
                         <td><b>Telefono:</b></td>
-                        <td style="color: red;"><?php echo $datos['telefonos'] ?></td>
+                        <td><?php echo $datos['telefonos'] ?></td>
                     </tr>
                     <tr>
                         <td><b>Megas:</b></td>
-                        <td style="color: red;"><?php echo $megas['nombreVelocidad'] ?></td>
+                        <td><?php echo $megas['nombreVelocidad'] ?></td>
                     </tr>
                     <tr>
                         <td><b>Servicio:</b></td>
@@ -410,12 +410,10 @@ if (isset($_SESSION['servicio'])) {
                                 <td><?php echo $datosCargos['fechaVencimiento'] ?></td>
                                 <?php
                                 if ($servicio == 'C') {
-                                    $totalCargos = $totalCargos + $datosCargos['cuotaCable'];
                                 ?>
                                     <td><?php echo number_format($datosCargos['cuotaCable'], 2) ?></td>
                                 <?php
                                 } else {
-                                    $totalCargos = $totalCargos + $datosCargos['cuotaInternet'];
                                 ?>
                                     <td><?php echo number_format($datosCargos['cuotaInternet'], 2) ?></td>
                                 <?php
@@ -426,12 +424,16 @@ if (isset($_SESSION['servicio'])) {
                                 <td><?php echo number_format('0.00', 2) ?></td>
                                 <?php
                                 if ($servicio == 'C') {
+                                    $total = $datosCargos['cuotaCable'] + $datosCargos['totalImpuesto'];
+                                    $totalCargos = $totalCargos + $total;
                                 ?>
-                                    <td><?php echo number_format($datosCargos['cuotaCable'], 2) ?></td>
+                                    <td><?php echo number_format($total, 2) ?></td>
                                 <?php
                                 } else {
+                                    $total = $datosCargos['cuotaInternet'] + $datosCargos['totalImpuesto'];
+                                    $totalCargos = $totalCargos + $total;
                                 ?>
-                                    <td><?php echo number_format($datosCargos['cuotaInternet'], 2) ?></td>
+                                    <td><?php echo number_format($total, 2) ?></td>
                                 <?php
                                 }
                                 ?>
@@ -454,14 +456,12 @@ if (isset($_SESSION['servicio'])) {
                                 <td><?php echo number_format('0.00', 2) ?></td>
                                 <?php
                                 if ($servicio == 'C') {
-                                    $totalAbonos = $totalAbonos + $datosAbono['cuotaCable'];
                                 ?>
                                     <td><?php echo number_format($datosAbono['cuotaCable'], 2) ?></td>
                                 <?php
                                 } else {
-                                    $totalAbonos = $totalAbonos + $datosAbono['cuotaInternet'];
                                 ?>
-                                    <td><?php echo number_format($datosAbono['cuotaInternet'], 2) ?></td>
+                                    <td><?php echo number_format($datosAbono['cuotaCable'], 2) ?></td>
                                 <?php
                                 }
                                 ?>
@@ -469,12 +469,16 @@ if (isset($_SESSION['servicio'])) {
                                 <td><?php echo number_format($datosAbono['totalImpuesto'], 2) ?></td>
                                 <?php
                                 if ($servicio == 'C') {
+                                    $total = $datosAbono['cuotaCable'] + $datosAbono['totalImpuesto'];
+                                    $totalAbonos = $totalAbonos + $total;
                                 ?>
-                                    <td><?php echo number_format($datosAbono['cuotaCable'], 2) ?></td>
+                                    <td><?php echo number_format($total, 2) ?></td>
                                 <?php
                                 } else {
+                                    $total = $datosAbono['cuotaInternet'] + $datosAbono['totalImpuesto'];
+                                    $totalAbonos = $totalAbonos + $total;
                                 ?>
-                                    <td><?php echo number_format($datosAbono['cuotaInternet'], 2) ?></td>
+                                    <td><?php echo number_format($total, 2) ?></td>
                                 <?php
                                 }
                                 ?>

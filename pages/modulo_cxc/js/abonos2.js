@@ -103,6 +103,7 @@ $(document).ready(function () {
             dataType: 'Json',
             success: function (datax) {
                 $("#ultimoRecibo").val(datax.valor);
+                $("#fechaAbono").val(datax.fecha);
             },
             error: function () {
                 swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
@@ -541,9 +542,9 @@ function abono() {
 
                         }).then(function () {
                             window.open("php/comprobantePagox2.php?uaid1=" + datax.Crecibo + "&cod=" + datax.Ccodigo + "&desde=" + datax.Cdesde + "&hasta=" + datax.Chasta + "&tipoServicio=" + datax.Cservicio + "", "_blank");
-                            setInterval('location.reload()', 3000);
+                            setInterval('location.reload()', 500);
                         }).catch(function(){
-                            setInterval('location.reload()', 3000);
+                            setInterval('location.reload()', 500);
                         });
                     }
 

@@ -81,10 +81,10 @@ switch ($proceso) {
             $mesPendiente = date_format(date_create($mesPendiente), 'm/Y');
             $xdatos['meses'] = $mesPendiente;
         } elseif ($arregloMeses['mesCargo'] == NULL) {
-            if ($servicio == 'C') {
-                $mesTabla = $arreglodatosclientes['fecha_primer_factura'];
+            if ($sservicio == 'C') {
+                $mesPendiente = $arreglodatosclientes['fecha_primer_factura'];
             }else{
-                $mesTabla = $arreglodatosclientes['fecha_primer_factura_in'];
+                $mesPendiente = $arreglodatosclientes['fecha_primer_factura_in'];
             }
             $mesPendiente = date_format(date_create($mesPendiente), 'm/Y');
             $xdatos['meses'] = $mesPendiente;

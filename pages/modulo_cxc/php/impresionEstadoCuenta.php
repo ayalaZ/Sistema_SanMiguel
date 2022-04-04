@@ -25,6 +25,34 @@ if ($desde == '' || $hasta == '') {
     $desde = '2000-01-01';
     $hasta = '2050-12-31';
 }
+
+$cliente = $mysqli->query("SELECT nombre, direccion, estado_cliente_in, servicio_suspendido, sin_servicio FROM clientes WHERE cod_cliente='$codigo'");
+$datos = $cliente->fetch_array();
+$CsusServido = $datos['servicio_suspendido'];
+$CsinServicio = $datos['sin_servicio'];
+if ($CsusServido == "T" && $CsinServicio == "F") {
+    $estadoCable = 'Suspendido';
+} elseif ($CsusServido != "T" && $CsinServicio == "T") {
+    $estadoCable = 'Sin Servicio';
+} elseif ($CsusServido != "T" && $CsinServicio == "F") {
+    $estadoCable = 'Activo';
+}
+$estado = $datos["estado_cliente_in"];
+if ($estado == 2) {
+    $estadoInternet = 'Suspendido';
+} elseif ($estado == 3) {
+    $estadoInternet = 'Sin servicio';
+} elseif ($estado == 1) {
+    $estadoInternet = 'Activo';
+}
+
+define('codigo', $codigo);
+define('nombre', $datos['nombre']);
+define('estadoCable', $estadoCable);
+define('direccion', $datos['direccion']);
+define('estadoInternet', $estadoInternet);
+define('desde', $desde);
+define('hasta', $hasta);
 switch ($documento) {
     case 'true':
         require '../../../pdfs/fpdf.php';
@@ -50,54 +78,34 @@ switch ($documento) {
                 } else {
                     $this->Cell(190, 4, utf8_decode('SUCURSAL DE PRUEBA'), 0, 1, 'L');
                 }
+                $this->SetFont('Arial', '', 7.5);
+                $this->Cell(130, 4, utf8_decode("CLIENTE: " . codigo . " " . nombre), 0, 0, 'L');
+                $this->Cell(130, 4, utf8_decode(strtoupper("CABLE: " . estadoCable)), 0, 1, 'R');
+                $this->Cell(130, 4, utf8_decode("DIRECCIÓN: " . substr(direccion, 0, 130)), 0, 0, 'L');
+                $this->Cell(130, 4, utf8_decode(strtoupper("INTERNET: " . estadoInternet)), 0, 1, 'R');
+                $this->SetFont('Arial', '', 7.5);
+                $this->Cell(190, 4, utf8_decode('DESDE ' . desde . ' HASTA ' . hasta), 0, 1, 'L');
+                $this->Ln(2);
+                $this->SetFont('Arial', 'B', 9);
+                $this->Cell(25, 5, utf8_decode('N° de recibo'), 'B', 0, 'L');
+                $this->Cell(25, 5, utf8_decode('Tipo servicio'), 'B', 0, 'L');
+                $this->Cell(30, 5, utf8_decode('N° comprobante'), 'B', 0, 'L');
+                $this->Cell(30, 5, utf8_decode('Mes de servicio'), 'B', 0, 'L');
+                $this->Cell(20, 5, utf8_decode('Aplicación'), 'B', 0, 'L');
+                $this->Cell(25, 5, utf8_decode('Vencimiento'), 'B', 0, 'L');
+                $this->Cell(20, 5, utf8_decode('Cargo'), 'B', 0, 'L');
+                $this->Cell(20, 5, utf8_decode('Abono'), 'B', 0, 'L');
+                $this->Cell(25, 5, utf8_decode('CESC cargo'), 'B', 0, 'L');
+                $this->Cell(25, 5, utf8_decode('CESC abono'), 'B', 0, 'L');
+                $this->Cell(20, 5, utf8_decode('TOTAL'), 'B', 1, 'L');
+                $this->Cell(265, 1, utf8_decode(''), 'B', 1, 'L');
             }
         }
 
         $pdf = new PDF();
         $pdf->AliasNbPages();
         $pdf->AddPage("L", 'Letter');
-        $cliente = $mysqli->query("SELECT nombre, direccion, estado_cliente_in, servicio_suspendido, sin_servicio FROM clientes WHERE cod_cliente='$codigo'");
-        $datos = $cliente->fetch_array();
-        $CsusServido = $datos['servicio_suspendido'];
-        $CsinServicio = $datos['sin_servicio'];
-        if ($CsusServido == "T" && $CsinServicio == "F") {
-            $estadoCable = 'Suspendido';
-        } elseif ($CsusServido != "T" && $CsinServicio == "T") {
-            $estadoCable = 'Sin Servicio';
-        } elseif ($CsusServido != "T" && $CsinServicio == "F") {
-            $estadoCable = 'Activo';
-        }
-        $estado = $datos["estado_cliente_in"];
-        if ($estado == 2) {
-            $estadoInternet = 'Suspendido';
-        } elseif ($estado == 3) {
-            $estadoInternet = 'Sin servicio';
-        } elseif ($estado == 1) {
-            $estadoInternet = 'Activo';
-        }
-        $pdf->SetFont('Arial', '', 7.5);
-        $pdf->Cell(130, 4, utf8_decode("CLIENTE: " . $codigo . " " . $datos['nombre']), 0, 0, 'L');
-        $pdf->Cell(130, 4, utf8_decode(strtoupper("CABLE: " . $estadoCable)), 0, 1, 'R');
-        $pdf->Cell(130, 4, utf8_decode("DIRECCIÓN: " . substr($datos['direccion'], 0, 130)), 0, 0, 'L');
-        $pdf->Cell(130, 4, utf8_decode(strtoupper("INTERNET: " . $estadoInternet)), 0, 1, 'R');
-        $pdf->SetFont('Arial', '', 7.5);
-        $pdf->Cell(190, 4, utf8_decode('DESDE ' . $desde . ' HASTA ' . $hasta), 0, 1, 'L');
-        $pdf->Ln(2);
-        $pdf->SetFont('Arial', 'B', 9);
-        //$pdf->Cell(20,5,utf8_decode('N°'),1,0,'L');
-        $pdf->Cell(25, 5, utf8_decode('N° de recibo'), 'B', 0, 'L');
-        $pdf->Cell(25, 5, utf8_decode('Tipo servicio'), 'B', 0, 'L');
-        $pdf->Cell(30, 5, utf8_decode('N° comprobante'), 'B', 0, 'L');
-        $pdf->Cell(30, 5, utf8_decode('Mes de servicio'), 'B', 0, 'L');
-        $pdf->Cell(20, 5, utf8_decode('Aplicación'), 'B', 0, 'L');
-        $pdf->Cell(25, 5, utf8_decode('Vencimiento'), 'B', 0, 'L');
-        $pdf->Cell(20, 5, utf8_decode('Cargo'), 'B', 0, 'L');
-        $pdf->Cell(20, 5, utf8_decode('Abono'), 'B', 0, 'L');
-        $pdf->Cell(25, 5, utf8_decode('CESC cargo'), 'B', 0, 'L');
-        $pdf->Cell(25, 5, utf8_decode('CESC abono'), 'B', 0, 'L');
-        $pdf->Cell(20, 5, utf8_decode('TOTAL'), 'B', 1, 'L');
-        $pdf->Cell(265, 1, utf8_decode(''), 'B', 1, 'L');
-        $pdf->Ln(3);
+
         $pdf->SetFont('Helvetica', '', 9);
         $soloCargos = $mysqli->query("SELECT * FROM tbl_cargos WHERE codigoCliente='$codigo' AND tipoServicio='$servicio' AND anulada='0' AND tbl_cargos.mesCargo NOT IN(SELECT mesCargo FROM tbl_abonos WHERE codigoCliente='$codigo' AND tipoServicio='$servicio' AND anulada='0') AND fechaFactura BETWEEN '$desde' AND '$hasta' ORDER BY mesCargo DESC");
         $cantidadCargos = $soloCargos->num_rows;
@@ -341,30 +349,30 @@ switch ($documento) {
         $cantidadCargos = $soloCargos->num_rows;
         if ($cantidadCargos > 0) {
             while ($datosCargos = $soloCargos->fetch_array()) {
-                $objPHPExcel->getActiveSheet()->setCellValue('A'.$contador1, $datosCargos['numeroRecibo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('B'.$contador1, $datosCargos['tipoServicio']);
-                $objPHPExcel->getActiveSheet()->setCellValue('C'.$contador1, $datosCargos['numeroFactura']);
-                $objPHPExcel->getActiveSheet()->setCellValue('D'.$contador1, $datosCargos['mesCargo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('E'.$contador1, $datosCargos['fechaFactura']);
-                $objPHPExcel->getActiveSheet()->setCellValue('F'.$contador1, $datosCargos['fechaVencimiento']);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $contador1, $datosCargos['numeroRecibo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $contador1, $datosCargos['tipoServicio']);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $contador1, $datosCargos['numeroFactura']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $contador1, $datosCargos['mesCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $contador1, $datosCargos['fechaFactura']);
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $contador1, $datosCargos['fechaVencimiento']);
                 if ($servicio == 'C') {
                     $cuota = $datosCargos['cuotaCable'];
                 } else {
                     $cuota = $datosCargos['cuotaInternet'];
                 }
-                $objPHPExcel->getActiveSheet()->setCellValue('G'.$contador1, $cuota);
-                $objPHPExcel->getActiveSheet()->getStyle('G'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('H'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('H'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('I'.$contador1, $datosCargos['totalImpuesto']);
-                $objPHPExcel->getActiveSheet()->getStyle('I'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('J'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('J'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $contador1, $cuota);
+                $objPHPExcel->getActiveSheet()->getStyle('G' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $contador1, $datosCargos['totalImpuesto']);
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $total = $datosCargos['totalImpuesto'] + $cuota;
-                $objPHPExcel->getActiveSheet()->setCellValue('K'.$contador1, $total);
-                $objPHPExcel->getActiveSheet()->getStyle('K'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('K' . $contador1, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('K' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $totalCargos = $totalCargos + $total;
-                $contador1+=1;
+                $contador1 += 1;
             }
         }
         //ABONOS
@@ -372,30 +380,30 @@ switch ($documento) {
         $cantidadAbonos = $soloAbonos->num_rows;
         if ($cantidadAbonos > 0) {
             while ($datosAbonos = $soloAbonos->fetch_array()) {
-                $objPHPExcel->getActiveSheet()->setCellValue('A'.$contador1, $datosAbonos['numeroRecibo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('B'.$contador1, $datosAbonos['tipoServicio']);
-                $objPHPExcel->getActiveSheet()->setCellValue('C'.$contador1, $datosAbonos['numeroFactura']);
-                $objPHPExcel->getActiveSheet()->setCellValue('D'.$contador1, $datosAbonos['mesCargo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('E'.$contador1, $datosAbonos['fechaAbonado']);
-                $objPHPExcel->getActiveSheet()->setCellValue('F'.$contador1, $datosAbonos['fechaVencimiento']);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $contador1, $datosAbonos['numeroRecibo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $contador1, $datosAbonos['tipoServicio']);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $contador1, $datosAbonos['numeroFactura']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $contador1, $datosAbonos['mesCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $contador1, $datosAbonos['fechaAbonado']);
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $contador1, $datosAbonos['fechaVencimiento']);
                 if ($servicio == 'C') {
                     $cuota = $datosAbonos['cuotaCable'];
                 } else {
                     $cuota = $datosAbonos['cuotaInternet'];
                 }
-                $objPHPExcel->getActiveSheet()->setCellValue('G'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('G'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('H'.$contador1, $cuota);
-                $objPHPExcel->getActiveSheet()->getStyle('H'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('I'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('I'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('J'.$contador1, $datosAbonos['totalImpuesto']);
-                $objPHPExcel->getActiveSheet()->getStyle('J'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('G' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $contador1, $cuota);
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $contador1, $datosAbonos['totalImpuesto']);
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $total = $datosAbonos['totalImpuesto'] + $cuota;
-                $objPHPExcel->getActiveSheet()->setCellValue('K'.$contador1, $total);
-                $objPHPExcel->getActiveSheet()->getStyle('K'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('K' . $contador1, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('K' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $totalAbonos = $totalAbonos + $total;
-                $contador1+=1;
+                $contador1 += 1;
             }
         }
         //TODOS
@@ -404,65 +412,65 @@ switch ($documento) {
         $cantidad = $todo->num_rows;
         if ($cantidad > 0) {
             while ($datos = $todo->fetch_array()) {
-                $objPHPExcel->getActiveSheet()->setCellValue('A'.$contador1, $datos['reciboCargo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('B'.$contador1, $datos['servicioCargo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('C'.$contador1, $datos['facturaCargo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('D'.$contador1, $datos['cargoCargo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('E'.$contador1, $datos['fechaFacturaCargo']);
-                $objPHPExcel->getActiveSheet()->setCellValue('F'.$contador1, $datos['fechaVencimientoCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $contador1, $datos['reciboCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $contador1, $datos['servicioCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $contador1, $datos['facturaCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $contador1, $datos['cargoCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $contador1, $datos['fechaFacturaCargo']);
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $contador1, $datos['fechaVencimientoCargo']);
                 if ($servicio == 'C') {
                     $cuota = $datos['cuotaCableCargo'];
                 } else {
                     $cuota = $datos['cuotaInterCargo'];
                 }
-                $objPHPExcel->getActiveSheet()->setCellValue('G'.$contador1, $cuota);
-                $objPHPExcel->getActiveSheet()->getStyle('G'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('H'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('H'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('I'.$contador1, $datos['totalImpuestoCargo']);
-                $objPHPExcel->getActiveSheet()->getStyle('I'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('J'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('J'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $contador1, $cuota);
+                $objPHPExcel->getActiveSheet()->getStyle('G' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $contador1, $datos['totalImpuestoCargo']);
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $total = $datos['totalImpuestoCargo'] + $cuota;
-                $objPHPExcel->getActiveSheet()->setCellValue('K'.$contador1, $total);
-                $objPHPExcel->getActiveSheet()->getStyle('K'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('K' . $contador1, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('K' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $totalCargos = $totalCargos + $total;
-                $contador1+=1;
+                $contador1 += 1;
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-                $objPHPExcel->getActiveSheet()->setCellValue('A'.$contador1, $datos['reciboAbono']);
-                $objPHPExcel->getActiveSheet()->setCellValue('B'.$contador1, $datos['servicioAbono']);
-                $objPHPExcel->getActiveSheet()->setCellValue('C'.$contador1, $datos['facturaAbono']);
-                $objPHPExcel->getActiveSheet()->setCellValue('D'.$contador1, $datos['cargoAbono']);
-                $objPHPExcel->getActiveSheet()->setCellValue('E'.$contador1, $datos['fechaAbonadoAbono']);
-                $objPHPExcel->getActiveSheet()->setCellValue('F'.$contador1, $datos['fechaVencimientoAbono']);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $contador1, $datos['reciboAbono']);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $contador1, $datos['servicioAbono']);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $contador1, $datos['facturaAbono']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $contador1, $datos['cargoAbono']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $contador1, $datos['fechaAbonadoAbono']);
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $contador1, $datos['fechaVencimientoAbono']);
                 if ($servicio == 'C') {
                     $cuota = $datos['cuotaCableAbono'];
                 } else {
                     $cuota = $datos['cuotaInterAbono'];
                 }
-                $objPHPExcel->getActiveSheet()->setCellValue('G'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('G'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('H'.$contador1, $cuota);
-                $objPHPExcel->getActiveSheet()->getStyle('H'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('I'.$contador1, '0');
-                $objPHPExcel->getActiveSheet()->getStyle('I'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-                $objPHPExcel->getActiveSheet()->setCellValue('J'.$contador1, $datos['totalImpuestoAbono']);
-                $objPHPExcel->getActiveSheet()->getStyle('J'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('G' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $contador1, $cuota);
+                $objPHPExcel->getActiveSheet()->getStyle('H' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $contador1, '0');
+                $objPHPExcel->getActiveSheet()->getStyle('I' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $contador1, $datos['totalImpuestoAbono']);
+                $objPHPExcel->getActiveSheet()->getStyle('J' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $total = $datos['totalImpuestoAbono'] + $cuota;
-                $objPHPExcel->getActiveSheet()->setCellValue('K'.$contador1, $total);
-                $objPHPExcel->getActiveSheet()->getStyle('K'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+                $objPHPExcel->getActiveSheet()->setCellValue('K' . $contador1, $total);
+                $objPHPExcel->getActiveSheet()->getStyle('K' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
                 $totalAbonos = $totalAbonos + $total;
-                $contador1+=1;
+                $contador1 += 1;
             }
         }
 
         $totaldetotal = $totalCargos - $totalAbonos;
-        $objPHPExcel->getActiveSheet()->setCellValue('J'.$contador1, "Total a cobrar");
-        $objPHPExcel->getActiveSheet()->getStyle('J'.$contador1)->getFont()->setBold(true);
-        $objPHPExcel->getActiveSheet()->setCellValue('K'.$contador1, $totaldetotal);
-        $objPHPExcel->getActiveSheet()->getStyle('K'.$contador1)->getFont()->setBold(true);
-        $objPHPExcel->getActiveSheet()->getStyle('K'.$contador1)->applyFromArray($style_array);
-        $objPHPExcel->getActiveSheet()->getStyle('K'.$contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+        $objPHPExcel->getActiveSheet()->setCellValue('J' . $contador1, "Total a cobrar");
+        $objPHPExcel->getActiveSheet()->getStyle('J' . $contador1)->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->setCellValue('K' . $contador1, $totaldetotal);
+        $objPHPExcel->getActiveSheet()->getStyle('K' . $contador1)->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('K' . $contador1)->applyFromArray($style_array);
+        $objPHPExcel->getActiveSheet()->getStyle('K' . $contador1)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
 
         header("Expires: 0");
