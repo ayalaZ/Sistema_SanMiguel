@@ -482,7 +482,7 @@ if ($detallado == 1) {
                         $totalConIvaEx = $totalConIvaEx + $montoCancelado;
                     } else {
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
-                        $pdf->Cell(20, 1, utf8_decode(number_format($sinIva, 2)), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
                         $totalSinIva = $totalSinIva + $sinIva;
                         $totalSoloIva = $totalSoloIva + $totalIva;
@@ -526,7 +526,7 @@ if ($detallado == 1) {
                         $totalConIvaEx2 = $totalConIvaEx2 + $montoCancelado2;
                     } else {
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
-                        $pdf->Cell(20, 1, utf8_decode(number_format($sinIva, 2)), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode(number_format($montoCancelado2, 2)), 0, 0, 'C');
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
                         $totalSinIva2 = $totalSinIva2 + $sinIva;
                         $totalSoloIva2 = $totalSoloIva2 + $totalIva;
@@ -573,7 +573,7 @@ if ($detallado == 1) {
                         $totalConIvaEx3 = $totalConIvaEx3 + $montoCancelado3;
                     } else {
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
-                        $pdf->Cell(20, 1, utf8_decode(number_format($sinIva, 2)), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode(number_format($montoCancelado3, 2)), 0, 0, 'C');
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
                         $totalSinIva3 = $totalSinIva3 + $sinIva;
                         $totalSoloIva3 = $totalSoloIva3 + $totalIva;
@@ -618,7 +618,7 @@ if ($detallado == 1) {
                         $totalConIvaEx = $totalConIvaEx + $montoCancelado;
                     } else {
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
-                        $pdf->Cell(20, 1, utf8_decode(number_format($sinIva, 2)), 0, 0, 'C');
+                        $pdf->Cell(20, 1, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
                         $pdf->Cell(20, 1, utf8_decode("0.00"), 0, 0, 'C');
                         $totalSinIva = $totalSinIva + $sinIva;
                         $totalSoloIva = $totalSoloIva + $totalIva;

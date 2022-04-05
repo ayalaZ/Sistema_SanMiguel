@@ -903,14 +903,14 @@ if ($detallado == 1) {
                     $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
-                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $montoCancelado);
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
                     $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
-                    $totalSinIva = $totalSinIva + $sinIva;
+                    $totalSinIva = $totalSinIva + $montoCancelado;
                     $totalSoloIva = $totalSoloIva + $totalIva;
                 }
 
@@ -981,14 +981,14 @@ if ($detallado == 1) {
                     $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
-                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $montoCancelado2);
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
                     $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
-                    $totalSinIva2 = $totalSinIva2 + $sinIva;
+                    $totalSinIva2 = $totalSinIva2 + $montoCancelado2;
                     $totalSoloIva2 = $totalSoloIva2 + $totalIva;
                 }
 
@@ -1063,14 +1063,14 @@ if ($detallado == 1) {
                     $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
-                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $montoCancelado3);
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
                     $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
-                    $totalSinIva3 = $totalSinIva3 + $sinIva;
+                    $totalSinIva3 = $totalSinIva3 + $montoCancelado3;
                     $totalSoloIva3 = $totalSoloIva3 + $totalIva;
                 }
 
@@ -1143,14 +1143,14 @@ if ($detallado == 1) {
                     $objPHPExcel->getActiveSheet()->getStyle('E' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->applyFromArray($style_array);
-                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $sinIva);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F' . $celda, $montoCancelado);
                     $objPHPExcel->getActiveSheet()->getStyle('F' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->applyFromArray($style_array);
                     $objPHPExcel->getActiveSheet()->setCellValue('G' . $celda, '0');
                     $objPHPExcel->getActiveSheet()->getStyle('G' . $celda)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 
-                    $totalSinIva = $totalSinIva + $sinIva;
+                    $totalSinIva = $totalSinIva + $montoCancelado;
                     $totalSoloIva = $totalSoloIva + $totalIva;
                 }
 
@@ -1190,7 +1190,7 @@ if ($detallado == 1) {
                 if ($ex->isExento("")) {
                     $totalConIvaEx2 = $totalConIvaEx2 + $montoCancelado2;
                 } else {
-                    $totalSinIva2 = $totalSinIva2 + $sinIva;
+                    $totalSinIva2 = $totalSinIva2 + $montoCancelado2;
                     $totalSoloIva2 = $totalSoloIva2 + $totalIva;
                 }
 
@@ -1223,7 +1223,7 @@ if ($detallado == 1) {
                 if ($ex->isExento("")) {
                     $totalConIvaEx3 = $totalConIvaEx3 + $montoCancelado3;
                 } else {
-                    $totalSinIva3 = $totalSinIva3 + $sinIva;
+                    $totalSinIva3 = $totalSinIva3 + $montoCancelado3;
                     $totalSoloIva3 = $totalSoloIva3 + $totalIva;
                 }
 

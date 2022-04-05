@@ -47,7 +47,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     <link rel="stylesheet" href="../herramientas/dist/css/adminlte.min.css">
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
     <script src="../herramientas/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="../herramientas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -58,6 +58,8 @@ function setMenu($permisosActuales, $permisoRequerido)
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.css" />
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <style>
         .error {
             color: red;
@@ -75,6 +77,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
+    <script src="js/usuarios.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -239,6 +242,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <th>Nombre</th>
                                 <th>Usuario</th>
                                 <th>Permisos</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -253,6 +257,17 @@ function setMenu($permisosActuales, $permisoRequerido)
                                     <td><?php echo $datos['nombre'] . ' ' . $datos['apellido'] ?></td>
                                     <td><?php echo $datos['usuario'] ?></td>
                                     <td><?php echo $datos['rol'] ?></td>
+                                    <td><?php
+                                            if ($datos['state'] == '1') {
+                                                ?>
+                                                    <button class="btn btn-sm btn-success"><i class="fas fa-user"></i></button>
+                                                <?php
+                                            }else{
+                                                ?>
+                                                    <button class="btn btn-sm btn-danger"></button>
+                                                <?php
+                                            }
+                                        ?></td>
                                     <td>
                                         <button class="btn btn-sm btn-warning"><i class="fas fa-user-edit"></i></button>
                                         <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
@@ -524,7 +539,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form id="frmusuario" name="frmusuario" role="dialog">
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="nombre" class="control-label">Nombre</label>
@@ -532,7 +547,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             </div>
                             <div class="col-md-6">
                                 <label for="apellido" class="control-label">Apellido</label>
-                                <input type="text" class="form-control" id="apellido" name="apelido">
+                                <input type="text" class="form-control" id="apellido" name="apellido">
                             </div>
                         </div>
                         <div class="row">
@@ -541,16 +556,34 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <input type="text" class="form-control" id="usuario" name="usuario">
                             </div>
                             <div class="col-md-6">
-                                <label for="Clave" class="control-label">Clave</label>
-                                <input type="password" class="form-control" id="clave" name="clave">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
                                 <label for="rol" class="control-label">Rol</label>
                                 <select name="rol" id="rol" class="form-control">
                                     <option value="" selected>Seleccione el rol</option>
+                                    <?php
+                                    $roles = $mysqli->query("SELECT * FROM tbl_roles");
+                                    while ($datos = $roles->fetch_array()) {
+                                    ?>
+                                        <option value="<?php echo strtolower($datos['nombreRol']) ?>"><?php echo $datos['nombreRol'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Clave" class="control-label">Clave</label>
+                                <input type="password" class="form-control" id="clave" name="clave">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confirm" class="control-label">Confirma clave</label>
+                                <input type="password" class="form-control" id="clave_confirm" name="clave_confirm">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top: 5px;">
+                                <input type="hidden" name="proceso" id="proceso" value="1">
+                                <button class="btn btn-success btn-lg" type="submit">Guardar</button>
                             </div>
                         </div>
                     </form>
