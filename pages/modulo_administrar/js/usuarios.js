@@ -9,7 +9,6 @@ $(document).ready(function () {
             },
             usuario: {
                 required: true,
-                minlength: 8,
             },
             rol: {
                 required: true,
@@ -33,7 +32,6 @@ $(document).ready(function () {
             },
             usuario: {
                 required: "Este campo es obligatorio",
-                minlength: 'Minimo 8 caracteres',
             },
             rol: {
                 required: "Este campo es obligatorio",

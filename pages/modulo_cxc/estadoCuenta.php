@@ -400,8 +400,17 @@ if (isset($_SESSION['servicio'])) {
                             $mesTabla = '01/' . $datosCargos['mesCargo'];
                             $date = str_replace('/', '-', $mesTabla);
                             $date = date('Ymd', strtotime($date));
+                            if ($datosCargos['estado'] == 'CANCELADA') {
+                                ?>
+                                    <tr class="table-light">
+                                <?php
+                            }else{
+                                ?>
+                                    <tr class="table-danger">
+                                <?php
+                            }
                         ?>
-                            <tr class="table-danger">
+                            
                                 <td><?php echo $datosCargos['numeroRecibo'] ?></td>
                                 <td><?php echo $datosCargos['tipoServicio'] ?></td>
                                 <td><?php echo $datosCargos['numeroFactura'] ?></td>

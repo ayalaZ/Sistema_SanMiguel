@@ -435,9 +435,28 @@ if ($detallado == 1) {
         $pdf->Cell(40, 3.5, utf8_decode(number_format($total4, 2)), 0, 1, 'L');
         $pdf->Cell(40, 3.5, utf8_decode('Exportaciones'), 0, 0, 'L');
         $pdf->Cell(40, 3.5, utf8_decode('0.00'), 0, 1, 'L');
-        $pdf->Cell(60, 3.5, utf8_decode(''), "T", 1, 'C');
+        $pdf->Cell(60, 3, utf8_decode(''), "T", 1, 'C');
         $pdf->Cell(40, 3.5, utf8_decode("VENTAS TOTALES:"), "", 0, 'L');
         $pdf->Cell(20, 3.5, utf8_decode(number_format(($total1 + $resumen2 + $resumen3 + $total4), 2)), "", 1, 'L');
+
+        if ($tiposComprobantes == 3) {
+            $totales = $mysqli->query("SELECT sum(totalComprobante) AS totalCable, sum(impuesto) AS impuesto FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoServicio='C'");
+            $datosTotales = $totales->fetch_array();
+            $pdf->Cell(60, 3, utf8_decode(''), "T", 1, 'C');
+            $pdf->Cell(40, 3.5, utf8_decode('Total solo cable'), 0, 0, 'L');
+            $pdf->Cell(40, 3.5, utf8_decode(number_format($datosTotales['totalCable'], 2)), 0, 1, 'L');
+            $pdf->Cell(40, 3.5, utf8_decode('Total CESC cable'), 0, 0, 'L');
+            $pdf->Cell(40, 3.5, utf8_decode(number_format($datosTotales['impuesto'], 2)), 0, 1, 'L');
+            
+            $totales = $mysqli->query("SELECT sum(totalComprobante) AS totalInternet, sum(impuesto) AS impuesto FROM tbl_ventas_anuladas WHERE fechaComprobante BETWEEN '$desde' AND '$hasta' AND tipoServicio='I'");
+            $datosTotales = $totales->fetch_array();
+            $pdf->Cell(60, 3, utf8_decode(''), "T", 1, 'C');
+            $pdf->Cell(40, 3.5, utf8_decode('Total solo internet'), 0, 0, 'L');
+            $pdf->Cell(40, 3.5, utf8_decode(number_format($datosTotales['totalInternet'], 2)), 0, 1, 'L');
+            $pdf->Cell(40, 3.5, utf8_decode('Total CESC internet'), 0, 0, 'L');
+            $pdf->Cell(40, 3.5, utf8_decode(number_format($datosTotales['impuesto'], 2)), 0, 1, 'L');
+        }
+
         $pdf->Ln(20);
         $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
         $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador"), "", 0, 'L');

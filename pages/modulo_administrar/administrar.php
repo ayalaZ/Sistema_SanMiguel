@@ -45,18 +45,16 @@ function setMenu($permisosActuales, $permisoRequerido)
     <link rel="stylesheet" href="../herramientas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../herramientas/dist/css/adminlte.min.css">
-
-
-
     <script src="../herramientas/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="../herramientas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
     <!-- AdminLTE App -->
     <script src="../herramientas/dist/js/adminlte.js"></script>
-
     <!-- SWEETALERT -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.css" />
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
@@ -66,9 +64,7 @@ function setMenu($permisosActuales, $permisoRequerido)
             font-family: verdana, Helvetica;
         }
     </style>
-
     <!-- DataTables CSS library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
     <!-- DataTables JS library -->
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -258,18 +254,19 @@ function setMenu($permisosActuales, $permisoRequerido)
                                     <td><?php echo $datos['usuario'] ?></td>
                                     <td><?php echo $datos['rol'] ?></td>
                                     <td><?php
-                                            if ($datos['state'] == '1') {
-                                                ?>
-                                                    <button class="btn btn-sm btn-success"><i class="fas fa-user"></i></button>
-                                                <?php
-                                            }else{
-                                                ?>
-                                                    <button class="btn btn-sm btn-danger"></button>
-                                                <?php
-                                            }
-                                        ?></td>
+                                        if ($datos['state'] == '1') {
+                                        ?>
+                                            <button class="btn btn-sm btn-success"><i class="fas fa-user"></i></button>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-user-alt-slash"></i></button>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning"><i class="fas fa-user-edit"></i></button>
+                                        <button class="btn btn-sm btn-warning" data-toggle="tooltip" title="Editar" data-placement="top"><i class="fas fa-user-edit"></i></button>
                                         <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                                         <button class="btn btn-sm btn-success"><i class="fas fa-key"></i></button>
                                     </td>
@@ -636,6 +633,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                 [0, "asc"]
             ],
         });
+
     });
 </script>
 
