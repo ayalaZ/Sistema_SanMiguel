@@ -205,7 +205,6 @@ if ($tipoComprobante == 2) {
         $pdf->Cell(67,6,utf8_decode(''),0,0,'L');
         $pdf->Cell(70,-20,utf8_decode($municipio),0,0,'L');
         $pdf->Cell(45,6,utf8_decode(''),0,0,'L');
-
         $pdf->Cell(70,-20,utf8_decode(''),0,1,'L');
         $pdf->Ln(10);
         //TELEFONO
@@ -213,12 +212,26 @@ if ($tipoComprobante == 2) {
         $pdf->Cell(70,6,utf8_decode(''),0,0,'L');
         $pdf->Cell(110,6,utf8_decode(''),0,0,'L');
         $pdf->Cell(70,20,utf8_decode(''),0,1,'L');
+        $codigo = $row['codigoCliente'];
+        $vencimientos = $mysqli->query("SELECT vencimiento_in AS Vinternet, vencimiento_ca AS Vcable FROM clientes WHERE cod_cliente='$codigo'");
+        $datosVencimiento = $vencimientos->fetch_array();
+        $fechaactual = date("Y-m-d");
+        $pdf->SetFont('Arial','B',7);
+        if ($row['tipoServicio'] == "I") {
+            if ($fechaactual > $datosVencimiento['Vinternet']) {
+                $pdf->Cell(195,6,utf8_decode('VC: '.$datosVencimiento['Vinternet']),0,0,'R');
+            }
+        }else{
+            if ($fechaactual > $datosVencimiento['Vcable']) {
+                $pdf->Cell(195,6,utf8_decode('VC: '.$datosVencimiento['Vcable']),0,0,'R');
+            }
+        } 
+        $pdf->SetFont('Arial','',7); 
         $pdf->Ln(4.5);
 
     //////////////////////////////FIN FRANJA 1///////////////////////////////////
         $pdf->Cell(23,6,utf8_decode('1'),0,0,'R');
         $pdf->Cell(13,6,utf8_decode(''),0,0,'R');
-
         $pdf->Cell(39,6,utf8_decode("Pendiente ".strftime('%B', strtotime($row['fechaCobro'])). " de ".strftime('%Y', strtotime($row['fechaCobro']))),0,0,'L');
 
         if ($row['exento'] != "T") {
@@ -229,7 +242,7 @@ if ($tipoComprobante == 2) {
             $pdf->Cell(36,6,utf8_decode("$".$unitario),0,0,'L');
             $pdf->Cell(87,6,utf8_decode("$".number_format($unitario,2)),0,0,'L');
         }
-
+        //$pdf->Cell(6,6,utf8_decode('FV:25-12-2023'),0,0,'R');
         $pdf->Cell(-37,6,utf8_decode('1'),0,0,'R');
         $pdf->Cell(13,6,utf8_decode(''),0,0,'R');
         $pdf->Cell(38,6,utf8_decode("Pendiente ".strftime('%B', strtotime($row['fechaCobro'])). " de ".strftime('%Y', strtotime($row['fechaCobro']))),0,0,'L');
@@ -247,6 +260,7 @@ if ($tipoComprobante == 2) {
         $pdf->Cell(161,6,utf8_decode('*'),0,0,'R');
         $pdf->Cell(6,6,utf8_decode(''),0,0,'R');
         $pdf->Cell(38,6,utf8_decode("Coordenadas ".$coordenadas),0,0,'L');
+        
         ///////////
         $pdf->Cell(260,6,utf8_decode(''),0,0,'L');
         $pdf->Cell(70,-30,utf8_decode(''),0,1,'L');
@@ -545,7 +559,7 @@ elseif ($tipoComprobante == 1) {
         
         //$pdf->Image('../../../images/contrato/factu-nueva2.jpg',1.5,-2.1,355, 216);
         $pdf->Image('../../../images/comp.png',150,143, 45, 10);
-
+        
           if ($row["anulada"] == 1){
               //$pdf->Image('../../../images/anulada.png',155,120);
               $pdf->Image('../../../images/anulada.png',135,70);
