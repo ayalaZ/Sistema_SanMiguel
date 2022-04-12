@@ -627,6 +627,8 @@ if (strlen($alert) > 3) {
                         </li>
                         <li><a onclick="window.open('php/f5.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')">Documento F-5</a>
                         </li>
+                        <li><a onclick="window.open('php/f6.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')">Documento F-6</a>
+                        </li>
                         <li><a onclick="window.open('php/f9.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')">Documento F-9</a>
                         </li>
                         <li><a onclick="window.open('php/allDoc.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')">Documentación completa</a>
@@ -832,7 +834,6 @@ if (strlen($alert) > 3) {
                 <div class="col-md-12">
                     <div class="panel panel-danger">
                         <div class="panel-heading">
-<<<<<<< HEAD
                             <?php 
                                 if (strtoupper($nombre) == 'CODIGO A REUTILIZAR') {
                                     ?>
@@ -862,21 +863,8 @@ if (strlen($alert) > 3) {
                             <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="atras" name="atras" onclick="<?php echo 'atras1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-backward"></i></button>&nbsp;
                             <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="adelante" name="adelante" onclick="<?php echo 'adelante1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-forward"></i></button>&nbsp;
                             <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="todoAdelante" name="todoAdelante" onclick="<?php echo 'todoAdelante1(' . $allClients->getLast() . ')' ?>"><i class="fas fa-fast-forward"></i></button></span>
-=======
-                            <span style="font-size:15px;" class="label label-danger"><?php echo $codigo; ?></span> <span><?php echo strtoupper($nombre); ?></span>
-                            <?php
-                            if ($idCuenta == "covid19") {
-                                echo '<span style="color: #d33333 ; font-weight: bold; font-size: 20px;">COVID-19 <i class="fas fa-biohazard"></i></span> <input class="" type="checkbox" name="aplicaCovid" checked>';
-                            } else {
-                                echo '<span style="color: #d33333 ; font-weight: bold; font-size: 20px;">COVID-19 <i class="fas fa-biohazard"></i></span> <input class="" type="checkbox" name="aplicaCovid">';
-                            }
-                            ?>
-                            <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="todoAtras" name="todoAtras" onclick="<?php echo 'todoAtras1(' . $allClients->getFirst() . ')' ?>"><i class="fas fa-fast-backward"></i></button>&nbsp;
-                                <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="atras" name="atras" onclick="<?php echo 'atras1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-backward"></i></button>&nbsp;
-                                    <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="adelante" name="adelante" onclick="<?php echo 'adelante1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-forward"></i></button>&nbsp;
-                                        <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="todoAdelante" name="todoAdelante" onclick="<?php echo 'todoAdelante1(' . $allClients->getLast() . ')' ?>"><i class="fas fa-fast-forward"></i></button>
-                                        </span>
->>>>>>> 8404f3d80dcbc2494a76c11cd1ac9cae57de7f40
+                            
+                            
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
