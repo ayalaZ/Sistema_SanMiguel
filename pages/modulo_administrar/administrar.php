@@ -74,6 +74,9 @@ function setMenu($permisosActuales, $permisoRequerido)
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
     <script src="js/usuarios.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -230,7 +233,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                     <h3>Listado de Usuarios</h3>
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#modalAddUser"><i class="fas fa-user-plus"></i></button>
+                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#modalAddUser" title="Nuevo Usuario" data-placement="top"><i class="fas fa-user-plus"></i></button>
                     <table class="table tabla">
                         <thead>
                             <tr>
@@ -266,9 +269,9 @@ function setMenu($permisosActuales, $permisoRequerido)
                                         ?>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning" data-toggle="tooltip" title="Editar" data-placement="top"><i class="fas fa-user-edit"></i></button>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
-                                        <button class="btn btn-sm btn-success"><i class="fas fa-key"></i></button>
+                                        <button class="btn btn-sm btn-warning" data-toggle="tooltip" title="Editar" data-placement="top" class="btn-editar" id="btn-editar" data-id="<?php echo $datos['idUsuario']?>" ><i class="fas fa-user-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger" data-toggle="tooltip" title="Eliminar" data-placement="top"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-sm btn-success" data-toggle="tooltip" title="Permisos" data-placement="top"><i class="fas fa-key"></i></button>
                                     </td>
                                 </tr>
                             <?php
@@ -526,7 +529,7 @@ function setMenu($permisosActuales, $permisoRequerido)
             </table>
         </div>
     </aside>
-    <!-- Modal SUSPENSIONES AUTOMATICAS -->
+    <!-- Modal Agregar  -->
     <div id="modalAddUser" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
             <!-- Modal content-->
@@ -588,7 +591,8 @@ function setMenu($permisosActuales, $permisoRequerido)
             </div>
         </div>
     </div>
-    </div><!-- Fin Modal SUSPENSIONES AUTOMATICAS -->
+    </div><!-- Fin Modal Agregar usuario -->
+
 </body>
 <script>
     $(document).ready(function() {
@@ -633,8 +637,12 @@ function setMenu($permisosActuales, $permisoRequerido)
                 [0, "asc"]
             ],
         });
-
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
     });
+
+    $(".btn-editar").on("click",);
 </script>
 
 </html>
