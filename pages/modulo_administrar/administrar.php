@@ -269,7 +269,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                         ?>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning" data-toggle="tooltip" title="Editar" data-placement="top" class="btn-editar" id="btn-editar" data-id="<?php echo $datos['idUsuario']?>" ><i class="fas fa-user-edit"></i></button>
+                                        <button class="btn btn-sm btn-warning btn-editar" data-toggle="tooltip" title="Editar" data-placement="top" name="btn-editar" id="btn-editar" value="<?php echo $datos['idUsuario'] ?>"><i class="fas fa-user-edit"></i></button>
                                         <button class="btn btn-sm btn-danger" data-toggle="tooltip" title="Eliminar" data-placement="top"><i class="fas fa-trash-alt"></i></button>
                                         <button class="btn btn-sm btn-success" data-toggle="tooltip" title="Permisos" data-placement="top"><i class="fas fa-key"></i></button>
                                     </td>
@@ -637,12 +637,14 @@ function setMenu($permisosActuales, $permisoRequerido)
                 [0, "asc"]
             ],
         });
-        $(function() {
+    });
+    $(function() {
             $('[data-toggle="tooltip"]').tooltip()
         });
-    });
-
-    $(".btn-editar").on("click",);
+        $(".btn-editar").on('click', function() {
+            $id = $(this).val();
+            alert($id);
+        });
 </script>
 
 </html>
