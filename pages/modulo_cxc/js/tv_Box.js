@@ -1,4 +1,3 @@
-<< << << < HEAD
 $(document).ready(function() {
             $(".delete").on('click', function(e) {
                 e.preventDefault();
@@ -55,8 +54,7 @@ $(document).ready(function() {
                         }
                     });
                 });
-            }); ===
-            === =
+            });
             $(document).ready(function() {
                 $(".delete").on('click', function(e) {
                     e.preventDefault();

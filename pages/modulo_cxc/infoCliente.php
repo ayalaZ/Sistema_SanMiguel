@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
 
     // read current record's data
 
-    
+
 
     try {
         $usuariotipo = $_SESSION["rol"];
@@ -551,22 +551,6 @@ if (strlen($alert) > 3) {
         .panel {
             border-color: #212121;
         }
-
-        .modal-dialog {
-            width: 1300px;
-        }
-
-        /* Important part */
-        .modal-dialog {
-            overflow-y: initial !important
-        }
-
-        .modal-body {
-            height: 500px;
-            overflow-y: auto;
-            font-size: 11px;
-            font-weight: normal;
-        }
     </style>
 
     <!-- SWEETALERT -->
@@ -735,7 +719,7 @@ if (strlen($alert) > 3) {
                         </tr>
 
                         <tr>
-                            <td><a onclick="window.open('php/contratoCable.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')" class="btn btn-danger btn-block" style="font-size: 16px;"><i class="far fa-file-alt"></i> Gestion de Contratos C</a></td>
+                            <td><button name="gestionCont" class="btn btn-danger btn-block" data-toggle="modal" data-target="#nuevoContratoC"><i class="far fa-file-alt"></i> Contrato Cable</button></td>
                             <!-- -->
                             <td><button name="gestionCont" class="btn btn-danger btn-block" data-toggle="modal" data-target="#nuevoContratoI"><i class="far fa-file-alt" style=" font-size: 20px;" disabled></i> Gestion de Contratos I</button></td>
                             <!-- -->
@@ -834,18 +818,18 @@ if (strlen($alert) > 3) {
                 <div class="col-md-12">
                     <div class="panel panel-danger">
                         <div class="panel-heading">
-                            <?php 
-                                if (strtoupper($nombre) == 'CODIGO A REUTILIZAR') {
-                                    ?>
-                                    <span style="font-size:15px;" class="label label-warning"><?php echo $codigo; ?></span> <span><?php echo strtoupper($nombre); ?></span>
-                                    <?php
-                                }else{
-                                    ?>
-                                    <span style="font-size:15px;" class="label label-danger"><?php echo $codigo; ?></span> <span><?php echo strtoupper($nombre); ?></span>
-                                    <?php
-                                }
+                            <?php
+                            if (strtoupper($nombre) == 'CODIGO A REUTILIZAR') {
                             ?>
-                            
+                                <span style="font-size:15px;" class="label label-warning"><?php echo $codigo; ?></span> <span><?php echo strtoupper($nombre); ?></span>
+                            <?php
+                            } else {
+                            ?>
+                                <span style="font-size:15px;" class="label label-danger"><?php echo $codigo; ?></span> <span><?php echo strtoupper($nombre); ?></span>
+                            <?php
+                            }
+                            ?>
+
                             <?php
                             if ($idCuenta == "covid19") {
                                 echo '<span style="color: #d33333 ; font-weight: bold; font-size: 20px;">COVID-19 <i class="fas fa-biohazard"></i></span> <input class="" type="checkbox" name="aplicaCovid" checked>';
@@ -853,18 +837,18 @@ if (strlen($alert) > 3) {
                                 echo '<span style="color: #d33333 ; font-weight: bold; font-size: 20px;">COVID-19 <i class="fas fa-biohazard"></i></span> <input class="" type="checkbox" name="aplicaCovid">';
                             }
                             $rol = $_SESSION['rol'];
-                                if ($rol == 'administracion' || $rol=='jefatura' || $rol=='subgerencia') {
+                            if ($rol == 'administracion' || $rol == 'jefatura' || $rol == 'subgerencia') {
                             ?>
-                            <button type="button" class="reu btn btn-xs btn-danger" data="<?php echo $codigo; ?>"><i class="fas fa-recycle"></i></button>
-                            <?php 
-                                }
+                                <button type="button" class="reu btn btn-xs btn-danger" data="<?php echo $codigo; ?>"><i class="fas fa-recycle"></i></button>
+                            <?php
+                            }
                             ?>
                             <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="todoAtras" name="todoAtras" onclick="<?php echo 'todoAtras1(' . $allClients->getFirst() . ')' ?>"><i class="fas fa-fast-backward"></i></button>&nbsp;
-                            <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="atras" name="atras" onclick="<?php echo 'atras1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-backward"></i></button>&nbsp;
-                            <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="adelante" name="adelante" onclick="<?php echo 'adelante1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-forward"></i></button>&nbsp;
-                            <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="todoAdelante" name="todoAdelante" onclick="<?php echo 'todoAdelante1(' . $allClients->getLast() . ')' ?>"><i class="fas fa-fast-forward"></i></button></span>
-                            
-                            
+                                <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="atras" name="atras" onclick="<?php echo 'atras1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-backward"></i></button>&nbsp;
+                                    <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="adelante" name="adelante" onclick="<?php echo 'adelante1(' . $_GET["id"] . ')' ?>"><i class="fas fa-step-forward"></i></button>&nbsp;
+                                        <span class="pull-right"><button class="btn btn-danger btn-xs" type="button" id="todoAdelante" name="todoAdelante" onclick="<?php echo 'todoAdelante1(' . $allClients->getLast() . ')' ?>"><i class="fas fa-fast-forward"></i></button></span>
+
+
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -1763,61 +1747,62 @@ if (strlen($alert) > 3) {
                 ?>
                         <script>
                             swal({
-                                type: 'success',
-                                title: 'Exito',
-                                text: 'Operacion realizada con exito!',
-                                showCancelButton: true,
-                                confirmButtonText: "Continuar",
-                                cancelButtonText: "Cancelar",
-                            })
-                            .then(resultado=>{
-                                if(resultado.value){
-                                    window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
-                                }else{
-                                    window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
-                                }
-                            });
-                           
+                                    type: 'success',
+                                    title: 'Exito',
+                                    text: 'Operacion realizada con exito!',
+                                    showCancelButton: true,
+                                    confirmButtonText: "Continuar",
+                                    cancelButtonText: "Cancelar",
+                                })
+                                .then(resultado => {
+                                    if (resultado.value) {
+                                        window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
+                                    } else {
+                                        window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
+                                    }
+                                });
                         </script>
                     <?php
-                    } if($estado == 'ERROR') { 
+                    }
+                    if ($estado == 'ERROR') {
                     ?>
                         <script>
                             swal({
-                                type: 'error',
-                                title: 'Error',
-                                text: 'Ingresa valores duplicados!',
-                                showCancelButton: true,
-                                confirmButtonText: "Continuar",
-                                cancelButtonText: "Cancelar",
-                            })
-                            .then(resultado=>{
-                                if(resultado.value){
-                                    window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
-                                }else{
-                                    window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
-                                }
-                            });
+                                    type: 'error',
+                                    title: 'Error',
+                                    text: 'Ingresa valores duplicados!',
+                                    showCancelButton: true,
+                                    confirmButtonText: "Continuar",
+                                    cancelButtonText: "Cancelar",
+                                })
+                                .then(resultado => {
+                                    if (resultado.value) {
+                                        window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
+                                    } else {
+                                        window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
+                                    }
+                                });
                         </script>
-                <?php
-                    }if ($estado == 'ERROR2') {
-                        ?>
+                    <?php
+                    }
+                    if ($estado == 'ERROR2') {
+                    ?>
                         <script>
                             swal({
-                                type: 'error',
-                                title: 'Error',
-                                text: 'Error al ingresar los datos',
-                                showCancelButton: true,
-                                confirmButtonText: "Continuar",
-                                cancelButtonText: "Cancelar",
-                            })
-                            .then(resultado=>{
-                                if(resultado.value){
-                                    window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
-                                }else{
-                                    window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
-                                }
-                            });
+                                    type: 'error',
+                                    title: 'Error',
+                                    text: 'Error al ingresar los datos',
+                                    showCancelButton: true,
+                                    confirmButtonText: "Continuar",
+                                    cancelButtonText: "Cancelar",
+                                })
+                                .then(resultado => {
+                                    if (resultado.value) {
+                                        window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
+                                    } else {
+                                        window.location.href = "infoCliente.php?id=<?php echo $codigo ?>";
+                                    }
+                                });
                         </script>
                 <?php
                     }
@@ -1861,7 +1846,7 @@ if (strlen($alert) > 3) {
                                             </div>
                                             <div class="col-md-1">
                                                 <label for="eliminar">Eliminar</label>
-                                                <a href="#" data='<?php echo $datos['idBox']?>' class="delete btn btn-sm btn-danger btn-block"><i class="fas fa-trash-alt"></i></a>
+                                                <a href="#" data='<?php echo $datos['idBox'] ?>' class="delete btn btn-sm btn-danger btn-block"><i class="fas fa-trash-alt"></i></a>
                                             </div>
                                         </div>
                                     </form>
@@ -1918,6 +1903,34 @@ if (strlen($alert) > 3) {
 
                 </div>
             </div>
+            <!-- Modal Contrato Cable -->
+            <!-- Modal -->
+            <div id="nuevoContratoC" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #CC0000;color:#fff;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Escoge una opcion!</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href="php/contratoCable.php?id=<?php echo $id ?>&opcion=1" class="btn btn-danger btn-block" style="font-size:16px;" target="_blank">Ver</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="php/contratoCable.php?id=<?php echo $id ?>&opcion=0" class="btn btn-danger btn-block" style="font-size:16px;" target="_blank">Generar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Fin modal contrato cable -->
             <!-- Modal Ordenes de Suspension -->
             <div id="ordenesSuspension" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-sm">
@@ -2127,6 +2140,7 @@ Full screen Modal
 }
 */
     </style>
+
     <div id="nuevoContratoI" class="modal fullscreen-modal fade" role="dialog">
         <div class="modal-dialog">
 
