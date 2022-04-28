@@ -39,4 +39,16 @@ switch ($proceso) {
         }
         echo json_encode($xdatos);
         break;
+    case '2':
+        break;
+    case '3':
+        $codigo = $_POST['cod'];
+        $datos = $mysqli->query("SELECT * FROM tbl_usuario WHERE idUsuario='$codigo'");
+        $datosUsuario = $datos->fetch_array();
+        $xdatos['id'] = $datosUsuario['idUsuario'];
+        $xdatos['nombre'] = $datosUsuario['nombre'];
+        $xdatos['apellido'] = $datosUsuario['apellido'];
+        $xdatos['usuario'] = $datosUsuario['usuario'];
+        echo json_encode($xdatos); 
+        break;
 }

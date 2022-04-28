@@ -82,10 +82,10 @@ function contratoInternet()
             $result_NC = $result_NC1 + 1;
         }
         if ($_SESSION['db'] == 'satpro_sm') {
-            $prefijocontrato = "SM-C";
+            $prefijocontrato = "SM-I";
             $lugar = 'San Miguel';
         } else {
-            $prefijocontrato = "US-C";
+            $prefijocontrato = "US-I";
             $lugar = 'Usulután';
         }
 
@@ -132,7 +132,35 @@ function contratoInternet()
             $pdf->SetFont('Courier', '', 8);
             $pdf->Cell(115, 2, 'Numero de contrato: ', 0, 0, 'R');
             $pdf->SetFont('Courier', 'B', 10);
-            $pdf->Cell(25, 2, utf8_decode('PRUEBA'), 0, 0, 'R');
+            if ($opcion == '0') {
+                $num_contrato1 = $datosCliente['cod_cliente'];
+                if ($datosCliente['tipo_de_contrato'] == 'Renovacion') {
+                    $tipo_de_contrato = 'R';
+                    $lastChar = substr($datosCliente['no_contrato_inter'], 9, 1);
+                    if ($lastChar == 'i' || $lastChar == 'I') {
+                        $remplazar = array('i', 'I');
+                        $num_contrato2 = str_replace($remplazar, 'R1', $datosCliente['no_contrato_inter']);
+                    } elseif ($lastChar == 'r' || $lastChar == 'R') {
+                        $numero = substr($datosCliente['no_contrato_inter'], 10, 1);
+                        $num_contrato2 = $datosCliente['no_contrato_inter'];
+                        $nc2 = substr($num_contrato2, 0, 10);
+                        $num_contrato2 = $nc2 . ($numero + 1);
+                    }
+                } else {
+                    $tipo_de_contrato = 'I';
+                    $num_contrato2 = $prefijocontrato . $num_contrato1 . $tipo_de_contrato;
+                }
+
+                // SQL query para traer datos del servicio de cable de la tabla clientes
+                $query = "UPDATE clientes SET no_contrato_inter= '$num_contrato2' WHERE cod_cliente = '$codigo'";
+                // PreparaciÃ³n de sentencia
+                $statement = $mysqli->query($query);
+            } else {
+               
+                    $num_contrato2 = $datosCliente['no_contrato_inter'];
+            }
+
+            $pdf->Cell(25, 2, utf8_decode($num_contrato2), 0, 0, 'R');
             $pdf->SetFont('Courier', '', 8);
             $pdf->Ln(4);
             $pdf->SetFont('Courier', 'B', 8);
@@ -190,13 +218,13 @@ function contratoInternet()
             $pdf->Ln(2);
             $pdf->Cell(45, 2, 'Direccion del instalacion:', 0, 0, 'L');
             $pdf->MultiCell(141, 3, strtoupper($datosCliente['direccion']), 0, 'L', 0);
-            $pdf->Line(55, 85, 196, 85);
-            $pdf->Line(10, 89, 196, 89);
+            $pdf->Line(55, 84, 196, 84);
+            $pdf->Line(10, 87, 196, 87);
             $pdf->Ln(2);
             $pdf->Cell(45, 2, 'Direccion de cobro:', 0, 0, 'L');
             $pdf->MultiCell(141, 3, strtoupper($datosCliente['direccion_cobro']), 0, 'L', 0);
-            $pdf->Line(45, 93, 196, 93);
-            $pdf->Line(10, 96, 196, 96);
+            $pdf->Line(44, 92, 196, 92);
+            $pdf->Line(10, 95, 196, 95);
             $pdf->Ln(3);
             $pdf->SetFont('Courier', 'B', 8);
             $pdf->Cell(100, 2, 'SECCION SEGUNDA: ESPECIFICACIONES DE LOS SERVICIOS PRESTADOS AL CLIENTE', 0, 1, 'L');
@@ -256,13 +284,31 @@ function contratoInternet()
             $pdf->Cell(30, 3, $datosCliente['serie_modem'], 'B', 0, 'C');
             $pdf->Cell(42, 2, 'Entregado en calidad de:', 0, 0, 'L');
             $pdf->Cell(33, 3, $datosCliente['entrega_calidad'], 'B', 1, 'C');
-            $pdf->Ln(3);
+            $pdf->Ln(2);
+            $pdf->Cell(62, 2, 'Plazo de vigencia contrato en meses:', 0, 0, 'L');
+            $pdf->Cell(36, 3, $datosCliente['periodo_contrato_int'], 'B', 0, 'C');
+            $pdf->Cell(38, 2, 'Costo de instalacion:', 0, 0, 'L');
+            $valor_instalacion = $datosCliente['costo_instalacion_in'];
+            if ($valor_instalacion == 0)
+            {
+                $costo_instalacion_in = "GRATUITA";
+                $pdf->Cell(50, 3, $costo_instalacion_in, 'B', 1, 'C');
+            }
+            else{
+                $pdf->Cell(50, 3, $valor_instalacion, 'B', 1, 'C'); 
+            }
+            $pdf->Ln(2);
+            $pdf->Cell(63, 2, 'Tarifa mensual unitaria por servicio:', 0, 0, 'L');
+            $pdf->Cell(36, 3, doubleval($datosCliente['cuota_in']), 'B', 0, 'C');
+            $pdf->Cell(19, 2, 'Beneficio:', 0, 0, 'L');
+            $pdf->Cell(68, 3, 'INTERNET ILIMITADO', 'B', 1, 'C');
+            $pdf->Ln(2);
             $pdf->SetFont('Courier', 'B', 8);
             $pdf->Cell(100, 2, 'SECCION TERCERA: TERMINOS Y CONDICIONES', 0, 1, 'L');
             $pdf->SetFont('Courier', '', 8);
             $pdf->Ln(2);
             $pdf->MultiCell(186, 3, utf8_decode('Los terminos y condiciones para la prestación de Servicio de Internet, por parte de CABLE VISION POR SATELITE SOCIEDAD ANONIMA DE CAPITAL VARIABLE, que se abrevia CABLE SAT S.A. DE C.V. Que en el desarrollo del presente instrumento podrá citarse como "CABLE SAT". Las condiciones particulares, en cuanto a plazo, plan o paquete contratado, tarifas, garantias, especificaciones de equipos para la prestacion del servicio a cada cliente, se encuentra detalladas en este CONTRATO DE SERVICIO que el CLIENTE voluntariamente se suscribe y acepta.'), 0, 'J', 0);
-            $pdf->Ln(3);
+            $pdf->Ln(1);
             $pdf->MultiCell(186, 3, utf8_decode('1. CLIENTE. Declaro que recibiré de parte de CABLE SAT el servicio de internet hasta la finalización del plazo acordado; y estoy consciente que el contrato de servicio entra en vigencia a partir de la fecha de suscripción y se renueva automaticamente por plazos iguales, una vez haya transcurrido diez dias despues del vencimiento del contrato.'), 0, 'J', 0);
             $pdf->SetFont('Arial', 'B', 50);
             $pdf->SetTextColor(239, 83, 80);
@@ -273,15 +319,15 @@ function contratoInternet()
             }
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFont('Courier', '', 8);
-            $pdf->Ln(3);
+            $pdf->Ln(1);
             $pdf->MultiCell(186, 3, utf8_decode('2. TARIFAS Y PRECIOS. Las tarifas y precios estaran consignadas en este contrato. Por el servicio que reciba me obligo a pagar a CABLE SAT: I) Tarifa y precio por el valor del servicio de internet contratado. II) Precio por activacion, instalacion, desactivacion, desistalacion, traslado de servicio, recargos por factura vencidas y otros semejantes previamente informados. III) Precio por venta o arrendamiento de equipo.'), 0, 'J', 0);
-            $pdf->Ln(3);
+            $pdf->Ln(1);
             $pdf->MultiCell(186, 3, utf8_decode('3. FACTURACION. Me comprometo a pagar los servicios antes indicados en dolares de los Estados Unidos de America, en concept de servicios contratados, los cuales seran facturados por periodos mensuales de acuerdo al sistema de facturacion utilizado por CABLE SAT; Asi mismo tengo el conocimiento, que si a dia de inicio del servicio faltare menos de un mes para la emision de la factura correspondiente, los cargos basicos se me facturarán proporcional. Tambien, deberé pagar dicha factura o credito fiscal como maximo en la fecha ultima de pago que se me ha indicado por cualquier medio verificable que disponga la empresa; debiendose cancelar en las oficinas administrativas, instituciones bancarias y financieras autorizadas, cobradores, etc. La falta de recibir el documento de cobro correspondiente, no me exime de la responsabilidad del pago oportuno.'), 0, 'J', 0);
-            $pdf->Ln(3);
+            $pdf->Ln(1);
             $pdf->MultiCell(186, 3, utf8_decode('4. VIGENCIA Y PLAZO. El plazo obligatorio de vigencia aplicable al servicio de internet, prestado por CABLE SAT se estipula en este contrato de servicio que suscribo y entrara en vigencia a partir de la fecha de mi suscripcion, luego de finalizado el plazo obligatorio y no habiendo expresado mi voluntad en sentido contrario, el plazo de cada contrato continuara renovandose por plazos iguales y seguire reciiendo el servicio en las mismas condiciones establecidas'), 0, 'J', 0);
-            $pdf->Ln(3);
+            $pdf->Ln(1);
             $pdf->MultiCell(186, 3, utf8_decode('5. TERMINACION CONTRACTUAL Y CONDICIONES DE RETIRO ANTICIPADO. En caso de dar por terminado el contrato de servicio internet, dentro del plazo obligatorio establecido en presente contrato, debo de notificar por escrito a las oficinas administraticas con diez dias habiles de anticipación al retiro efectivo del servicio, debe pagas todos y cada uno de los montos adeudados al momento de la terminacion (valor del numero de meses restantes p/la finalizacion del contrato), y penalidad por terminación anticipada de manera particular.'), 0, 'J', 0);
-            $pdf->Ln(3);
+            $pdf->Ln(1);
             $pdf->MultiCell(186, 3, utf8_decode('6. EL SERVICIO CONTRATADO PODRAS SUSPENDERSE EN LOS CASOS SIGUIENTES. CABLE SAT, podra suspender la prestacion del servicio de internet por incumplimiento de cualquier obligacion establecidas en el contrato, especialmente por mora de hasta dos facturas o credito fiscal por servicio prestado, por casos establecidos en la ley y su respectivo reglamento, de presentarse esta situacion se debe notificar al clientemedente notificaciones por escrito, llamadas telefonicas, correos electornicos o por cualquier otro medio.'), 0, 'J', 0);
             $pdf->AddPage('P', 'Letter');
             $pdf->MultiCell(186, 3, utf8_decode('7. EQUIPO ENTREGADO COMO DATO. a) Recibi de parte de CABLE SAT en entera satsfaccion y en calidad de comodato el equipo que permitira recibir el servicio de internet, que sera instalado a una distancia no mayor de dos metros de la computradora. Me comprometo a mantenerlo conectado al protector/regulador de voltaje correspondiente y con instalacion polarizadas, tengo claro que el equipo y accesorios instalados, para el servicio son propiedad de CABLE SAT, b) Es mi responsabilidad el mantenimiento y cuidado del equipo por uso normal o por uso indebido o irregular durante el timpo del vigente contrato; es responsabilidad de la empresa si son defectos de fabrica, maa calidad o condiciones ruinosas del equipo al inicio de la vigencia del contrato, ninguna de las partes es responsable por interrupciones en el servicio a causa de sucesos constitutivos de fuerza mayor o por caso fortuito, c) Se entenderá que el equipo se ecnontrara en la dirección proporcionada por el cliente cuando se elaboro el contrato de servicio, por lo tanto el compromiso de CABLE SAT es brindar el servicio contratado en dicha direccion, d) Me comprometo a devolver el equipo indicado en el contrato final del plazo debiendo entregarlo al personal de CABLE SAT designado para tales efectosm en buen estado de consideracion y funcionamiento, e) En caso de hurto, robo o perdida del equipo notificaré CABLE SAT para el bloqueo del servicio y me obligo a presentar la denuncia correspondiente ante las autoridades competentes, haciendo llegas una copia cestificada a las oficinas administrativasm f) Reposicion, en caso de deterioro, robo o perdida, entre otras causas del equipo, el cliente podrá solicitar la reposicion del mismo pagando el valor total del equipo, g) Prohibiciion, el cliente no podra arrendar ni ceder los derecho emanados del equipo, ni aun, a titulo gratuito, ni comprometer el dominio o prosesion del mismo en forma alguna.'), 0, 'J', 0);

@@ -475,6 +475,7 @@ if (strlen($alert) > 3) {
 
     <title>Cablesat</title>
     <link rel="shortcut icon" href="../../images/cablesat.png" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <!-- Bootstrap Core CSS -->
     <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- MetisMenu CSS -->
@@ -558,7 +559,6 @@ if (strlen($alert) > 3) {
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
 </head>
-
 <body>
 
     <?php
@@ -721,7 +721,7 @@ if (strlen($alert) > 3) {
                         <tr>
                             <td><button name="gestionCont" class="btn btn-danger btn-block" data-toggle="modal" data-target="#nuevoContratoC"><i class="far fa-file-alt"></i> Contrato Cable</button></td>
                             <!-- -->
-                            <td><button name="gestionCont" class="btn btn-danger btn-block" data-toggle="modal" data-target="#nuevoContratoI"><i class="far fa-file-alt" style=" font-size: 20px;" disabled></i> Gestion de Contratos I</button></td>
+                            <td><button name="gestionCont" class="btn btn-danger btn-block" data-toggle="modal" data-target="#nuevoContratoI"><i class="far fa-file-alt" style=" font-size: 20px;" disabled></i> Contrato Internet</button></td>
                             <!-- -->
                             <td><a onclick="window.location='estadoCuenta.php?codigoCliente=<?php echo $codigo; ?>'"><button class="btn btn-danger btn-block" style="font-size: 16px;"><i class="fas fa-file-invoice-dollar"></i> Estado de cuenta</button></a></td>
                             <form id="formClientes" class="" action="#" method="POST">
@@ -982,15 +982,13 @@ if (strlen($alert) > 3) {
                                         </div>
                                         <div class="col-md-5">
                                             <label for="colonia"><span style="color:red;font-size:18px;">**</span>Barrio o colonia</label>
-                                            <select class="form-control input-sm alert-danger" id="colonia" name="colonia" disabled required>
-                                                <option value="" selected>Seleccionar</option>
+                                            <select class="buscador form-control input-sm alert-danger " id="colonia" name="colonia" required disabled>
                                                 <?php
-                                                foreach ($arrColonias as $key) {
-                                                    if ($key['idColonia'] == $colonia) {
-                                                        echo "<option value=" . $key['idColonia'] . " selected>" . $key['nombreColonia'] . "</option>";
-                                                    } else {
-                                                        echo "<option value=" . $key['idColonia'] . ">" . $key['nombreColonia'] . "</option>";
-                                                    }
+                                                $colonias = $mysqli->query("SELECT * FROM tbl_colonias_cxc");
+                                                while ($datos = $colonias->fetch_array()) {
+                                                ?>
+                                                    <option value="<?php echo $datos['idColonia'] ?>"><?php echo $datos['nombreColonia'] ?></option>
+                                                <?php
                                                 }
                                                 ?>
                                             </select>
@@ -1927,7 +1925,6 @@ if (strlen($alert) > 3) {
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
-
                 </div>
             </div>
             <!-- Fin modal contrato cable -->
@@ -2141,46 +2138,26 @@ Full screen Modal
 */
     </style>
 
-    <div id="nuevoContratoI" class="modal fullscreen-modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal Header -->
+    <div id="nuevoContratoI" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
             <div class="modal-content">
-                <div style="background-color: #d32f2f; color:white;" class="modal-header">
+                <div class="modal-header" style="background-color: #CC0000;color:#fff;">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Contrato de Internet</h4>
+                    <h4 class="modal-title">Escoge una opcion!</h4>
                 </div>
-
-                <!-- Modal body -->
                 <div class="modal-body">
-                    <br><br>
-                    <center>
-                        <img id="logI" src="../../images/logo.png" class="img-rounded" alt="Cinque Terre" width="255" height="236" />
-                    </center>
-                    <br><br><br><br>
-                    <div class="col-sm-14 text-left">
-                        <button type="button" name="generarCont" class="btn btn-danger btn-block" style="font-size: 16px;" onclick="window.open('php/contratoInterDigitalN.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')" disabled><i class="far fa-file-alt"></i> Generar contrato parte frontal</button>
-                    </div>
-                    <br><br>
-                    <div class="col-sm-14 text-left">
-                        <button type="button" name="generarCont" class="btn btn-danger btn-block" style="font-size: 16px;" onclick="window.open('php/contratoInterDigitalN-2.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')" disabled><i class="far fa-file-alt"></i> Contrato parte posterior</button>
-                    </div>
-
-
-                </div>
-                <!-- Modal footer -->
-                <div class="modal-footer">
-
                     <div class="row">
-                        <div class="col-sm-8 text-left">
-                            <button type="button" name="imprimir" class="btn btn-success btn-block" onclick="window.open('php/contratoInterReimp.php<?php echo "?id=" . $id; ?>','','height=600,width=1000,top=-300,left=200')" disabled>Reimprimir contrato</button>
+                        <div class="col-sm-6">
+                            <a href="php/contratoInternet.php?id=<?php echo $id ?>&opcion=1" class="btn btn-danger btn-block" style="font-size:16px;" target="_blank">Ver</a>
                         </div>
-                        <div class="col-sm-4 text-right">
-                            <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Salir</button>
+                        <div class="col-sm-6">
+                            <a href="php/contratoInternet.php?id=<?php echo $id ?>&opcion=0" class="btn btn-danger btn-block" style="font-size:16px;" target="_blank">Generar</a>
                         </div>
-
                     </div>
-
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -2447,6 +2424,12 @@ Full screen Modal
     </script>
     <script src="js/tv_Box.js"></script>
     <script src="js/mascaras.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.buscador').select2();
+        });
+    </script>
 </body>
 
 </html>

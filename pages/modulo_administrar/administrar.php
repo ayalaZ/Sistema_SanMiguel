@@ -72,11 +72,11 @@ function setMenu($permisosActuales, $permisoRequerido)
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
     <script src="js/usuarios.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -592,7 +592,69 @@ function setMenu($permisosActuales, $permisoRequerido)
         </div>
     </div>
     </div><!-- Fin Modal Agregar usuario -->
-
+    <!-- Modal editar usuario -->
+    <div id="editUser" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #CC0000;color:#fff;">
+                    <h4 class="modal-title">Editar usuario</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmusuario2" name="frmusuario" role="dialog">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="nombre" class="control-label">Nombre</label>
+                                <input type="text" class="form-control" id="Editnombre" name="nombre" autocomplete="off">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="apellido" class="control-label">Apellido</label>
+                                <input type="text" class="form-control" id="Editapellido" name="apellido" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="usuario" class="control-label">Usuario</label>
+                                <input type="text" class="form-control" id="Editusuario" name="usuario" autocomplete="off">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="rol" class="control-label">Rol</label>
+                                <select name="rol" id="rol" class="form-control">
+                                    <option value="" selected>Seleccione el rol</option>
+                                    <?php
+                                    $roles = $mysqli->query("SELECT * FROM tbl_roles");
+                                    while ($datos = $roles->fetch_array()) {
+                                    ?>
+                                        <option value="<?php echo strtolower($datos['nombreRol']) ?>"><?php echo $datos['nombreRol'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Clave" class="control-label">Clave</label>
+                                <input type="password" class="form-control" id="clave" name="clave" autocomplete="off">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confirm" class="control-label">Confirma clave</label>
+                                <input type="password" class="form-control" id="clave_confirm" name="clave_confirm" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top: 5px;">
+                                <input type="hidden" name="proceso" id="proceso" value="2">
+                                <input type="hidden" name="id" id="id">
+                                <button class="btn btn-warning btn-lg" type="submit">Editar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Final modal editar usuario -->
 </body>
 <script>
     $(document).ready(function() {
@@ -639,12 +701,31 @@ function setMenu($permisosActuales, $permisoRequerido)
         });
     });
     $(function() {
-            $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    $(".btn-editar").on('click', function() {
+        $id = $(this).val();
+        $proceso = '3';
+        $.ajax({
+            type: 'POST',
+            url: 'php/usuarios.php',
+            data: {
+                cod: $id,
+                proceso: $proceso
+            },
+            dataType: 'Json',
+            success: function(datax) {
+                $("#Editnombre").val(datax.nombre);
+                $("#Editapellido").val(datax.apellido);
+                $("#Editusuario").val(datax.usuario);
+                $("#id").val(datax.id);
+                $("#editUser").modal("show");
+            },
+            error: function() {
+                swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
+            }
         });
-        $(".btn-editar").on('click', function() {
-            $id = $(this).val();
-            alert($id);
-        });
+    });
 </script>
 
 </html>
