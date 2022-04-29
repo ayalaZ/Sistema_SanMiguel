@@ -259,19 +259,19 @@ function setMenu($permisosActuales, $permisoRequerido)
                                     <td><?php
                                         if ($datos['state'] == '1') {
                                         ?>
-                                            <button class="btn btn-sm btn-success"><i class="fas fa-user"></i></button>
+                                            <button class="btn btn-sm btn-success" data-toggle="tooltip" title="Activo" data-placement="top"><i class="fas fa-user"></i></button>
                                         <?php
                                         } else {
                                         ?>
-                                            <button class="btn btn-sm btn-danger"><i class="fas fa-user-alt-slash"></i></button>
+                                            <button class="btn btn-sm btn-danger" data-toggle="tooltip" title="Inactivo" data-placement="top"><i class="fas fa-user-alt-slash"></i></button>
                                         <?php
                                         }
                                         ?>
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-warning btn-editar" data-toggle="tooltip" title="Editar" data-placement="top" name="btn-editar" id="btn-editar" value="<?php echo $datos['idUsuario'] ?>"><i class="fas fa-user-edit"></i></button>
-                                        <button class="btn btn-sm btn-danger" data-toggle="tooltip" title="Eliminar" data-placement="top"><i class="fas fa-trash-alt"></i></button>
-                                        <button class="btn btn-sm btn-success" data-toggle="tooltip" title="Permisos" data-placement="top"><i class="fas fa-key"></i></button>
+                                        <button class="btn btn-sm btn-danger btn-eliminar" data-toggle="tooltip" title="Eliminar" data-placement="top" name="btn-eliminar" id="btn-eliminar" value="<?php echo $datos['idUsuario'] ?>"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-sm btn-success btn-permisos" data-toggle="tooltip" title="Permisos" data-placement="top" name="btn-permisos" id="btn-permisos" value="<?php echo $datos['idUsuario'] ?>"><i class="fas fa-key"></i></button>
                                     </td>
                                 </tr>
                             <?php
@@ -635,11 +635,11 @@ function setMenu($permisosActuales, $permisoRequerido)
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="Clave" class="control-label">Clave</label>
-                                <input type="password" class="form-control" id="clave" name="clave" autocomplete="off">
+                                <input type="password" class="form-control" id="clave" name="clave2" autocomplete="off">
                             </div>
                             <div class="col-md-6">
                                 <label for="confirm" class="control-label">Confirma clave</label>
-                                <input type="password" class="form-control" id="clave_confirm" name="clave_confirm" autocomplete="off">
+                                <input type="password" class="form-control" id="clave_confirm" name="clave2_confirm" autocomplete="off">
                             </div>
                         </div>
                         <div class="row">
@@ -655,6 +655,133 @@ function setMenu($permisosActuales, $permisoRequerido)
         </div>
     </div>
     <!-- Final modal editar usuario -->
+    <!-- Modal permisos -->
+    <div id="editPermisos" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #CC0000;color:#fff;">
+                    <h4 class="modal-title">Edita los permisos</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmusuario3" name="frmusuario" role="dialog">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Modulo</th>
+                                    <th>Acceso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Administrador</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="admin" name="admin">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Contabilidad</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="cont" name="cont">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Planilla</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="pla" name="pla">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Activo fijo</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="act" name="act">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Inventario</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="inv" name="inv">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>IVA</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="iva" name="iva">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bancos</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="banc" name="banc">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cuentas por cobras</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="cxc" name="cxc">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cuentas por pagar</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="cxp" name="cxp">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">Permisos globales y gestion de contratos</th>
+                                </tr>
+                                <tr>
+                                    <td>Agregar</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="ag" name="ag">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Modificar</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="mod" name="mod">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Eliminar</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="eli" name="eli">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Generar contrato</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="genC" name="genC">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Imprimir contrato</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="impC" name="impC">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">Activar o desactivar usuario</th>
+                                </tr>
+                                <td>Estado</td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="form-check-input" id="estado" name="estado">
+                                    </td>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top: 5px;">
+                                <input type="hidden" name="proceso" id="proceso" value="6">
+                                <input type="hidden" name="id2" id="id2">
+                                <button class="btn btn-warning btn-lg" type="submit">Editar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de modal permisos -->
 </body>
 <script>
     $(document).ready(function() {
@@ -703,6 +830,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     });
+    //FUNCION DEL BOTON EDITAR
     $(".btn-editar").on('click', function() {
         $id = $(this).val();
         $proceso = '3';
@@ -724,6 +852,107 @@ function setMenu($permisosActuales, $permisoRequerido)
             error: function() {
                 swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
             }
+        });
+    });
+    //FUNCION DEL BOTON PERMISOS
+    $(".btn-permisos").on('click', function() {
+        $id = $(this).val();
+        $proceso = '4';
+        $.ajax({
+            type: 'POST',
+            url: 'php/usuarios.php',
+            data: {
+                cod: $id,
+                proceso: $proceso
+            },
+            dataType: 'Json',
+            success: function(datax) {
+               $("#id2").val(datax.id);
+               $("input:checkbox").prop('checked', false);
+               if (datax.admin == 1) {
+                    $("#admin").prop("checked", true);
+               }
+               if (datax.cont == 2) {
+                    $("#cont").prop("checked", true);
+               }
+               if (datax.plan == 4) {
+                    $("#pla").prop("checked", true);
+               }
+               if (datax.acti == 8) {
+                    $("#act").prop("checked", true);
+               }
+               if (datax.inve == 16) {
+                    $("#inv").prop("checked", true);
+               }
+               if (datax.iva == 32) {
+                    $("#iva").prop("checked", true);
+               }
+               if (datax.banc == 64) {
+                    $("#banc").prop("checked", true);
+               }
+               if (datax.cxc == 128) {
+                    $("#cxc").prop("checked", true);
+               }if (datax.cxp == 256) {
+                    $("#cxp").prop("checked", true);
+               }
+               if (datax.ag == 1) {
+                    $("#ag").prop("checked", true);
+               }
+               if (datax.ed == 2) {
+                    $("#mod").prop("checked", true);
+               }
+               if (datax.el == 4) {
+                    $("#eli").prop("checked", true);
+               }
+               if (datax.gencont == 8) {
+                    $("#genC").prop("checked", true);
+               }
+               if (datax.Impcont == 16) {
+                    $("#impC").prop("checked", true);
+               }
+               if (datax.estado == 1) {
+                    $("#estado").prop("checked", true);
+               }
+                $("#editPermisos").modal("show");
+            },
+            error: function() {
+                swal('Error', 'Ha ocurrido un error al traer los datos', 'error');
+            }
+        });
+
+    });
+    //FUNCION DEL BOTON ELIMINAR
+    $(".btn-eliminar").on('click', function() {
+        $id = $(this).val();
+        $proceso = '5';
+        swal({
+            title: "ELIMINAR",
+            text: "Seguro deseas eliminar usuario?",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "No",
+            confirmButtonText: "Continuar",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        }).then(function() {
+            $.ajax({
+                type: 'POST',
+                url: 'php/usuarios.php',
+                data: {
+                    cod: $id,
+                    proceso: $proceso
+                },
+                dataType: 'Json',
+                success: function(datax) {
+                    swal('Estado de la operacion', datax.msg, datax.typeinfo);
+                    if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                        setInterval('location.reload()', 3000);
+                    }
+                },
+                error: function() {
+                    swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
+                }
+            });
         });
     });
 </script>

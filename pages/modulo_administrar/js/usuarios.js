@@ -85,11 +85,11 @@ $(document).ready(function () {
             rol: {
                 required: true,
             },
-            clave: {
+            clave2: {
                 required: true,
                 minlength: 8
             },
-            clave_confirm: {
+            clave2_confirm: {
                 required: true,
                 minlength: 8,
                 equalTo: "#clave",
@@ -108,11 +108,11 @@ $(document).ready(function () {
             rol: {
                 required: "Este campo es obligatorio",
             },
-            clave: {
+            clave2: {
                 required: "Este campo es obligatorio",
                 minlength: "Minimo 8 carateres"
             },
-            clave_confirm: {
+            clave2_confirm: {
                 required: "Este campo es obligatorio",
                 minlength: "Minimo 8 caratereces",
                 equalTo: "La clave no coincide",
@@ -120,6 +120,32 @@ $(document).ready(function () {
         },
         submitHandler: function (form) {
             var form = $("#frmusuario2");
+            var formdata = false;
+            if (window.FormData) {
+                formdata = new FormData(form[0]);
+            }
+            $.ajax({
+                type: 'POST',
+                url: 'php/usuarios.php',
+                cache: false,
+                data: formdata ? formdata : form.serialize(),
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+
+                success: function (datax) {
+                    swal('Estado de la operacion', datax.msg, datax.typeinfo);
+                    if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                        setInterval('location.reload()', 3000);
+                    }
+
+                }
+            });
+        }
+    });
+    $("#frmusuario3").validate({
+        submitHandler: function (form) {
+            var form = $("#frmusuario3");
             var formdata = false;
             if (window.FormData) {
                 formdata = new FormData(form[0]);
