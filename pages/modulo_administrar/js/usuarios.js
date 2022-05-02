@@ -92,7 +92,7 @@ $(document).ready(function () {
             clave2_confirm: {
                 required: true,
                 minlength: 8,
-                equalTo: "#clave",
+                equalTo: "#clave2",
             },
         },
         messages: {

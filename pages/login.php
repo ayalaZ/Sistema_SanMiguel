@@ -65,6 +65,9 @@ if(!isset($_SESSION))
                     if ($_GET['login'] == 'failed') {
                         echo "</br>";
                         echo "<div class='alert alert-danger'>Usuario o contraseña inconrrecta.</div>";
+                    }elseif($_GET['login'] == 'failed2'){
+                        echo "</br>";
+                        echo "<div class='alert alert-danger'>Usuario desactivado.</div>";
                     }
                 }
                 ?>

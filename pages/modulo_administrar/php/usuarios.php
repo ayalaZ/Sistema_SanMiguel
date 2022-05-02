@@ -20,8 +20,8 @@ switch ($proceso) {
         $apellido = $_POST['apellido'];
         $usuario = $_POST['usuario'];
         $rol = $_POST['rol'];
-        $clave = $_POST['clave'];
-        $clave = hash('sha512', strtolower($_POST["clave"]));
+        $clavepro = $_POST['clave'];
+        $clave = password_hash($clavepro, PASSWORD_DEFAULT);
         $buscar = $mysqli->query("SELECT * FROM tbl_usuario WHERE usuario='$usuario'");
         $cantidad = $buscar->num_rows;
         if ($cantidad > 0) {
@@ -49,8 +49,8 @@ switch ($proceso) {
         $apellido = $_POST['apellido'];
         $usuario = $_POST['usuario'];
         $rol = $_POST['rol'];
-        $clave = $_POST['clave'];
-        $clave = hash('sha512', strtolower($_POST["clave"]));
+        $clavepro = $_POST['clave2'];
+        $clave = password_hash($clavepro, PASSWORD_DEFAULT);
         $buscar = $mysqli->query("SELECT * FROM tbl_usuario WHERE usuario='$usuario' AND idUsuario!='$id'");
         $cantidad = $buscar->num_rows;
         if ($cantidad > 0) {
@@ -76,7 +76,7 @@ switch ($proceso) {
         $xdatos['nombre'] = $datosUsuario['nombre'];
         $xdatos['apellido'] = $datosUsuario['apellido'];
         $xdatos['usuario'] = $datosUsuario['usuario'];
-        echo json_encode($xdatos); 
+        echo json_encode($xdatos);
         break;
     case '4':
         $codigo = $_POST['cod'];
@@ -104,12 +104,41 @@ switch ($proceso) {
         break;
     case '5':
         $codigo = $_POST['cod'];
+        $eliminarPermisos = $mysqli->query("DELETE FROM tbl_permisosglobal WHERE IdUsuario='$codigo'");
         $eliminar = $mysqli->query("DELETE FROM tbl_usuario WHERE idUsuario='$codigo'");
         if ($eliminar) {
             $xdatos['msg'] = "Usuario eliminado";
             $xdatos['typeinfo'] = "success";
         } else {
             $xdatos['msg'] = "No se pudo eliminar";
+            $xdatos['typeinfo'] = "error";
+        }
+        echo json_encode($xdatos);
+        break;
+    case '6':
+        $id = $_POST['id2'];
+        $estado = $_POST['estado'];
+        $admin = $_POST['admin'];
+        $cont = $_POST['cont'];
+        $pla = $_POST['pla'];
+        $act = $_POST['act'];
+        $inv = $_POST['inv'];
+        $iva = $_POST['iva'];
+        $banc = $_POST['banc'];
+        $cxc = $_POST['cxc'];
+        $cxp = $_POST['cxp'];
+        $ag = $_POST['ag'];
+        $mod = $_POST['mod'];
+        $eli = $_POST['eli'];
+        $genc = $_POST['genC'];
+        $impc = $_POST['impC'];
+        $updateEstado = $mysqli->query("UPDATE tbl_usuario SET state='$estado' WHERE idUsuario='$id'");
+        $updatePermisos = $mysqli->query("UPDATE tbl_permisosglobal SET Madmin='$admin', Mcont='$cont', Mplan='$pla', Macti='$act', Minve='$inv', Miva='$iva', Mbanc='$banc', Mcxc='$cxc', Mcxp='$cxp', Ag='$ag', Ed='$mod', El='$eli', GenCont='$genc', ImpCont='$impc' WHERE IdUsuario='$id'");
+        if ($updatePermisos) {
+            $xdatos['msg'] = "Permisos modificados";
+            $xdatos['typeinfo'] = "success";
+        } else {
+            $xdatos['msg'] = "No se pudo modificar los permisos";
             $xdatos['typeinfo'] = "error";
         }
         echo json_encode($xdatos);

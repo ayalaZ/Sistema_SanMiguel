@@ -96,6 +96,9 @@ function setMenu($permisosActuales, $permisoRequerido)
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
             <li class="nav-item">
+                <a class="nav-link" href="configuracion.php" role="butto"><i class="fas fa-cog"></i></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
@@ -635,7 +638,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="Clave" class="control-label">Clave</label>
-                                <input type="password" class="form-control" id="clave" name="clave2" autocomplete="off">
+                                <input type="password" class="form-control" id="clave2" name="clave2" autocomplete="off">
                             </div>
                             <div class="col-md-6">
                                 <label for="confirm" class="control-label">Confirma clave</label>
@@ -676,55 +679,55 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <tr>
                                     <td>Administrador</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="admin" name="admin">
+                                        <input type="checkbox" class="form-check-input" id="admin" name="admin" value="1">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Contabilidad</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="cont" name="cont">
+                                        <input type="checkbox" class="form-check-input" id="cont" name="cont" value="2">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Planilla</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="pla" name="pla">
+                                        <input type="checkbox" class="form-check-input" id="pla" name="pla" value="4">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Activo fijo</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="act" name="act">
+                                        <input type="checkbox" class="form-check-input" id="act" name="act" value="8">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Inventario</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="inv" name="inv">
+                                        <input type="checkbox" class="form-check-input" id="inv" name="inv" value="16">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>IVA</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="iva" name="iva">
+                                        <input type="checkbox" class="form-check-input" id="iva" name="iva" value="32">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Bancos</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="banc" name="banc">
+                                        <input type="checkbox" class="form-check-input" id="banc" name="banc" value="64">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Cuentas por cobras</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="cxc" name="cxc">
+                                        <input type="checkbox" class="form-check-input" id="cxc" name="cxc" value="128">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Cuentas por pagar</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="cxp" name="cxp">
+                                        <input type="checkbox" class="form-check-input" id="cxp" name="cxp" value="256">
                                     </td>
                                 </tr>
                                 <tr>
@@ -733,31 +736,31 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <tr>
                                     <td>Agregar</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="ag" name="ag">
+                                        <input type="checkbox" class="form-check-input" id="ag" name="ag" value="1">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Modificar</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="mod" name="mod">
+                                        <input type="checkbox" class="form-check-input" id="mod" name="mod" value="2">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Eliminar</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="eli" name="eli">
+                                        <input type="checkbox" class="form-check-input" id="eli" name="eli" value="4">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Generar contrato</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="genC" name="genC">
+                                        <input type="checkbox" class="form-check-input" id="genC" name="genC" value="8">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Imprimir contrato</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="impC" name="impC">
+                                        <input type="checkbox" class="form-check-input" id="impC" name="impC" value="16">
                                     </td>
                                 </tr>
                                 <tr>
@@ -765,7 +768,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 </tr>
                                 <td>Estado</td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" class="form-check-input" id="estado" name="estado">
+                                        <input type="checkbox" class="form-check-input" id="estado" name="estado" value="1">
                                     </td>
                             </tbody>
                         </table>
@@ -950,7 +953,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                     }
                 },
                 error: function() {
-                    swal('Error', 'Ha ocurrido un error al traer el numero de recibo', 'error');
+                    swal('Error', 'Ha ocurrido al elimina el usurio', 'error');
                 }
             });
         });
