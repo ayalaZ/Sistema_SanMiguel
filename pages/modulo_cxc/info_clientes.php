@@ -77,7 +77,6 @@ function setMenu($permisosActuales, $permisoRequerido)
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
@@ -113,7 +112,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     </nav>
     <!-- menu lateral -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="../index.php" class="brand-link">
+        <a href="../index.php" class="brand-link" style="text-decoration: none;">
             <img src="../herramientas/dist/img/logo.png" alt="Cable sat" class="brand-image img-circle elevation-3" style="opacity: .8">
             <span class="brand-text font-weight-light">Cable Sat</span>
         </a>
@@ -126,7 +125,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                     <!--<img src="herramientas/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">-->
                 </div>
                 <div class="info">
-                    <a href="../index.php"><?php echo $_SESSION['nombres'] ?></a>
+                    <a href="../index.php" style="text-decoration: none;"><?php echo $_SESSION['nombres'] ?></a>
                 </div>
             </div>
             <!-- menu -->
@@ -220,20 +219,14 @@ function setMenu($permisosActuales, $permisoRequerido)
         </div>
     </aside>
     <div class="content-wrapper">
-        <?php
-        if ($_SESSION["rol"] != "administracion" && $_SESSION["rol"] != "subgerencia" && $_SESSION["rol"] != "jefatura" && $_SESSION["rol"] != "contabilidad") {
-            echo "<script>
-                            swal('Error', 'No tienes permisos para ingresar a esta área. Att: Don Manuel.', 'error');
-                       </script>";
-        } else {
-        ?>
             <div class="card" style="margin: 10px;">
                 <div class="card-header">
                     <h3>Listado de clientes</h3>
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-lg btn-success" data-toggle="tooltip" title="Nuevo Cliente" data-placement="top"><i class="fas fa-user-friends"></i></button>
-                    <table class="table tabla">
+                    <a href="addclientes.php" class="btn btn-lg btn-outline-dark" data-toggle="tooltip" title="Nuevo Cliente" data-placement="top"><i class="fas fa-user-plus"></i></a>
+                    <button class="btn btn-lg btn-outline-dark" data-toggle="tooltip" title="Clientes" data-placement="top" id="cant_clientes"><i class="fas fa-users"></i>&nbsp;&nbsp;</button>
+                    <table class="table tabla" id="clientes">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -244,64 +237,12 @@ function setMenu($permisosActuales, $permisoRequerido)
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $clientes = $mysqli->query("SELECT cod_cliente,nombre,direccion,numero_dui,servicio_suspendido,sin_servicio,estado_cliente_in FROM clientes ORDER BY cod_cliente");
-                            while ($datos = $clientes->fetch_array()) {
-                                $CsusServido = $datos['servicio_suspendido'];
-                                $CsinServicio = $datos['sin_servicio'];
-                                if ($CsusServido == "T" && $CsinServicio == "F") {
-                                    $estadoCable = '1';
-                                } elseif ($CsusServido != "T" && $CsinServicio == "T") {
-                                    $estadoCable = '2';
-                                } elseif ($CsusServido != "T" && $CsinServicio == "F") {
-                                    $estadoCable = '3';
-                                }
-                                $estado = $datos["estado_cliente_in"];
-                                if ($estado == 2) {
-                                    $estadoInternet = '1';
-                                } elseif ($estado == 3) {
-                                    $estadoInternet = '2';
-                                } elseif ($estado == 1) {
-                                    $estadoInternet = '3';
-                                }
 
-                                if ($estadoCable == 3 && $estadoInternet == 3) {
-                                    ?>
-                                        <tr class="table-warning">      
-                                    <?php
-                                }elseif ($estadoCable == 3 && $estadoInternet != 3) {
-                                    ?>
-                                        <tr class="table-success">      
-                                    <?php
-                                }elseif ($estadoCable != 3 && $estadoInternet == 3) {
-                                    ?>
-                                        <tr class="table-danger">      
-                                    <?php
-                                }else{
-                                    ?>
-                                        <tr>      
-                                    <?php
-                                }
-                                
-                            ?>
-                                    <td><?php echo $datos['cod_cliente'] ?></td>
-                                    <td><?php echo $datos['nombre'] ?></td>
-                                    <td style="font-size: small;width: 50%;"><?php echo $datos['direccion'] ?></td>
-                                    <td><?php echo $datos['numero_dui'] ?></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-default btn-editar" data-toggle="tooltip" title="Ver" data-placement="top" name="btn-editar" id="btn-editar" value=""><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-sm btn-default btn-eliminar" data-toggle="tooltip" title="Editar" data-placement="top" name="btn-eliminar" id="btn-eliminar" value=""><i class="fas fa-pencil-alt"></i></button>
-                                    </td>
-                                </tr>
-                            <?php
-                            }
-                            ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         <?php
-        }
         ?>
     </div>
     <!-- extensiones -->
@@ -565,32 +506,87 @@ function setMenu($permisosActuales, $permisoRequerido)
                 window.location.replace("../../php/logout.php");
             });
         });
-        $('.tabla').DataTable({
-            dom: 'Pfrtip',
-            pageLength: 50,
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+        $("#clientes tbody").append("<tr><td colspan='5' style='text-align:center;font-weight: bold;font-size:1.6rem'>Cargando datos...</td></tr>");
+        $.ajax({
+            type: 'POST',
+            dataType: 'Json',
+            url: "php/clientes.php",
+            success: function(datax) {
+                $("#clientes tbody").empty();
+                var filas = datax.filas;
+                for (var i = 0; i < filas; i++) {
+                    $CsusServido = datax.clientes[i].servicio_suspendido;
+                    $CsinServicio = datax.clientes[i].sin_servicio;
+                    if ($CsusServido == "T" && $CsinServicio == "F") {
+                        $estadoCable = '1';
+                    }
+                    if ($CsusServido != "T" && $CsinServicio == "T") {
+                        $estadoCable = '2';
+                    }
+                    if ($CsusServido != "T" && $CsinServicio == "F") {
+                        $estadoCable = '3';
+                    }
+                    $estado = datax.clientes[i].estado_cliente_in;
+                    if ($estado == 2) {
+                        $estadoInternet = '1';
+                    }
+                    if ($estado == 3) {
+                        $estadoInternet = '2';
+                    }
+                    if ($estado == 1) {
+                        $estadoInternet = '3';
+                    }
+                    if ($estadoCable == 3 && $estadoInternet == 3) {
+                        var nuevafila = "<tr class = 'table-warning'>";
+                    }
+                    if($estadoCable == 3 && $estadoInternet != 3) {
+                        var nuevafila = "<tr class = 'table-success'>";
+                    }
+                    if($estadoCable != 3 && $estadoInternet == 3) {
+                        var nuevafila = "<tr class = 'table-danger'>";
+
+                    } 
+                    
+                    if($estadoCable != 3 && $estadoInternet != 3){
+                        var nuevafila = "<tr>";
+                    }
+
+                    nuevafila = nuevafila + "<td style='font-weight:bold;'>" +
+                        datax.clientes[i].cod_cliente + "</td><td>" +
+                        datax.clientes[i].nombre + "</td><td style='width:50%;'>" +
+                        datax.clientes[i].direccion + "</td><td>" +
+                        datax.clientes[i].numero_dui + "</td><td><a href='php/ver_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-ver' id='btn-ver' data-toggle='tooltip' title='Ver' data-placement='top'><i class='fas fa-eye'></i></a><a href='php/editar_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-editar' id='btn-editar' data-toggle='tooltip' title='Editar' data-placement='top'><i class='fas fa-pencil-alt'></i></a></td></tr>";
+                    $("#clientes tbody").append(nuevafila);
                 }
-            },
-            "order": [
-                [0, "asc"]
-            ],
+                $("#cant_clientes").append(filas-1);
+                $('.tabla').DataTable({
+                    dom: 'Pfrtip',
+                    pageLength: 50,
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    },
+                    "order": [
+                        [0, "asc"]
+                    ],
+                });
+            }
         });
     });
     $(function() {
