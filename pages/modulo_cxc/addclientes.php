@@ -79,12 +79,13 @@ function setMenu($permisosActuales, $permisoRequerido)
     <style>
         .accordion-button {
             outline: none !important;
-            color: #fff !important;
+            color: #000 !important;
             outline-width: 0 !important;
             box-shadow: none;
             -moz-box-shadow: none;
             -webkit-box-shadow: none;
-            background-color: #dc3545 !important;
+            background-color: transparent !important;
+            border-bottom: 1px solid #b71c1c;
 
         }
 
@@ -92,12 +93,24 @@ function setMenu($permisosActuales, $permisoRequerido)
             border-color: none;
             box-shadow: none;
             outline: 0 none;
-            color: #fff;
+            color: #000;
+            border-bottom: 1px solid #b71c1c;
+        }
+        .codigo{
+            text-align: center;
+            border: 1px solid #000;
+        }
+        .codigo input{
+            color: #CC0000;
+            background-color: transparent!important;
+            border: none;
+            text-align: center;
+            font-size: x-large;
         }
     </style>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-fixed sidebar-collapse">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
         <img class="animation__shake" src="../herramientas/dist/img/logo.png" alt="Cabesat" height="60" width="60">
@@ -240,40 +253,46 @@ function setMenu($permisosActuales, $permisoRequerido)
     </aside>
     <div class="content-wrapper">
         <div class="card" style="margin: 10px;">
-            <div class="card-header">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item"><a href="#datos-generales" data-toggle="tab" class="nav-link active" style="text-decoration: none;color:red;">DATOS GENERALES</a></li>
-                    <li class="nav-item"><a href="#otros-datos" data-toggle="tab" class="nav-link" style="text-decoration: none;color:red;">OTROS DATOS</a></li>
-                    <li class="nav-item"><a href="#servicios" data-toggle="tab" class="nav-link" style="text-decoration: none;color:red;">SERVICIOS</a></li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <form id="addcliente" role="dialog">
+            <form id="addcliente" role="dialog">
+                <div class="card-header">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item"><a href="#datos-generales" data-toggle="tab" class="nav-link active" style="text-decoration: none;color:#000;">DATOS GENERALES</a></li>
+                        <li class="nav-item"><a href="#otros-datos" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">OTROS DATOS</a></li>
+                        <li class="nav-item"><a href="#servicios" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">SERVICIOS</a></li>
+                        <li class="nav-item"><button type="submit" class="btn btn-default btn-lg"><i class="fas fa-save"></i></button></li>
+                    </ul>
+                </div>
+                <div class="card-body">
+
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-3 codigo">
+                                    <?php
+                                    $querycodigo = $mysqli->query("SELECT cod_cliente FROM clientes ORDER BY cod_cliente DESC LIMIT 1");
+                                    $codigo = $querycodigo->fetch_array();
+                                    ?>
+                                    <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" value="<?php echo $codigo['cod_cliente'] ?>" readonly style="font-weight: bold;">
                                     <label for="codigo">Código del cliente</label>
-                                    <input class="form-control form-control-sm" type="text" name="codigo" value="">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="contrato">N° de contrato (CABLE)</label>
-                                    <input class="form-control form-control-sm" type="text" name="contrato">
+                                    <input class="form-control form-control-sm" type="text" name="contrato" readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="factura">Número de factura</label>
-                                    <input class="form-control form-control-sm" type="text" name="factura">
+                                    <input class="form-control form-control-sm" type="text" name="factura" readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="nAnexo">Número de anexo</label>
-                                    <input class="form-control form-control-sm" type="text" name="nAnexo">
+                                    <input class="form-control form-control-sm" type="text" name="nAnexo" readonly>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-9">
                                     <label for="nombre">Nombre</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" name="nombre" required>
+                                    <input class="form-control form-control-sm alert-danger" type="text" name="nombre">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="ncr">Número de registro</label>
@@ -287,7 +306,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 </div>
                                 <div class="col-md-3">
                                     <label for="nacionalidad">Nacionalidad</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" id="nacionalidad" name="nacionalidad" required>
+                                    <input class="form-control form-control-sm alert-danger" type="text" id="nacionalidad" name="nacionalidad">
                                 </div>
                             </div>
                             <div class="row">
@@ -303,7 +322,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-2">
                                     <label for="dui">DUI</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" id="dui" name="dui" pattern="[0-9]{8}-[0-9]{1}" required>
+                                    <input class="form-control form-control-sm alert-danger" type="text" id="dui" name="dui" pattern="[0-9]{8}-[0-9]{1}">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="expedicion">Lugar y fecha de expedición</label>
@@ -315,47 +334,54 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 </div>
                                 <div class="col-md-3">
                                     <label for="fechaNacimiento">Fecha de nacimiento</label>
-                                    <input class="form-control form-control-sm alert-danger" type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                                    <input class="form-control form-control-sm alert-danger" type="date" id="fechaNacimiento" name="fechaNacimiento">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="direccion">Dirección</label>
-                                    <textarea class="form-control form-control-sm alert-danger" name="direccion" rows="2" cols="40" required></textarea>
+                                    <textarea class="form-control form-control-sm alert-danger" name="direccion" rows="2" cols="40" id="direccion"></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="departamento">Departamento</label>
-                                    <select class="form-control form-control-sm alert-danger" id="departamento" name="departamento" required>
-                                        <option value="" selected>Seleccionar</option>
-
+                                    <select class="form-control form-control-sm alert-danger" id="departamento" name="departamento">
+                                        <option value="" selected>Seleccionar...</option>
+                                        <?php
+                                        $querydepartamentos = $mysqli->query("SELECT * FROM tbl_departamentos_cxc");
+                                        while ($departamentos = $querydepartamentos->fetch_array()) {
+                                        ?>
+                                            <option value="<?php echo $departamentos['idDepartamento'] ?>"><?php echo $departamentos['nombreDepartamento'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="municipio">Municipio</label>
-                                    <select class="form-control form-control-sm alert-danger" id="municipio" name="municipio" required>
-                                        <option value="" selected>Seleccionar</option>
+                                    <select class="form-control form-control-sm alert-danger" id="municipio" name="municipio">
+                                        <option value="" selected>Seleccionar...</option>
 
                                     </select>
                                 </div>
                                 <div class="col-md-5">
                                     <label for="colonia">Barrio o colonia</label>
-                                    <select class="form-control form-control-sm alert-danger" id="colonia" name="colonia" required>
-                                        <option value="">Seleccionar</option>
+                                    <select class="form-control form-control-sm alert-danger" id="colonia" name="colonia">
+                                        <option value="">Seleccionar...</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="direccionCobro">Dirección de cobro</label>
-                                    <textarea class="form-control form-control-sm" name="direccionCobro" rows="2" cols="40"></textarea>
+                                    <textarea class="form-control form-control-sm" name="direccionCobro" rows="2" cols="40" id="direccionCobro"></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" name="telefono" required>
+                                    <input class="form-control form-control-sm alert-danger" type="text" name="telefono">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="telefonoTrabajo">Teléfono de trabajo</label>
@@ -369,24 +395,38 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="cuentaContable">Cuenta contable</label>
-                                    <input class="form-control form-control-sm" type="text" name="cuentaContable">
+                                    <input class="form-control form-control-sm" type="text" name="cuentaContable" readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="formaFacturar">Forma al facturar</label>
                                     <select class="form-control form-control-sm" name="formaFacturar">
-                                        <option value="" selected>Seleccionar</option>
-
+                                        <?php
+                                        $queryformas = $mysqli->query("SELECT * FROM tbl_forma_pago");
+                                        while ($formas = $queryformas->fetch_array()) {
+                                        ?>
+                                            <option value="<?php echo $formas['idFormaPago'] ?>"><?php echo $formas['nombreFormaPago'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="tipoComprobante">Tipo de comprobante</label>
-                                    <select class="form-control form-control-sm alert-danger" id="tipoComprobante" name="tipoComprobante" required>
+                                    <select class="form-control form-control-sm alert-danger" id="tipoComprobante" name="tipoComprobante">
                                         <option value="" selected>Seleccionar</option>
+                                        <?php
+                                        $queryComprobante = $mysqli->query("SELECT * FROM tbl_tipo_comprobante");
+                                        while ($comprobante = $queryComprobante->fetch_array()) {
+                                        ?>
+                                            <option value="<?php echo $comprobante['idComprobante'] ?>"><?php echo $comprobante['nombreComprobante'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <label for="saldoActual">Saldo actual</label>
-                                    <input class="form-control form-control-sm" type="text" name="saldoActual">
+                                    <input class="form-control form-control-sm" type="text" name="saldoActual" readonly>
                                 </div>
                             </div>
                             <div class="row">
@@ -406,8 +446,16 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="cobrador">Cobrador que lo atiende</label>
-                                    <select class="form-control form-control-sm alert-danger" name="cobrador" required>
-                                        <option value="">Seleccionar</option>
+                                    <select class="form-control form-control-sm alert-danger" name="cobrador">
+                                        <option value="">Seleccionar...</option>
+                                        <?php
+                                        $querycobradores = $mysqli->query('SELECT * FROM tbl_cobradores');
+                                        while ($cobrador = $querycobradores->fetch_array()) {
+                                        ?>
+                                            <option value="<?php echo $cobrador['codigoCobrador'] ?>"><?php echo $cobrador['nombreCobrador'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -483,11 +531,11 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="fechaPrimerFacturaCable">Fecha primer factura</label>
-                                                    <input class="form-control form-control-sm cable" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="mesesContratoCable">Meses de contrato</label>
-                                                    <input class="form-control form-control-sm cable" type="text" id="mesesContratoCable" name="mesesContratoCable">
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoCable" name="mesesContratoCable">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="exento">Exento</label>
@@ -501,40 +549,343 @@ function setMenu($permisosActuales, $permisoRequerido)
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <label for="cuotaMensualCable">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm alert-danger cable" type="text" name="cuotaMensualCable" >
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaMensualCable">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="prepago">Prepago</label>
-                                                    <input class="form-control form-control-sm cable" type="text" name="prepago" >
+                                                    <input class="form-control form-control-sm" type="text" name="prepago">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoServicio">Tipo de servicio</label>
-                                                    <select class="form-control form-control-sm cable" id="tipoServicioCable" name="tipoServicioCable" >
-                                                        <option value="" selected>Seleccionar</option>
+                                                    <select class="form-control form-control-sm" id="tipoServicioCable" name="tipoServicioCable">
+                                                        <option value="" selected>Seleccionar...</option>
+                                                        <?php
+                                                        $queryServicioC = $mysqli->query("SELECT * FROM tbl_servicios_cable");
+                                                        while ($ServicioCable = $queryServicioC->fetch_array()) {
+                                                        ?>
+                                                            <option value="<?php echo $ServicioCable['idServicioCable'] ?>"><?php echo $ServicioCable['nombreServicioCable'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </div>
+                                                <div class="col-md-5">
+                                                    <label for="diaGenerarFacturaCable">Día cobro</label>
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaCable">
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-3">
-                                                    <label for="mactv">TV DIGITAL</label>
-                                                    <button type="button" class="btn btn-danger btn-block btn-xl" data-toggle="modal" data-target="#cas" name="button"><i class="fas fa-tv"></i> Datos de caja digital</button>
+                                                    <label for="inicioContratoCable">Inicio de contrato</label>
+                                                    <input class="form-control form-control-sm" type="date" id="inicioContratoCable" name="inicioContratoCable">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="vencimientoContratoCable">Vence contrato</label>
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoCable" name="vencimientoContratoCable">
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <label for="diaGenerarFacturaCable">Día cobro</label>
-                                                    <input class="form-control form-control-sm alert-danger cable" type="text" name="diaGenerarFacturaCable">
+                                                    <label for="fechaSuspensionCable">Fecha suspension</label>
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspensionCable" name="fechaSuspensionCable">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="fechaReconexionCable">Fecha de reconexión</label>
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionCable" name="fechaReconexionCable">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="derivaciones">N° de derivaciones</label>
+                                                    <input class="form-control form-control-sm" type="number" name="derivaciones">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="encargadoInstalacionCable">Técnico que realizó la instalación</label>
+                                                    <select class="form-control form-control-sm" name="encargadoInstalacionCable">
+                                                        <option value="">Seleccionar...</option>
+                                                        <?php
+                                                        $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
+                                                        while ($tecnicos = $querytecnicos->fetch_array()) {
+                                                        ?>
+                                                            <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label style="color: #CC0000" for="cuotaCovidC">Cuota COVID-19</label>
+                                                    <input class="form-control form-control-sm " type="text" id="cuotaCovidC" name="cuotaCovidC">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label style="color: #CC0000" for="covidDesdeC">Desde</label>
+                                                    <input class="form-control form-control-sm " type="date" id="covidDesdeC" name="covidDesdeC">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label style="color: #CC0000" for="covidHastaC">Hasta</label>
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaC" name="covidHastaC">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="direccionCable">Dirección</label>
+                                                    <input class="form-control form-control-sm" type="text" name="direccionCable" id="direccionCable" readonly>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <br>
                                     <!--INTERNET -->
                                     <h2 class="accordion-header" id="item2">
                                         <button class="accordion-button" type="button" data-bs-toggle='collapse' data-bs-target='#collapse2' aria-expanded="true" aria-controls="collapse2">INTERNET</button>
                                     </h2>
                                     <div class="accordion-collapse collapse" id="collapse2" aria-labelledby="item2" data-bs-parent='#accordio-servicios'>
                                         <div class="accordion-body">
-                                            <h1>INTERNET</h1>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label for="fechaInstalacionInternet">Fecha de instalación</label>
+                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionInternet" name="fechaInstalacionInternet">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="fechaPrimerFacturaInternet">Fecha primer factura</label>
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaInternet" name="fechaPrimerFacturaInternet">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="mesesContratoInternet">Meses de contrato</label>
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoInternet" name="mesesContratoInternet">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="tipoServicioInternet">Tipo de servicio</label>
+                                                    <select class="form-control form-control-sm" name="tipoServicioInternet">
+                                                        <option value="" selected>Seleccionar...</option>
+                                                        <?php
+                                                        $queryServicioI = $mysqli->query("SELECT * FROM tbl_servicios_inter");
+                                                        while ($ServicioInter = $queryServicioI->fetch_array()) {
+                                                        ?>
+                                                            <option value="<?php echo $ServicioInter['idServicioInter'] ?>"><?php echo $ServicioInter['nombreServicioInter'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="diaGenerarFacturaInternet">Día para generar factura</label>
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaInternet">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for="velocidadInternet">Velocidad</label>
+                                                    <select class="form-control form-control-sm" name="velocidadInternet">
+                                                        <option value="" selected>Seleccionar...</option>
+                                                        <?php
+                                                        $queryVelocidades = $mysqli->query("SELECT * FROM tbl_velocidades");
+                                                        while ($Velocidad = $queryVelocidades->fetch_array()) {
+                                                        ?>
+                                                            <option value="<?php echo $Velocidad['idVelocidad'] ?>"><?php echo $Velocidad['nombreVelocidad'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="cuotaMensualInternet">Cuota mensual</label>
+                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="prepago_in">Prepago</label>
+                                                    <input class="form-control form-control-sm" type="text" name="prepago_in">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="tipoCliente">Tipo de cliente</label>
+                                                    <select class="form-control form-control-sm" name="tipoCliente">
+                                                        <option value="" selected>Seleccionar...</option>
+                                                        <?php
+                                                        $queryTipo = $mysqli->query("SELECT * FROM tbl_tipos_clientes");
+                                                        while ($tipo = $queryTipo->fetch_array()) {
+                                                        ?>
+                                                            <option value="<?php echo $tipo['idTipoCliente'] ?>"><?php echo $tipo['nombreTipoCliente'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for="tecnologia">Tecnología</label>
+                                                    <select class="form-control form-control-sm" name="tecnologia">
+                                                        <option value="" selected>Seleccionar...</option>
+                                                        <?php
+                                                        $queryTecnologias = $mysqli->query("SELECT * FROM tbl_tecnologias");
+                                                        while ($tecnologia = $queryTecnologias->fetch_array()) {
+                                                        ?>
+                                                            <option value="<?php echo $tecnologia['idTecnologia'] ?>"><?php echo $tecnologia['nombreTecnologia'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="enCalidad">En calidad de</label>
+                                                    <input class="form-control form-control-sm" type="text" name="enCalidad">
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="tipo_de_contrato">Tipo de contrato</label>
+                                                    <select class="form-control form-control-sm" name="tipo_de_contrato">
+                                                        <option value="">Seleccione</option>
+                                                        <option value="Nuevo">Nuevo</option>
+                                                        <option value="Reconexion">Reconexión</option>
+                                                        <option value="Renovacion">Renovación</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for="nContratoVigente">N° de contrato (INTERNET)</label>
+                                                    <input class="form-control form-control-sm" type="text" name="nContratoVigente" readonly>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="vencimientoContratoInternet">Vencimiento de contrato</label>
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoInternet" name="vencimientoContratoInternet">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ultimaRenovacionInternet">Última renovación</label>
+                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="fechaSuspencionInternet">Fecha de suspensión</label>
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspencionInternet" name="fechaSuspencionInternet">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="fechaReconexionInternet">Fecha de reconexión</label>
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionInternet" name="fechaReconexionInternet">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <label for="promocion">Promoción</label>
+                                                    <input class="form-control form-control-sm" type="text" name="promocion">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="promocionDesde">Desde</label>
+                                                    <input class="form-control form-control-sm" type="date" name="promocionDesde">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="promocionHasta">Hasta</label>
+                                                    <input class="form-control form-control-sm" type="date" name="promocionHasta">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="cuotaPromocion">Cuota de la promoción</label>
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaPromocion">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <label for="encargadoInstalacionInter">Técnico que realizó la instalación</label>
+                                                    <select class="form-control form-control-sm " name="encargadoInstalacionInter">
+                                                        <option value="">Seleccionar...</option>
+                                                        <?php
+                                                        $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
+                                                        while ($tecnicos = $querytecnicos->fetch_array()) {
+                                                        ?>
+                                                            <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="costoInstalacionIn">Costo de instalación</label>
+                                                    <input class="form-control form-control-sm" type="text" name="costoInstalacionIn">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label style="color: #CC0000" for="cuotaCovidI">Cuota COVID-19</label>
+                                                    <input class="form-control form-control-sm" type="text" id="cuotaCovidI" name="cuotaCovidI">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label style="color: #CC0000" for="covidDesdeI">Desde</label>
+                                                    <input class="form-control form-control-sm" type="date" id="covidDesdeI" name="covidDesdeI">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label style="color: #CC0000" for="covidHastaI">Hasta</label>
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaI" name="covidHastaI">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="direccionInternet">Dirección</label>
+                                                    <input class="form-control form-control-sm" type="text" name="direccionInternet" id="direccionInternet" readonly>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label for="colilla">Colilla</label>
+                                                            <input class="form-control form-control-sm" type="text" name="colilla">
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="wanip">WAN IP</label>
+                                                            <input class="form-control form-control-sm" type="text" id="wanip" name="wanip">
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="coordenadas">Coordenadas</label>
+                                                            <input class="form-control form-control-sm" type="text" name="coordenadas">
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="nodo">Nodo/Ap/Path</label>
+                                                            <input class="form-control form-control-sm" type="text" name="nodo">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <label for="modelo">Modelo</label>
+                                                            <input class="form-control form-control-sm" type="text" name="modelo">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="recepcion">Recepción</label>
+                                                            <input class="form-control form-control-sm" type="text" name="recepcion">
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <label for="mac">MAC</label>
+                                                            <input class="form-control form-control-sm" type="text" id="mac" name="mac">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="transmicion">Transmisión</label>
+                                                            <input class="form-control form-control-sm" type="text" name="transmision">
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <label for="serie">Serie</label>
+                                                            <input class="form-control form-control-sm" type="text" name="serie">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="ruido">Ruido</label>
+                                                            <input class="form-control form-control-sm" type="text" name="ruido">
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="claveWifi">Clave WIFI</label>
+                                                            <input class="form-control form-control-sm" type="text" name="claveWifi">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <br>
+                                                    <button class="btn btn-success btn-block" type="button" name="agregar" onclick="activarMac();" style="font-size:16px">Activar servicio</button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <br>
+                                                    <button class="btn btn-danger btn-block" type="button" name="eliminar" onclick="eliminarMac();" style="font-size:16px">Desactivar servicio</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <br>
                                     <!--TELEFONIA-->
                                     <h2 class="accordion-header" id="item3">
                                         <button class="accordion-button" type="button" data-bs-toggle='collapse' data-bs-target='#collapse3' aria-expanded="true" aria-controls="collapse3">TELEFONIA</button>
@@ -548,14 +899,8 @@ function setMenu($permisosActuales, $permisoRequerido)
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-lg btn-success"><i class="fas fa-save"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
     <!-- extensiones -->
@@ -819,12 +1164,11 @@ function setMenu($permisosActuales, $permisoRequerido)
                 window.location.replace("../../php/logout.php");
             });
         });
-
-
     });
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     });
 </script>
+<script src="js/funcionesClientes.js"></script>
 
 </html>

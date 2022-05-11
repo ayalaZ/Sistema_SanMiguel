@@ -2290,7 +2290,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             </div>
                             <div class="col-md-4">
                                 <label for="lDetallado">Ver reporte detallado</label>
-                                <input class="form-control" type="checkbox" id="lDetallado" name="lDetallado" value="1" checked>
+                                <input type="checkbox" name="lDetallado" id="lDetallado" class="form-check-input" value="1" style="margin-top: 10%; width:35px;height:35px;" checked>
                             </div>
                         </div>
                     </div>

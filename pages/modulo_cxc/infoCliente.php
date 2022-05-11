@@ -559,6 +559,7 @@ if (strlen($alert) > 3) {
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
 </head>
+
 <body>
 
     <?php
@@ -817,6 +818,7 @@ if (strlen($alert) > 3) {
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-danger">
+
                         <div class="panel-heading">
                             <?php
                             if (strtoupper($nombre) == 'CODIGO A REUTILIZAR') {
@@ -952,14 +954,18 @@ if (strlen($alert) > 3) {
                                     <div class="row">
                                         <div class="col-md-3">
                                             <label for="departamento"><span style="color:red;font-size:18px;">**</span>Departamento</label>
-                                            <select class="form-control input-sm alert-danger" id="departamento" name="departamento" disabled required>
-                                                <option value="" selected>Seleccionar</option>
+                                            <select class="form-control input-sm alert-danger" id="departamento" name="departamento" disabled required style="border: 1px solid green;">
+                                                <option value="">Seleccionar...</option>
                                                 <?php
-                                                foreach ($arrDepartamentos as $key) {
-                                                    if ($key['idDepartamento'] == $departamento) {
-                                                        echo "<option value=" . $key['idDepartamento'] . " selected>" . $key['nombreDepartamento'] . "</option>";
-                                                    } else {
-                                                        echo "<option value=" . $key['idDepartamento'] . ">" . $key['nombreDepartamento'] . "</option>";
+                                                $querydepartamentos = $mysqli->query("SELECT * FROM tbl_departamentos_cxc");
+                                                while ($departamentos = $querydepartamentos->fetch_array()) {
+                                                    if ($departamentos['idDepartamento'] == $departamento) {
+                                                ?>
+                                                        <option value="<?php echo $departamentos['idDepartamento'] ?>" selected><?php echo $departamentos['nombreDepartamento'] ?></option>
+                                                    <?php
+                                                    } else {                                                ?>
+                                                        <option value="<?php echo $departamentos['idDepartamento'] ?>"><?php echo $departamentos['nombreDepartamento'] ?></option>
+                                                <?php
                                                     }
                                                 }
                                                 ?>
@@ -967,30 +973,22 @@ if (strlen($alert) > 3) {
                                         </div>
                                         <div class="col-md-4">
                                             <label for="municipio"><span style="color:red;font-size:18px;">**</span>Municipio</label>
-                                            <select class="form-control input-sm alert-danger" id="municipio" name="municipio" disabled required>
-                                                <option value="" selected>Seleccionar</option>
+                                            <select class="form-control input-sm alert-danger" id="municipio" name="municipio" disabled required style="border: 1px solid green;">
                                                 <?php
-                                                foreach ($arrMunicipios as $key) {
-                                                    if ($key['idMunicipio'] == $municipio) {
-                                                        echo "<option value=" . $key['idMunicipio'] . " selected>" . $key['nombreMunicipio'] . "</option>";
-                                                    } else {
-                                                        echo "<option value=" . $key['idMunicipio'] . ">" . $key['nombreMunicipio'] . "</option>";
-                                                    }
-                                                }
+                                                $querymunicipio = $mysqli->query("SELECT * FROM tbl_municipios_cxc WHERE idMunicipio='$municipio'");
+                                                $municipio = $querymunicipio->fetch_array();
                                                 ?>
+                                                <option value="<?php $municipio['idMunicipio'] ?>" selected><?php echo $municipio['nombreMunicipio'] ?></option>
                                             </select>
                                         </div>
                                         <div class="col-md-5">
                                             <label for="colonia"><span style="color:red;font-size:18px;">**</span>Barrio o colonia</label>
-                                            <select class="buscador form-control input-sm alert-danger " id="colonia" name="colonia" required disabled>
-                                                <?php
-                                                $colonias = $mysqli->query("SELECT * FROM tbl_colonias_cxc");
-                                                while ($datos = $colonias->fetch_array()) {
-                                                ?>
-                                                    <option value="<?php echo $datos['idColonia'] ?>"><?php echo $datos['nombreColonia'] ?></option>
-                                                <?php
-                                                }
-                                                ?>
+                                            <select class="form-control input-sm alert-danger " id="colonia" name="colonia" required disabled style="border: 1px solid green!important;">
+                                              <?php 
+                                                $queryColonia = $mysqli->query("SELECT * FROM tbl_colonias_cxc WHERE idColonia='$colonia'");
+                                                $datosColonias = $queryColonia->fetch_array();
+                                              ?>
+                                              <option value="<?php echo $datosColonias['idColonia']?>" selected><?php echo $datosColonias['nombreColonia'] ?></option>
                                             </select>
                                         </div>
                                     </div>
@@ -2428,6 +2426,57 @@ Full screen Modal
     <script>
         $(document).ready(function() {
             $('.buscador').select2();
+        });
+        $("#departamento").change(function() {
+            $id = $(this).val();
+            $opcion = 'municipios';
+            $.ajax({
+                type: 'POST',
+                url: 'php/funcionesClientes.php',
+                data: {
+                    id: $id,
+                    opcion: $opcion,
+                },
+                dataType: 'Json',
+                success: function(datax) {
+                    $("#municipio").empty();
+                    var filas = datax.filas;
+                    var idmunicipio = datax.idmunicipio;
+                    $("#municipio").append("<option value=''>Seleccionar...</option>");
+                    for (var i = 0; i < filas; i++) {
+                        var nuevafila = "<option value=" + datax.municipios[i].idMunicipio + ">" + datax.municipios[i].nombreMunicipio + "</option>";
+                        $("#municipio").append(nuevafila);
+                    }
+                },
+                error: function() {
+                    swal('Error', 'Ha ocurrido un error al traer la informacion', 'error');
+                }
+            });
+        });
+        $("#municipio").change(function() {
+            $id = $(this).val();
+            $opcion = 'colonia';
+            $.ajax({
+                type: 'POST',
+                url: 'php/funcionesClientes.php',
+                data: {
+                    id: $id,
+                    opcion: $opcion
+                },
+                dataType: 'Json',
+                success: function(datax) {
+                    $("#colonia").empty();
+                    var filas = datax.filas;
+                    $("#colonia").append("<option value=''>Seleccionar...</option>");
+                    for (var i = 0; i < filas; i++) {
+                        var nuevafila = "<option value=" + datax.colonias[i].idColonia + ">" + datax.colonias[i].nombreColonia + "</option>";
+                        $("#colonia").append(nuevafila);
+                    }
+                },
+                error: function() {
+                    swal('Error', 'Ha ocurrido un error al traer la informacion', 'error');
+                }
+            });
         });
     </script>
 </body>

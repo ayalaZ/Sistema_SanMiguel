@@ -120,9 +120,9 @@ if ($detallado == 1) {
             if ($datos['tipoServicio'] == 'C') {
                 $monto = $datos['cuotaCable'];
                 $montoCancelado = 0.00;
-                $separado = ($datos['cuotaCable'] / 1.13);
+                $separado = round(($datos['cuotaCable'] / 1.13),2,PHP_ROUND_HALF_EVEN);
                 $iva = ($separado * 0.13);
-                $internasGravadas = ($datos['cuotaCable'] - $iva);
+                $internasGravadas = $datos['cuotaCable'] - $iva;
                 $debitoFiscal = $iva;
                 $internasGravadas2 = 0;
                 $debitoFiscal2 = 0;
@@ -132,9 +132,9 @@ if ($detallado == 1) {
             } else {
                 $monto = $datos['cuotaInternet'];
                 $montoCancelado = 0.00;
-                $separado = ($datos['cuotaInternet'] / 1.13);
+                $separado = round(($datos['cuotaInternet'] / 1.13),2,PHP_ROUND_HALF_EVEN);
                 $iva = ($separado * 0.13);
-                $internasGravadas = ($datos['cuotaInternet'] - $iva);
+                $internasGravadas = $datos['cuotaInternet'] - $iva;
                 $debitoFiscal = $iva;
                 $internasGravadas2 = 0;
                 $debitoFiscal2 = 0;
@@ -235,23 +235,23 @@ if ($detallado == 1) {
                 if ($notaCredito['tipoServicio'] == 'C') {
                     $monto = $notaCredito['cuotaCable'];
                     $montoCancelado = 0.00;
-                    $iva = ($monto / 1.13) * 0.13;
+                    $iva = round(($monto / 1.13),2,PHP_ROUND_HALF_EVEN) * 0.13;
                     $internasGravadas = $monto - $iva;
                     $debitoFiscal = $iva;
                     $internasGravadas2 = 0;
                     $debitoFiscal2 = 0;
-                    $totalGravadasSinIva = $totalGravadasSinIva - $internasGravadas;
+                    $totalGravadasSinIva = number_format($totalGravadasSinIva,2) - number_format($internasGravadas,2);
                     $totalIvaCredito = $totalIvaCredito - $debitoFiscal;
                     $totalCESCcredito = $totalCESCcredito - $notaCredito['totalImpuesto'];
                 } else {
                     $monto = $notaCredito['cuotaInternet'];
                     $montoCancelado = 0.00;
-                    $iva = ($monto / 1.13) * 0.13;
+                    $iva = round(($monto / 1.13),2,PHP_ROUND_HALF_EVEN) * 0.13;
                     $internasGravadas = $monto - $iva;
                     $debitoFiscal = $iva;
                     $internasGravadas2 = 0;
                     $debitoFiscal2 = 0;
-                    $totalGravadasSinIva = $totalGravadasSinIva - $internasGravadas;
+                    $totalGravadasSinIva = number_format($totalGravadasSinIva,2) - number_format($internasGravadas,2);
                     $totalIvaCredito = $totalIvaCredito - $debitoFiscal;
                     $totalCESCcredito = $totalCESCcredito - $notaCredito['totalImpuesto'];
                 }
@@ -409,7 +409,7 @@ if ($detallado == 1) {
         //quinta fila
         $pdf->Cell(40, 6, utf8_decode('CESC 5%'), 0, 0, 'L');
         $pdf->Cell(45, 6, utf8_decode(number_format($totalCESCcredito, 2)), 0, 0, 'L');
-        $totalCESCventasmanualesCompleto = $totalCESCventasManuales + $totalCESCventasManuales2;
+        $totalCESCventasmanualesCompleto = number_format($totalCESCventasManuales,2) + number_format($totalCESCventasManuales2,2);
         $pdf->Cell(65, 6, utf8_decode(number_format(($totalCESCventasmanualesCompleto), 2)), 0, 0, 'L');
         $pdf->Cell(45, 6, utf8_decode(number_format($totalCESCanulados, 2)), 0, 1, 'L');
         //sexta fila
@@ -435,7 +435,7 @@ if ($detallado == 1) {
     $pdf->Ln(20);
     $pdf->Cell(70, 3, utf8_decode(''), "T", 1, 'C');
     $pdf->Cell(40, 1, utf8_decode("Nombre y firma del contador:"), "", 0, 'L');
-} else {
+}else {
     $numero = 1;
     $counter = 1;
     for ($i = 0; $i < 31; $i++) {

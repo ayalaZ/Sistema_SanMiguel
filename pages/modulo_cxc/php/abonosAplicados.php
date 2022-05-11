@@ -17,11 +17,9 @@
   $hasta = $_POST['lHasta'];
   $codigoCobrador = $_POST['lCobrador'];
   $colonia = $_POST['lColonia'];
-    if (isset($_POST['lDetallado'])){
+
         $detallado = $_POST['lDetallado'];
-    }else{
-        $detallado = null;
-    }
+
     //$detallado = $_POST['lDetallado'];
   $tipoServicio = $_POST['lServicio'];
   
