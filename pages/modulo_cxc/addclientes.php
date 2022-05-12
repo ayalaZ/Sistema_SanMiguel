@@ -96,13 +96,15 @@ function setMenu($permisosActuales, $permisoRequerido)
             color: #000;
             border-bottom: 1px solid #b71c1c;
         }
-        .codigo{
+
+        .codigo {
             text-align: center;
             border: 1px solid #000;
         }
-        .codigo input{
+
+        .codigo input {
             color: #CC0000;
-            background-color: transparent!important;
+            background-color: transparent !important;
             border: none;
             text-align: center;
             font-size: x-large;
@@ -253,7 +255,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     </aside>
     <div class="content-wrapper">
         <div class="card" style="margin: 10px;">
-            <form id="addcliente" role="dialog">
+            <form id="addcliente" method="POST">
                 <div class="card-header">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -261,6 +263,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                         <li class="nav-item"><a href="#otros-datos" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">OTROS DATOS</a></li>
                         <li class="nav-item"><a href="#servicios" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">SERVICIOS</a></li>
                         <li class="nav-item"><button type="submit" class="btn btn-default btn-lg"><i class="fas fa-save"></i></button></li>
+                        <input type="hidden" name="opcion" id="opcion" value="ingresar">
                     </ul>
                 </div>
                 <div class="card-body">
@@ -268,13 +271,15 @@ function setMenu($permisosActuales, $permisoRequerido)
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="row">
-                                <div class="col-md-3 codigo">
+                                <div class="col-md-2 codigo">
+                                    <label for="codigo">Código del cliente</label>
                                     <?php
                                     $querycodigo = $mysqli->query("SELECT cod_cliente FROM clientes ORDER BY cod_cliente DESC LIMIT 1");
                                     $codigo = $querycodigo->fetch_array();
+                                    $nuevoCodigo = $codigo['cod_cliente'] + 1;
+                                    $nuevoCodigo = str_pad($nuevoCodigo, 5, "0", STR_PAD_LEFT);
                                     ?>
-                                    <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" value="<?php echo $codigo['cod_cliente'] ?>" readonly style="font-weight: bold;">
-                                    <label for="codigo">Código del cliente</label>
+                                    <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" value="<?php echo $nuevoCodigo ?>" style="font-weight: bold;">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="contrato">N° de contrato (CABLE)</label>
@@ -287,6 +292,10 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <div class="col-md-3">
                                     <label for="nAnexo">Número de anexo</label>
                                     <input class="form-control form-control-sm" type="text" name="nAnexo" readonly>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="ordenes">Ordenes</label>
+                                    <input type="checkbox" name="ordenes" id="ordenes" class="form-check-input" value="1" style="margin-top: 20%; width:35px;height:35px;" checked>
                                 </div>
                             </div>
                             <div class="row">
@@ -322,7 +331,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-2">
                                     <label for="dui">DUI</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" id="dui" name="dui" pattern="[0-9]{8}-[0-9]{1}">
+                                    <input class="form-control form-control-sm alert-danger" type="text" id="dui" name="dui">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="expedicion">Lugar y fecha de expedición</label>
@@ -446,7 +455,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="cobrador">Cobrador que lo atiende</label>
-                                    <select class="form-control form-control-sm alert-danger" name="cobrador">
+                                    <select class="form-control form-control-sm alert-danger" name="cobrador" id="cobrador">
                                         <option value="">Seleccionar...</option>
                                         <?php
                                         $querycobradores = $mysqli->query('SELECT * FROM tbl_cobradores');
@@ -1147,6 +1156,7 @@ function setMenu($permisosActuales, $permisoRequerido)
         </div>
     </aside>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 <script>
     $(document).ready(function() {
         $(".salir").on("click", function(e) {
