@@ -555,10 +555,10 @@ function setMenu($permisosActuales, $permisoRequerido)
                         datax.clientes[i].cod_cliente + "</td><td>" +
                         datax.clientes[i].nombre + "</td><td style='width:50%;'>" +
                         datax.clientes[i].direccion + "</td><td>" +
-                        datax.clientes[i].numero_dui + "</td><td><a href='php/ver_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-ver' id='btn-ver' data-toggle='tooltip' title='Ver' data-placement='top'><i class='fas fa-eye'></i></a><a href='php/editar_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-editar' id='btn-editar' data-toggle='tooltip' title='Editar' data-placement='top'><i class='fas fa-pencil-alt'></i></a></td></tr>";
+                        datax.clientes[i].numero_dui + "</td><td><a href='ver_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-ver' id='btn-ver' data-toggle='tooltip' title='Ver' data-placement='top'><i class='fas fa-eye'></i></a><a href='php/editar_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-editar' id='btn-editar' data-toggle='tooltip' title='Editar' data-placement='top'><i class='fas fa-pencil-alt'></i></a></td></tr>";
                     $("#clientes tbody").append(nuevafila);
                 }
-                $("#cant_clientes").append(filas-1);
+                $("#cant_clientes").append(filas);
                 $('.tabla').DataTable({
                     dom: 'Pfrtip',
                     pageLength: 50,
