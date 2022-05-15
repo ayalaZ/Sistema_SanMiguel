@@ -27,13 +27,14 @@ function setMenu($permisosActuales, $permisoRequerido)
     return ((intval($permisosActuales) & intval($permisoRequerido)) == 0) ? false : true;
 }
 if (isset($_GET['codigo'])) {
-   $codigo = $_GET['codigo'];
-   $cliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");
-   $arrayCliente = $cliente->fetch_array();
+    $codigo = $_GET['codigo'];
+    $cliente = $mysqli->query("SELECT * FROM clientes WHERE cod_cliente='$codigo'");
+    $arrayCliente = $cliente->fetch_array();
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -99,9 +100,12 @@ if (isset($_GET['codigo'])) {
             color: #000;
             border-bottom: 1px solid #b71c1c;
         }
-        input, select, textarea{
-            color: #CC0000!important;
-            font-size: large!important;
+
+        input,
+        select,
+        textarea {
+            color: #CC0000 !important;
+            font-size: large !important;
             font-weight: bold;
         }
 
@@ -115,8 +119,8 @@ if (isset($_GET['codigo'])) {
             background-color: transparent !important;
             border: none;
             text-align: center;
-            font-size: x-large;
-        }        
+            font-size: x-large !important;
+        }
     </style>
 </head>
 
@@ -316,7 +320,7 @@ if (isset($_GET['codigo'])) {
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="saldoCable">Saldo actual cable</label>
-                                    <input class="form-control form-control-sm" type="text" name="saldoCable" value="<?php echo $arrayCliente['saldoCable'] ?>"> 
+                                    <input class="form-control form-control-sm" type="text" name="saldoCable" value="<?php echo $arrayCliente['saldoCable'] ?>">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="saldoInternet">Saldo actual internet</label>
@@ -350,30 +354,30 @@ if (isset($_GET['codigo'])) {
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="departamento">Departamento</label>
-                                    <?php 
-                                        $idDepartamento = $arrayCliente['id_departamento'];
-                                        $departamento = $mysqli->query("SELECT * FROM tbl_departamentos_cxc WHERE idDepartamento='$idDepartamento'");
-                                        $arrayDepartamento = $departamento->fetch_array();
+                                    <?php
+                                    $idDepartamento = $arrayCliente['id_departamento'];
+                                    $departamento = $mysqli->query("SELECT * FROM tbl_departamentos_cxc WHERE idDepartamento='$idDepartamento'");
+                                    $arrayDepartamento = $departamento->fetch_array();
                                     ?>
-                                    <input type="text" class="form-control form-control-sm" id="departamento" name="departamento" value="<?php echo $arrayDepartamento['nombreDepartamento'];?>">
+                                    <input type="text" class="form-control form-control-sm" id="departamento" name="departamento" value="<?php echo $arrayDepartamento['nombreDepartamento']; ?>">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="municipio">Municipio</label>
-                                    <?php 
-                                        $idMunicipio = $arrayCliente['id_municipio'];
-                                        $municipio = $mysqli->query("SELECT * FROM tbl_municipios_cxc WHERE idMunicipio='$idMunicipio'");
-                                        $arraymunicipio = $municipio->fetch_array();
+                                    <?php
+                                    $idMunicipio = $arrayCliente['id_municipio'];
+                                    $municipio = $mysqli->query("SELECT * FROM tbl_municipios_cxc WHERE idMunicipio='$idMunicipio'");
+                                    $arraymunicipio = $municipio->fetch_array();
                                     ?>
-                                    <input type="text" class="form-control form-control-sm" id="municipio" name="municipio" value="<?php echo $arraymunicipio['nombreMunicipio'];?>">
+                                    <input type="text" class="form-control form-control-sm" id="municipio" name="municipio" value="<?php echo $arraymunicipio['nombreMunicipio']; ?>">
                                 </div>
                                 <div class="col-md-5">
                                     <label for="colonia">Barrio o colonia</label>
-                                    <?php 
-                                        $idColonia = $arrayCliente['id_colonia'];
-                                        $colonia = $mysqli->query("SELECT * FROM tbl_colonias_cxc WHERE idColonia='$idColonia'");
-                                        $arraycolonia = $colonia->fetch_array();
+                                    <?php
+                                    $idColonia = $arrayCliente['id_colonia'];
+                                    $colonia = $mysqli->query("SELECT * FROM tbl_colonias_cxc WHERE idColonia='$idColonia'");
+                                    $arraycolonia = $colonia->fetch_array();
                                     ?>
-                                    <input type="text" class="form-control form-control-sm" id="colonia" name="colonia" value="<?php echo $arraycolonia['nombreColonia'];?>">
+                                    <input type="text" class="form-control form-control-sm" id="colonia" name="colonia" value="<?php echo $arraycolonia['nombreColonia']; ?>">
                                 </div>
                             </div>
                             <div class="row">
@@ -403,42 +407,38 @@ if (isset($_GET['codigo'])) {
                                 </div>
                                 <div class="col-md-3">
                                     <label for="formaFacturar">Forma al facturar</label>
-                                    <?php 
-                                        $idforma = $arrayCliente['forma_pago'];
-                                        $formaPago = $mysqli->query("SELECT * FROM tbl_forma_pago WHERE idFormaPago='$idforma'");
-                                        $arrayForma = $formaPago->fetch_array();
+                                    <?php
+                                    $idforma = $arrayCliente['forma_pago'];
+                                    $formaPago = $mysqli->query("SELECT * FROM tbl_forma_pago WHERE idFormaPago='$idforma'");
+                                    $arrayForma = $formaPago->fetch_array();
                                     ?>
-                                    <input type="text" class="form-control form-control-sm" id="FormaPago" name="FormaPago" value="<?php echo $arrayForma['nombreFormaPago'];?>">
+                                    <input type="text" class="form-control form-control-sm" id="FormaPago" name="FormaPago" value="<?php echo $arrayForma['nombreFormaPago']; ?>">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="tipoComprobante">Tipo de comprobante</label>
-                                    <select class="form-control form-control-sm" id="tipoComprobante" name="tipoComprobante">
-                                        <option value="" selected>Seleccionar</option>
-                                        <?php
-                                        $queryComprobante = $mysqli->query("SELECT * FROM tbl_tipo_comprobante");
-                                        while ($comprobante = $queryComprobante->fetch_array()) {
-                                        ?>
-                                            <option value="<?php echo $comprobante['idComprobante'] ?>"><?php echo $comprobante['nombreComprobante'] ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
+                                    <?php
+                                    $idComprobante = $arrayCliente['tipo_comprobante'];
+                                    $tipo_comprobante = $mysqli->query("SELECT * FROM tbl_tipo_comprobante WHERE idComprobante='$idComprobante'");
+                                    $arrayComprobante = $tipo_comprobante->fetch_array();
+                                    $queryComprobante = $mysqli->query("SELECT * FROM tbl_tipo_comprobante");
+                                    ?>
+                                    <input type="text" class="form-control form-contro-sm" id="tipoComprobante" name="tipoComprobante" value="<?php echo $arrayComprobante['nombreComprobante'] ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="saldoActual">Saldo actual</label>
-                                    <input class="form-control form-control-sm" type="text" name="saldoActual" readonly>
+                                    <input class="form-control form-control-sm" type="text" name="saldoActual" value="<?php echo $arrayCliente['saldo_actual'] ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="facebook">Cuenta de Facebook</label>
-                                    <input class="form-control form-control-sm" type="text" name="facebook">
+                                    <input class="form-control form-control-sm" type="text" name="facebook" value="<?php echo $arrayCliente['facebook'] ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="correo">Correo electrónico</label>
-                                    <input class="form-control form-control-sm" type="text" name="correo">
+                                    <input class="form-control form-control-sm" type="text" name="correo" value="<?php echo $arrayCliente['correo_electronico'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -446,71 +446,66 @@ if (isset($_GET['codigo'])) {
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="cobrador">Cobrador que lo atiende</label>
-                                    <select class="form-control form-control-sm" name="cobrador" id="cobrador">
-                                        <option value="">Seleccionar...</option>
-                                        <?php
-                                        $querycobradores = $mysqli->query('SELECT * FROM tbl_cobradores');
-                                        while ($cobrador = $querycobradores->fetch_array()) {
-                                        ?>
-                                            <option value="<?php echo $cobrador['codigoCobrador'] ?>"><?php echo $cobrador['nombreCobrador'] ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
+                                    <?php
+                                    $idCobrador = $arrayCliente['cod_cobrador'];
+                                    $cobrador = $mysqli->query("SELECT * FROM tbl_cobradores WHERE codigoCobrador='$idCobrador'");
+                                    $arrayCobrador = $cobrador->fetch_array();
+                                    ?>
+                                    <input type="text" class="form-control form-control-sm" value="<?php echo $arrayCobrador['nombreCobrador'] ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="rp1_nombre">Referencia personal #1</label>
-                                    <input class="form-control form-control-sm" type="text" name="rf1_nombre">
+                                    <input class="form-control form-control-sm" type="text" name="rf1_nombre" value="<?php echo $arrayCliente['contactos'] ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp1_telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp1_telefono">
+                                    <input class="form-control form-control-sm" type="text" name="rp1_telefono" value="<?php echo $arrayCliente['telcon1'] ?>">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rp1_direccion">Dirección</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp1_direccion">
+                                    <input class="form-control form-control-sm" type="text" name="rp1_direccion" value="<?php echo $arrayCliente['dir1'] ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp1_parentezco">Parentezco</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp1_parentezco">
+                                    <input class="form-control form-control-sm" type="text" name="rp1_parentezco" value="<?php echo $arrayCliente['paren1'] ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="rp2_nombre">Referencia personal #2</label>
-                                    <input class="form-control form-control-sm" type="text" name="rf2_nombre">
+                                    <input class="form-control form-control-sm" type="text" name="rf2_nombre" value="<?php echo $arrayCliente['contacto2'] ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp2_telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp2_telefono">
+                                    <input class="form-control form-control-sm" type="text" name="rp2_telefono" value="<?php echo $arrayCliente['telcon2'] ?>">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rp2_direccion">Dirección</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp2_direccion">
+                                    <input class="form-control form-control-sm" type="text" name="rp2_direccion" value="<?php echo $arrayCliente['dir2'] ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp2_parentezco">Parentezco</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp2_parentezco">
+                                    <input class="form-control form-control-sm" type="text" name="rp2_parentezco" value="<?php echo $arrayCliente['paren2'] ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="rp3_nombre">Referencia personal #3</label>
-                                    <input class="form-control form-control-sm" type="text" name="rf3_nombre">
+                                    <input class="form-control form-control-sm" type="text" name="rf3_nombre" value="<?php echo $arrayCliente['contacto3'] ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp3_telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp3_telefono">
+                                    <input class="form-control form-control-sm" type="text" name="rp3_telefono" value="<?php echo $arrayCliente['telcon3'] ?>">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rp3_direccion">Dirección</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp3_direccion">
+                                    <input class="form-control form-control-sm" type="text" name="rp3_direccion" value="<?php echo $arrayCliente['dir3'] ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp3_parentezco">Parentezco</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp3_parentezco">
+                                    <input class="form-control form-control-sm" type="text" name="rp3_parentezco" value="<?php echo $arrayCliente['paren3'] ?>">
                                 </div>
                             </div>
 
@@ -527,109 +522,119 @@ if (isset($_GET['codigo'])) {
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="fechaInstalacionCable">Fecha de instalación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionCable" name="fechaInstalacionCable">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionCable" name="fechaInstalacionCable" value="<?php echo $arrayCliente['fecha_instalacion'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="fechaPrimerFacturaCable">Fecha primer factura</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable" value="<?php echo $arrayCliente['fecha_primer_factura'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="mesesContratoCable">Meses de contrato</label>
-                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoCable" name="mesesContratoCable">
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoCable" name="mesesContratoCable" value="<?php echo $arrayCliente['periodo_contrato_ca'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="exento">Exento</label>
-                                                    <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;">
+                                                    <?php
+                                                    if ($arrayCliente['exento'] == 'T') {
+                                                    ?>
+                                                        <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled checked>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="cortesia">Cortesía</label>
-                                                    <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;">
+                                                    <?php
+                                                    if ($arrayCliente['servicio_cortesia'] == 'T') {
+                                                    ?>
+                                                        <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled checked>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <label for="cuotaMensualCable">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm" type="text" name="cuotaMensualCable">
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaMensualCable" value="<?php echo number_format($arrayCliente['valor_cuota'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="prepago">Prepago</label>
-                                                    <input class="form-control form-control-sm" type="text" name="prepago">
+                                                    <input class="form-control form-control-sm" type="text" name="prepago" value="<?php echo number_format($arrayCliente['prepago'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoServicio">Tipo de servicio</label>
-                                                    <select class="form-control form-control-sm" id="tipoServicioCable" name="tipoServicioCable">
-                                                        <option value="" selected>Seleccionar...</option>
-                                                        <?php
-                                                        $queryServicioC = $mysqli->query("SELECT * FROM tbl_servicios_cable");
-                                                        while ($ServicioCable = $queryServicioC->fetch_array()) {
-                                                        ?>
-                                                            <option value="<?php echo $ServicioCable['idServicioCable'] ?>"><?php echo $ServicioCable['nombreServicioCable'] ?></option>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <?php
+                                                    $idTipoServicio = $arrayCliente['tipo_servicio'];
+                                                    $TipoServicio = $mysqli->query("SELECT * FROM tbl_servicios_cable WHERE idServicioCable='$idTipoServicio'");
+                                                    $arrayTipoServicio = $TipoServicio->fetch_array();
+                                                    ?>
+                                                    <input type="text" class="form-control form-control-sm" id="tipoServicioCable" name="tipoServicioCable" value="<?php echo $arrayTipoServicio['nombreServicioCable'] ?>">
                                                 </div>
                                                 <div class="col-md-5">
                                                     <label for="diaGenerarFacturaCable">Día cobro</label>
-                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaCable">
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaCable" value="<?php echo $arrayCliente['dia_cobro'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="inicioContratoCable">Inicio de contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="inicioContratoCable" name="inicioContratoCable">
+                                                    <input class="form-control form-control-sm" type="date" id="inicioContratoCable" name="inicioContratoCable" value="<?php echo $arrayCliente['fecha_instalacion'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="vencimientoContratoCable">Vence contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoCable" name="vencimientoContratoCable">
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoCable" name="vencimientoContratoCable" value="<?php echo $arrayCliente['vencimiento_ca'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaSuspensionCable">Fecha suspension</label>
-                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspensionCable" name="fechaSuspensionCable">
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspensionCable" name="fechaSuspensionCable" value="<?php echo $arrayCliente['fecha_suspension'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaReconexionCable">Fecha de reconexión</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionCable" name="fechaReconexionCable">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionCable" name="fechaReconexionCable" value="<?php echo $arrayCliente['fecha_reinstalacion'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="derivaciones">N° de derivaciones</label>
-                                                    <input class="form-control form-control-sm" type="number" name="derivaciones">
+                                                    <input class="form-control form-control-sm" type="number" name="derivaciones" value="<?php echo $arrayCliente['numero_derivaciones'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="encargadoInstalacionCable">Técnico que realizó la instalación</label>
-                                                    <select class="form-control form-control-sm" name="encargadoInstalacionCable">
-                                                        <option value="">Seleccionar...</option>
-                                                        <?php
-                                                        $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
-                                                        while ($tecnicos = $querytecnicos->fetch_array()) {
-                                                        ?>
-                                                            <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <?php
+                                                    $idTecnicoCable = $arrayCliente['id_tecnico'];
+                                                    $tecnicoCable = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc WHERE idTecnico='$idTecnicoCable'");
+                                                    $arrayTecnico = $tecnicoCable->fetch_array();
+                                                    ?>
+                                                    <input type="text" class="form-control form-control-sm" id="encargadoInstalacionCable" name="encargadoInstalacionCable" value="<?php echo $arrayTecnico['nombreTecnico'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="cuotaCovidC">Cuota COVID-19</label>
-                                                    <input class="form-control form-control-sm " type="text" id="cuotaCovidC" name="cuotaCovidC">
+                                                    <input class="form-control form-control-sm " type="text" id="cuotaCovidC" name="cuotaCovidC" value="<?php echo $arrayCliente['cuotaCovidC'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidDesdeC">Desde</label>
-                                                    <input class="form-control form-control-sm " type="date" id="covidDesdeC" name="covidDesdeC">
+                                                    <input class="form-control form-control-sm " type="date" id="covidDesdeC" name="covidDesdeC" value="<?php echo $arrayCliente['covidDesdeC'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidHastaC">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidHastaC" name="covidHastaC">
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaC" name="covidHastaC" value="<?php echo $arrayCliente['covidHastaC'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="direccionCable">Dirección</label>
-                                                    <input class="form-control form-control-sm" type="text" name="direccionCable" id="direccionCable" readonly>
+                                                    <input class="form-control form-control-sm" type="text" name="direccionCable" id="direccionCable" value="<?php echo $arrayCliente['dire_cable'] ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -643,92 +648,66 @@ if (isset($_GET['codigo'])) {
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <label for="fechaInstalacionInternet">Fecha de instalación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionInternet" name="fechaInstalacionInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionInternet" name="fechaInstalacionInternet" value="<?php echo $arrayCliente['fecha_instalacion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaPrimerFacturaInternet">Fecha primer factura</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaInternet" name="fechaPrimerFacturaInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaInternet" name="fechaPrimerFacturaInternet" value="<?php echo $arrayCliente['fecha_primer_factura_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="mesesContratoInternet">Meses de contrato</label>
-                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoInternet" name="mesesContratoInternet">
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoInternet" name="mesesContratoInternet" value="<?php echo $arrayCliente['periodo_contrato_int'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoServicioInternet">Tipo de servicio</label>
-                                                    <select class="form-control form-control-sm" name="tipoServicioInternet">
-                                                        <option value="" selected>Seleccionar...</option>
-                                                        <?php
-                                                        $queryServicioI = $mysqli->query("SELECT * FROM tbl_servicios_inter");
-                                                        while ($ServicioInter = $queryServicioI->fetch_array()) {
-                                                        ?>
-                                                            <option value="<?php echo $ServicioInter['idServicioInter'] ?>"><?php echo $ServicioInter['nombreServicioInter'] ?></option>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <?php
+                                                    $idTipoServicioInternet = $arrayCliente['tipo_servicio_in'];
+                                                    $servicio_in = $mysqli->query("SELECT * FROM tbl_servicios_inter WHERE idServicioInter='$idTipoServicioInternet'");
+                                                    $arrayServicioIn = $servicio_in->fetch_array();
+                                                    ?>
+                                                    <input type="text" class="form-control form-control-sm" id="tipoServicioInternet" name="tipoServicioInternet" value="<?php echo $arrayServicioIn['nombreServicioInter'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="diaGenerarFacturaInternet">Día para generar factura</label>
-                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaInternet">
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaInternet" value="<?php echo $arrayCliente['dia_corbo_in'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="velocidadInternet">Velocidad</label>
-                                                    <select class="form-control form-control-sm" name="velocidadInternet">
-                                                        <option value="" selected>Seleccionar...</option>
-                                                        <?php
-                                                        $queryVelocidades = $mysqli->query("SELECT * FROM tbl_velocidades");
-                                                        while ($Velocidad = $queryVelocidades->fetch_array()) {
-                                                        ?>
-                                                            <option value="<?php echo $Velocidad['idVelocidad'] ?>"><?php echo $Velocidad['nombreVelocidad'] ?></option>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <?php
+                                                    $idVelocidad = $arrayCliente['id_velocidad'];
+                                                    $velocidad = $mysqli->query("SELECT * FROM tbl_velocidades WHERE idVelocidad='$idVelocidad'");
+                                                    $arrayVelocidad = $velocidad->fetch_array();
+                                                    ?>
+                                                    <input type="text" class="form-control form-control-sm" id="velocidadInternet" name="velocidadInternet" value="<?php echo $arrayVelocidad['nombreVelocidad'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="cuotaMensualInternet">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet">
+                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet" value="<?php echo number_format($arrayCliente['cuota_in'],2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="prepago_in">Prepago</label>
-                                                    <input class="form-control form-control-sm" type="text" name="prepago_in">
+                                                    <input class="form-control form-control-sm" type="text" name="prepago_in" value="<?php echo number_format($arrayCliente['prepago_in'],2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoCliente">Tipo de cliente</label>
-                                                    <select class="form-control form-control-sm" name="tipoCliente">
-                                                        <option value="" selected>Seleccionar...</option>
                                                         <?php
-                                                        $queryTipo = $mysqli->query("SELECT * FROM tbl_tipos_clientes");
-                                                        while ($tipo = $queryTipo->fetch_array()) {
+                                                        $idTipoCliente = $arrayCliente['id_tipo_cliente'];
+                                                        $tipoCliente = $mysqli->query("SELECT * FROM tbl_tipos_clientes WHERE idTipoCliente='$idTipoCliente'");
+                                                        $arrayTipoCliente = $tipoCliente->fetch_array();
                                                         ?>
-                                                            <option value="<?php echo $tipo['idTipoCliente'] ?>"><?php echo $tipo['nombreTipoCliente'] ?></option>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <input type="text" class="form-control form-control-sm" id="tipoCliente" name="tipoCliente" value="<?php echo $arrayTipoCliente['nombreTipoCliente'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="tecnologia">Tecnología</label>
-                                                    <select class="form-control form-control-sm" name="tecnologia">
-                                                        <option value="" selected>Seleccionar...</option>
-                                                        <?php
-                                                        $queryTecnologias = $mysqli->query("SELECT * FROM tbl_tecnologias");
-                                                        while ($tecnologia = $queryTecnologias->fetch_array()) {
-                                                        ?>
-                                                            <option value="<?php echo $tecnologia['idTecnologia'] ?>"><?php echo $tecnologia['nombreTecnologia'] ?></option>
-                                                        <?php
-                                                        }
-                                                        ?>
-
-                                                    </select>
+                                                    <input type="text" class="form-control form-control-sm" id="tecnologia" name="tecnologia" value="<?php echo $arrayCliente['tecnologia'] ?>">
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="enCalidad">En calidad de</label>
-                                                    <input class="form-control form-control-sm" type="text" name="enCalidad">
+                                                    <input class="form-control form-control-sm" type="text" name="enCalidad" value="<?php echo $arrayCliente['entrega_calidad'] ?>">
                                                 </div>
 
                                                 <div class="col-md-3">
@@ -739,86 +718,82 @@ if (isset($_GET['codigo'])) {
                                                         <option value="Reconexion">Reconexión</option>
                                                         <option value="Renovacion">Renovación</option>
                                                     </select>
+                                                    <input type="text" class="form-control form-control-sm" id="tipo_de_contrato" name="tipo_de_contrato" value="<?php echo $arrayCliente['tipo_de_contrato'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="nContratoVigente">N° de contrato (INTERNET)</label>
-                                                    <input class="form-control form-control-sm" type="text" name="nContratoVigente" readonly>
+                                                    <input class="form-control form-control-sm" type="text" name="nContratoVigente" value="<?php echo $arrayCliente['no_contrato_inter'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="vencimientoContratoInternet">Vencimiento de contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoInternet" name="vencimientoContratoInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoInternet" name="vencimientoContratoInternet" value="<?php echo $arrayCliente['vencimiento_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="ultimaRenovacionInternet">Última renovación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet" <?php echo $arrayCliente['ult_ren_in'] ?>>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaSuspencionInternet">Fecha de suspensión</label>
-                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspencionInternet" name="fechaSuspencionInternet">
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspencionInternet" name="fechaSuspencionInternet" value="<?php echo $arrayCliente['ultima_suspencion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaReconexionInternet">Fecha de reconexión</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionInternet" name="fechaReconexionInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionInternet" name="fechaReconexionInternet" value="<?php echo $arrayCliente['fecha_reconexion_in'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <label for="promocion">Promoción</label>
-                                                    <input class="form-control form-control-sm" type="text" name="promocion">
+                                                    <input class="form-control form-control-sm" type="text" name="promocion" value="<?php echo $arrayCliente['id_promocion'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="promocionDesde">Desde</label>
-                                                    <input class="form-control form-control-sm" type="date" name="promocionDesde">
+                                                    <input class="form-control form-control-sm" type="date" name="promocionDesde" value="<?php echo $arrayCliente['dese_promocion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="promocionHasta">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" name="promocionHasta">
+                                                    <input class="form-control form-control-sm" type="date" name="promocionHasta" value="<?php echo $arrayCliente['hasta_promocion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="cuotaPromocion">Cuota de la promoción</label>
-                                                    <input class="form-control form-control-sm" type="text" name="cuotaPromocion">
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaPromocion" value="<?php echo $arrayCliente['cuota_promocion'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-9">
                                                     <label for="encargadoInstalacionInter">Técnico que realizó la instalación</label>
-                                                    <select class="form-control form-control-sm " name="encargadoInstalacionInter">
-                                                        <option value="">Seleccionar...</option>
-                                                        <?php
-                                                        $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
-                                                        while ($tecnicos = $querytecnicos->fetch_array()) {
-                                                        ?>
-                                                            <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <?php
+                                                    $idTecnicoInter = $arrayCliente['id_tecnico_in'];
+                                                    $tecnicoInter = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc WHERE idTecnico='$idTecnicoInter'");
+                                                    $arrayTecnico = $tecnicoInter->fetch_array();
+                                                    ?>
+                                                    <input type="text" class="form-control form-control-sm" id="encargadoInstalacionInter" name="encargadoInstalacionInter" value="<?php echo $arrayTecnico['nombreTecnico'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="costoInstalacionIn">Costo de instalación</label>
-                                                    <input class="form-control form-control-sm" type="text" name="costoInstalacionIn">
+                                                    <input class="form-control form-control-sm" type="text" name="costoInstalacionIn" value="<?php echo $arrayCliente['costo_instalacion_in'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="cuotaCovidI">Cuota COVID-19</label>
-                                                    <input class="form-control form-control-sm" type="text" id="cuotaCovidI" name="cuotaCovidI">
+                                                    <input class="form-control form-control-sm" type="text" id="cuotaCovidI" name="cuotaCovidI" value="<?php echo $arrayCliente['cuotaCovidI'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidDesdeI">Desde</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidDesdeI" name="covidDesdeI">
+                                                    <input class="form-control form-control-sm" type="date" id="covidDesdeI" name="covidDesdeI" value="<?php echo $arrayCliente['covidDesdeI'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidHastaI">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidHastaI" name="covidHastaI">
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaI" name="covidHastaI" value="<?php echo $arrayCliente['covidHastaI'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="direccionInternet">Dirección</label>
-                                                    <input class="form-control form-control-sm" type="text" name="direccionInternet" id="direccionInternet" readonly>
+                                                    <input class="form-control form-control-sm" type="text" name="direccionInternet" id="direccionInternet" value="<?php echo $arrayCliente['dire_internet'] ?>">
                                                 </div>
                                             </div>
                                             <hr>
@@ -827,19 +802,19 @@ if (isset($_GET['codigo'])) {
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label for="colilla">Colilla</label>
-                                                            <input class="form-control form-control-sm" type="text" name="colilla">
+                                                            <input class="form-control form-control-sm" type="text" name="colilla" value="<?php echo $arrayCliente['colilla'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="wanip">WAN IP</label>
-                                                            <input class="form-control form-control-sm" type="text" id="wanip" name="wanip">
+                                                            <input class="form-control form-control-sm" type="text" id="wanip" name="wanip" value="<?php echo $arrayCliente['wanip'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="coordenadas">Coordenadas</label>
-                                                            <input class="form-control form-control-sm" type="text" name="coordenadas">
+                                                            <input class="form-control form-control-sm" type="text" name="coordenadas" value="<?php echo $arrayCliente['coordenadas'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="nodo">Nodo/Ap/Path</label>
-                                                            <input class="form-control form-control-sm" type="text" name="nodo">
+                                                            <input class="form-control form-control-sm" type="text" name="nodo" value="<?php echo $arrayCliente['dire_telefonia'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -847,41 +822,33 @@ if (isset($_GET['codigo'])) {
                                                     <div class="row">
                                                         <div class="col-md-8">
                                                             <label for="modelo">Modelo</label>
-                                                            <input class="form-control form-control-sm" type="text" name="modelo">
+                                                            <input class="form-control form-control-sm" type="text" name="modelo" value="<?php echo $arrayCliente['marca_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="recepcion">Recepción</label>
-                                                            <input class="form-control form-control-sm" type="text" name="recepcion">
+                                                            <input class="form-control form-control-sm" type="text" name="recepcion" value="<?php echo $arrayCliente['recep_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-8">
                                                             <label for="mac">MAC</label>
-                                                            <input class="form-control form-control-sm" type="text" id="mac" name="mac">
+                                                            <input class="form-control form-control-sm" type="text" id="mac" name="mac" value="<?php echo $arrayCliente['mac_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="transmicion">Transmisión</label>
-                                                            <input class="form-control form-control-sm" type="text" name="transmision">
+                                                            <input class="form-control form-control-sm" type="text" name="transmision" value="<?php echo $arrayCliente['trans_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-8">
                                                             <label for="serie">Serie</label>
-                                                            <input class="form-control form-control-sm" type="text" name="serie">
+                                                            <input class="form-control form-control-sm" type="text" name="serie" value="<?php echo $arrayCliente['serie_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="ruido">Ruido</label>
-                                                            <input class="form-control form-control-sm" type="text" name="ruido">
+                                                            <input class="form-control form-control-sm" type="text" name="ruido" value="<?php echo $arrayCliente['ruido_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="claveWifi">Clave WIFI</label>
-                                                            <input class="form-control form-control-sm" type="text" name="claveWifi">
+                                                            <input class="form-control form-control-sm" type="text" name="claveWifi" value="<?php echo $arrayCliente['clave_modem'] ?>">
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <br>
-                                                    <button class="btn btn-success btn-block" type="button" name="agregar" onclick="activarMac();" style="font-size:16px">Activar servicio</button>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <br>
-                                                    <button class="btn btn-danger btn-block" type="button" name="eliminar" onclick="eliminarMac();" style="font-size:16px">Desactivar servicio</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1150,9 +1117,9 @@ if (isset($_GET['codigo'])) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 <script>
     $(document).ready(function() {
-        $("input").prop('readonly',true);
-        $("textarea").prop('readonly',true);
-        $("select").prop('disabled',true);
+        $("input").prop('readonly', true);
+        $("textarea").prop('readonly', true);
+        $("select").prop('disabled', true);
         $(".salir").on("click", function(e) {
             e.preventDefault();
             swal({
@@ -1173,4 +1140,5 @@ if (isset($_GET['codigo'])) {
         $('[data-toggle="tooltip"]').tooltip()
     });
 </script>
+
 </html>
