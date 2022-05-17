@@ -1,6 +1,14 @@
 $(document).ready(function () {
     $("#dui").mask("99999999-9");
     $("#nit").mask("9999-999999-999-9");
+    jQuery.validator.addMethod(
+        "money",
+        function(value, element) {
+            var isValidMoney = /^\d{0,4}(\.\d{0,2})?$/.test(value);
+            return this.optional(element) || isValidMoney;
+        },
+        "Insert "
+    );
 
     $("#addcliente").validate({
         rules: {
@@ -42,6 +50,18 @@ $(document).ready(function () {
             cobrador: {
                 required: true,
             },
+            cuotaMensualCable:{
+                money:true,
+            },
+            prepago:{
+                money:true,
+            },
+            cuotaMensualInternet:{
+                money:true,
+            },
+            prepago_in:{
+                money:true,
+            },
         },
         messages: {
             codigo: {
@@ -81,6 +101,18 @@ $(document).ready(function () {
             },
             cobrador: {
                 required: 'Este campo es necesario',
+            },
+            cuotaMensualCable:{
+                money:'Debe ingresar valor monetario',
+            },
+            prepago:{
+                money:'Debe ingresar valor monetario',
+            },
+            cuotaMensualInternet:{
+                money:'Debe ingresar valor monetario',
+            },
+            prepago_in:{
+                money:'Debe ingresar valor monetario',
             },
         },
         submitHandler: function (form) {

@@ -975,20 +975,39 @@ if (strlen($alert) > 3) {
                                             <label for="municipio"><span style="color:red;font-size:18px;">**</span>Municipio</label>
                                             <select class="form-control input-sm alert-danger" id="municipio" name="municipio" disabled required style="border: 1px solid green;">
                                                 <?php
-                                                $querymunicipio = $mysqli->query("SELECT * FROM tbl_municipios_cxc WHERE idMunicipio='$municipio'");
-                                                $municipio = $querymunicipio->fetch_array();
+                                                $querymunicipio = $mysqli->query("SELECT * FROM tbl_municipios_cxc WHERE idDepto='$departamento'");
+                                                while ($municipio2 = $querymunicipio->fetch_array()) {
+                                                    if ($municipio2['idMunicipio'] == $municipio) {
+                                                        ?>
+                                                        <option value="<?php echo $municipio2['idMunicipio'] ?>" selected><?php echo $municipio2['nombreMunicipio'] ?></option>      
+                                                        <?php
+                                                    }else{
+                                                        ?>
+                                                        <option value="<?php echo $municipio2['idMunicipio'] ?>"><?php echo $municipio2['nombreMunicipio'] ?></option>
+                                                        <?php
+                                                    }
+                                                }
                                                 ?>
-                                                <option value="<?php $municipio['idMunicipio'] ?>" selected><?php echo $municipio['nombreMunicipio'] ?></option>
                                             </select>
                                         </div>
                                         <div class="col-md-5">
                                             <label for="colonia"><span style="color:red;font-size:18px;">**</span>Barrio o colonia</label>
                                             <select class="form-control input-sm alert-danger " id="colonia" name="colonia" required disabled style="border: 1px solid green!important;">
                                               <?php 
-                                                $queryColonia = $mysqli->query("SELECT * FROM tbl_colonias_cxc WHERE idColonia='$colonia'");
-                                                $datosColonias = $queryColonia->fetch_array();
+                                                $queryColonia = $mysqli->query("SELECT * FROM tbl_colonias_cxc WHERE idMuni='$municipio'");
+                                                while ($datosColonias = $queryColonia->fetch_array()) {
+                                                    if ($datosColonias['idColonia'] == $colonia) {
+                                                        ?>
+                                                        <option value="<?php echo $datosColonias['idColonia']?>" selected><?php echo $datosColonias['nombreColonia'] ?></option>
+                                                        <?php
+                                                    }else{
+                                                        ?>
+                                                        <option value="<?php echo $datosColonias['idColonia']?>" ><?php echo $datosColonias['nombreColonia'] ?></option>
+                                                        <?php
+                                                    }
+                                                }
                                               ?>
-                                              <option value="<?php echo $datosColonias['idColonia']?>" selected><?php echo $datosColonias['nombreColonia'] ?></option>
+                                              
                                             </select>
                                         </div>
                                     </div>

@@ -121,6 +121,13 @@ if (isset($_GET['codigo'])) {
             text-align: center;
             font-size: x-large !important;
         }
+
+        .trabajos {
+
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+        }
     </style>
 </head>
 
@@ -274,6 +281,7 @@ if (isset($_GET['codigo'])) {
                         <li class="nav-item"><a href="#datos-generales" data-toggle="tab" class="nav-link active" style="text-decoration: none;color:#000;">DATOS GENERALES</a></li>
                         <li class="nav-item"><a href="#otros-datos" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">OTROS DATOS</a></li>
                         <li class="nav-item"><a href="#servicios" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">SERVICIOS</a></li>
+                        <li class="nav-item"><a href="#ordenes" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">TRABAJOS</a></li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -684,19 +692,19 @@ if (isset($_GET['codigo'])) {
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="cuotaMensualInternet">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet" value="<?php echo number_format($arrayCliente['cuota_in'],2) ?>">
+                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet" value="<?php echo number_format($arrayCliente['cuota_in'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="prepago_in">Prepago</label>
-                                                    <input class="form-control form-control-sm" type="text" name="prepago_in" value="<?php echo number_format($arrayCliente['prepago_in'],2) ?>">
+                                                    <input class="form-control form-control-sm" type="text" name="prepago_in" value="<?php echo number_format($arrayCliente['prepago_in'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoCliente">Tipo de cliente</label>
-                                                        <?php
-                                                        $idTipoCliente = $arrayCliente['id_tipo_cliente'];
-                                                        $tipoCliente = $mysqli->query("SELECT * FROM tbl_tipos_clientes WHERE idTipoCliente='$idTipoCliente'");
-                                                        $arrayTipoCliente = $tipoCliente->fetch_array();
-                                                        ?>
+                                                    <?php
+                                                    $idTipoCliente = $arrayCliente['id_tipo_cliente'];
+                                                    $tipoCliente = $mysqli->query("SELECT * FROM tbl_tipos_clientes WHERE idTipoCliente='$idTipoCliente'");
+                                                    $arrayTipoCliente = $tipoCliente->fetch_array();
+                                                    ?>
                                                     <input type="text" class="form-control form-control-sm" id="tipoCliente" name="tipoCliente" value="<?php echo $arrayTipoCliente['nombreTipoCliente'] ?>">
                                                 </div>
                                             </div>
@@ -860,6 +868,252 @@ if (isset($_GET['codigo'])) {
                                     <div class="accordion-collapse collapse" id="collapse3" aria-labelledby="item3" data-bs-parent='#accordio-servicios'>
                                         <div class="accordion-body">
                                             <h5>Servicio no disponible</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="ordenes" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="accordion" id="accordion-trabajos">
+                                <div class="accordion-item">
+                                    <!--ORDENES TECNICAS -->
+                                    <h2 class="accordion-header" id="obj1">
+                                        <button class="accordion-button" type="button" data-bs-toggle='collapse' data-bs-target='#col1' aria-expanded="true" aria-controls="col1">ORDENES TECNICAS</button>
+                                    </h2>
+                                    <div class="accordion-collapse collapse" id="col1" aria-labelledby="obj1" data-bs-parent='#accordion-trabajos'>
+                                        <div class="accordion-body trabajos">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <th>N° orden</th>
+                                                    <th>Tipo de orden</th>
+                                                    <th>Fecha de orden</th>
+                                                    <th>Fecha realizada</th>
+                                                    <th>Servicio</th>
+                                                    <th>Actividad</th>
+                                                    <th>Creada por</th>
+                                                    <th>Estado</th>
+                                                </thead>
+                                                <?php
+                                                $ordenes = $mysqli->query("SELECT * FROM tbl_ordenes_trabajo WHERE codigoCliente='$codigo' ORDER BY idOrdenTrabajo DESC");
+                                                while ($datos = $ordenes->fetch_array()) {
+                                                    if ($datos['actividaCable'] == '' && $datos['actividadInter'] != '') {
+                                                        $servicio = 'Internet';
+                                                    } else {
+                                                        $servicio = 'Cable';
+                                                    }
+                                                ?>
+                                                    <tr style="cursor: pointer;" class="fila1" id='<?php echo $datos['idOrdenTrabajo'] ?>'>
+                                                        <td><span class="bg-danger" style="padding: 5px;font-size:large;font-weight:bold;"><?php echo $datos['idOrdenTrabajo'] ?></span></td>
+                                                        <td><?php echo $datos['tipoOrdenTrabajo'] ?></td>
+                                                        <td><?php echo $datos['fechaOrdenTrabajo'] ?></td>
+                                                        <td><?php echo $datos['fechaTrabajo'] ?></td>
+                                                        <td><?php echo $servicio ?></td>
+                                                        <?php
+                                                        if ($servicio == 'Cable') {
+                                                        ?>
+                                                            <td><?php echo $datos['actividadCable'] ?></td>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <td><?php echo $datos['actividadInter'] ?></td>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                        <td><?php echo $datos['creadoPor'] ?></td>
+                                                        <?php
+                                                        if ($datos['fechaTrabajo'] != '') {
+                                                        ?>
+                                                            <td style="text-align:center;"><i class="fas fa-check-circle bg-success fa-lg"></i></td>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <td style="text-align:center;"><i class="fas fa-times-circle bg-danger fa-lg"></i></td>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </tr>
+                                                <?php
+                                                }
+                                                ?>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <!--ORDENES DE SUSPENSION -->
+                                    <h2 class="accordion-header" id="obj2">
+                                        <button class="accordion-button" type="button" data-bs-toggle='collapse' data-bs-target='#col2' aria-expanded="true" aria-controls="col2">ORDENES DE SUSPENSION</button>
+                                    </h2>
+                                    <div class="accordion-collapse collapse" id="col2" aria-labelledby="obj2" data-bs-parent='#accordion-trabajos'>
+                                        <div class="accordion-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <th>N° orden</th>
+                                                    <th>Tipo de orden</th>
+                                                    <th>Fecha de orden</th>
+                                                    <th>Fecha realizada</th>
+                                                    <th>Servicio</th>
+                                                    <th>Observacion</th>
+                                                    <th>Creada por</th>
+                                                    <th>Estado</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $ordenes2 = $mysqli->query("SELECT * FROM tbl_ordenes_suspension WHERE codigoCliente='$codigo' ORDER BY idOrdenSuspension DESC");
+                                                    while ($datos = $ordenes2->fetch_array()) {
+                                                        if ($datos['actividaCable'] == '' && $datos['actividadInter'] != '') {
+                                                            $servicio = 'Internet';
+                                                        } else {
+                                                            $servicio = 'Cable';
+                                                        }
+                                                    ?>
+                                                        <tr style="cursor: pointer;" class="fila2" id='<?php echo $datos['idOrdenSuspension'] ?>'>
+                                                            <td><span class="bg-danger" style="padding: 5px;font-size:large;font-weight:bold;"><?php echo $datos['idOrdenSuspension'] ?></span></td>
+                                                            <td><?php echo $datos['tipoOrden'] ?></td>
+                                                            <td><?php echo $datos['fechaOrden'] ?></td>
+                                                            <td><?php echo $datos['fechaSuspension'] ?></td>
+                                                            <td><?php echo $servicio ?></td>
+                                                            <td><?php echo $datos['observaciones'] ?></td>
+                                                            <td><?php echo $datos['creadoPor'] ?></td>
+                                                            <?php
+                                                            if ($datos['fechaSuspension'] != '') {
+                                                            ?>
+                                                                <td style="text-align:center;"><i class="fas fa-check-circle bg-success fa-lg"></i></td>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <td style="text-align:center;"><i class="fas fa-times-circle bg-danger fa-lg"></i></td>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </tr>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <!--ORDENES DE RECONEXION -->
+                                    <h2 class="accordion-header" id="obj3">
+                                        <button class="accordion-button" type="button" data-bs-toggle='collapse' data-bs-target='#col3' aria-expanded="true" aria-controls="col3">ORDENES DE RECONEXION</button>
+                                    </h2>
+                                    <div class="accordion-collapse collapse" id="col3" aria-labelledby="obj3" data-bs-parent='#accordion-trabajos'>
+                                        <div class="accordion-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <th>N° orden</th>
+                                                    <th>Tipo de orden</th>
+                                                    <th>Fecha de orden</th>
+                                                    <th>Fecha realizada</th>
+                                                    <th>Servicio</th>
+                                                    <th>Observacion</th>
+                                                    <th>Creada por</th>
+                                                    <th>Estado</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $ordenes3 = $mysqli->query("SELECT * FROM tbl_ordenes_reconexion WHERE codigoCliente='$codigo' ORDER BY idOrdenReconex DESC");
+                                                    while ($datos = $ordenes3->fetch_array()) {
+                                                        if ($datos['tipoReconexCable'] == '' && $datos['tipoReconexInter'] != '') {
+                                                            $servicio = 'Internet';
+                                                        } else {
+                                                            $servicio = 'Cable';
+                                                        }
+                                                    ?>
+                                                        <tr style="cursor: pointer;" class="fila3" id='<?php echo $datos['idOrdenReconex'] ?>'>
+                                                            <td><span class="bg-danger" style="padding: 5px;font-size:large;font-weight:bold;"><?php echo $datos['idOrdenReconex'] ?></span></td>
+                                                            <td><?php echo $datos['tipoOrden'] ?></td>
+                                                            <td><?php echo $datos['fechaOrden'] ?></td>
+                                                            <?php
+                                                            if ($servicio == 'Cable') {
+                                                            ?>
+                                                                <td><?php echo $datos['fechaReconexCable'] ?></td>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <td><?php echo $datos['fechaReconexInter'] ?></td>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                            <td><?php echo $servicio ?></td>
+                                                            <td><?php echo $datos['observaciones'] ?></td>
+                                                            <td><?php echo $datos['creadoPor'] ?></td>
+                                                            <?php
+                                                            if ($datos['fechaReconexCable'] != '' ||  $datos['fechaReconexInter'] != '') {
+                                                            ?>
+                                                                <td style="text-align:center;"><i class="fas fa-check-circle bg-success fa-lg"></i></td>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <td style="text-align:center;"><i class="fas fa-times-circle bg-danger fa-lg"></i></td>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </tr>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <!--ORDENES DE TRASLADO -->
+                                    <h2 class="accordion-header" id="obj4">
+                                        <button class="accordion-button" type="button" data-bs-toggle='collapse' data-bs-target='#col4' aria-expanded="true" aria-controls="col4">ORDENES DE TRASLADO</button>
+                                    </h2>
+                                    <div class="accordion-collapse collapse" id="col4" aria-labelledby="obj4" data-bs-parent='#accordion-trabajos'>
+                                        <div class="accordion-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <th>N° orden</th>
+                                                    <th>Tipo de orden</th>
+                                                    <th>Fecha de orden</th>
+                                                    <th>Fecha realizada</th>
+                                                    <th>Servicio</th>
+                                                    <th>Observacion</th>
+                                                    <th>Creada por</th>
+                                                    <th>Estado</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php 
+                                                        $ordenes3 = $mysqli->query("SELECT * FROM tbl_ordenes_traslado WHERE codigoCliente='$codigo' ORDER BY idOrdenTraslado DESC");
+                                                        while ($datos = $ordenes3->fetch_array()) {
+                                                            if ($datos['tipoServicio'] == 'I') {
+                                                                $servicio = 'Internet';
+                                                            } else {
+                                                                $servicio = 'Cable';
+                                                            }
+                                                            ?>
+                                                            <tr style="cursor: pointer;" class="fila4" id='<?php echo $datos['idOrdenTraslado'] ?>'>
+                                                            <td><span class="bg-danger" style="padding: 5px;font-size:large;font-weight:bold;"><?php echo $datos['idOrdenTraslado'] ?></span></td>
+                                                            <td><?php echo $datos['tipoOrden'] ?></td>
+                                                            <td><?php echo $datos['fechaOrden'] ?></td>
+                                                            <td><?php echo $datos['fechaTraslado'] ?></td>
+                                                            <td><?php echo $servicio ?></td>
+                                                            <td><?php echo $datos['observaciones'] ?></td>
+                                                            <td><?php echo $datos['creadoPor'] ?></td>
+                                                            <?php
+                                                            if ($datos['fechaTraslado'] != '') {
+                                                            ?>
+                                                                <td style="text-align:center;"><i class="fas fa-check-circle bg-success fa-lg"></i></td>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <td style="text-align:center;"><i class="fas fa-times-circle bg-danger fa-lg"></i></td>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </tr>
+                                                            <?php
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -1140,5 +1394,6 @@ if (isset($_GET['codigo'])) {
         $('[data-toggle="tooltip"]').tooltip()
     });
 </script>
+<script src="js/verclientes.js"></script>
 
 </html>

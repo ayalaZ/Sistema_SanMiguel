@@ -301,61 +301,61 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-9">
                                     <label for="nombre">Nombre</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" name="nombre">
+                                    <input class="form-control form-control-sm alert-danger" type="text" name="nombre" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="ncr">Número de registro</label>
-                                    <input class="form-control form-control-sm" type="text" id="nrc" name="nrc">
+                                    <input class="form-control form-control-sm" type="text" id="nrc" name="nrc" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-9">
                                     <label for="nombre">Nombre Comercial</label>
-                                    <input class="form-control form-control-sm" type="text" name="nombre_comercial">
+                                    <input class="form-control form-control-sm" type="text" name="nombre_comercial" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="nacionalidad">Nacionalidad</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" id="nacionalidad" name="nacionalidad">
+                                    <input class="form-control form-control-sm alert-danger" type="text" id="nacionalidad" name="nacionalidad" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="saldoCable">Saldo actual cable</label>
-                                    <input class="form-control form-control-sm" type="text" name="saldoCable">
+                                    <input class="form-control form-control-sm" type="text" name="saldoCable" autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="saldoInternet">Saldo actual internet</label>
-                                    <input class="form-control form-control-sm" type="text" name="saldoInternet">
+                                    <input class="form-control form-control-sm" type="text" name="saldoInternet" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
                                     <label for="dui">DUI</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" id="dui" name="dui">
+                                    <input class="form-control form-control-sm alert-danger" type="text" id="dui" name="dui" autocomplete="off">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="expedicion">Lugar y fecha de expedición</label>
-                                    <input class="form-control form-control-sm" type="text" name="expedicion">
+                                    <input class="form-control form-control-sm" type="text" name="expedicion" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="nit">NIT</label>
-                                    <input class="form-control form-control-sm" type="text" id="nit" name="nit">
+                                    <input class="form-control form-control-sm" type="text" id="nit" name="nit" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="fechaNacimiento">Fecha de nacimiento</label>
-                                    <input class="form-control form-control-sm alert-danger" type="date" id="fechaNacimiento" name="fechaNacimiento">
+                                    <input class="form-control form-control-sm alert-danger" type="date" id="fechaNacimiento" name="fechaNacimiento" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="direccion">Dirección</label>
-                                    <textarea class="form-control form-control-sm alert-danger" name="direccion" rows="2" cols="40" id="direccion"></textarea>
+                                    <textarea class="form-control form-control-sm alert-danger" name="direccion" rows="2" cols="40" id="direccion" autocomplete="off"></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="departamento">Departamento</label>
-                                    <select class="form-control form-control-sm alert-danger" id="departamento" name="departamento">
+                                    <select class="form-control form-control-sm alert-danger" id="departamento" name="departamento" autocomplete="off">
                                         <option value="" selected>Seleccionar...</option>
                                         <?php
                                         $querydepartamentos = $mysqli->query("SELECT * FROM tbl_departamentos_cxc");
@@ -369,14 +369,14 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 </div>
                                 <div class="col-md-4">
                                     <label for="municipio">Municipio</label>
-                                    <select class="form-control form-control-sm alert-danger" id="municipio" name="municipio">
+                                    <select class="form-control form-control-sm alert-danger" id="municipio" name="municipio" autocomplete="off">
                                         <option value="" selected>Seleccionar...</option>
 
                                     </select>
                                 </div>
                                 <div class="col-md-5">
                                     <label for="colonia">Barrio o colonia</label>
-                                    <select class="form-control form-control-sm alert-danger" id="colonia" name="colonia">
+                                    <select class="form-control form-control-sm alert-danger" id="colonia" name="colonia" autocomplete="off">
                                         <option value="">Seleccionar...</option>
                                     </select>
                                 </div>
@@ -384,21 +384,21 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="direccionCobro">Dirección de cobro</label>
-                                    <textarea class="form-control form-control-sm" name="direccionCobro" rows="2" cols="40" id="direccionCobro"></textarea>
+                                    <textarea class="form-control form-control-sm" name="direccionCobro" rows="2" cols="40" id="direccionCobro" autocomplete="off"></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm alert-danger" type="text" name="telefono">
+                                    <input class="form-control form-control-sm alert-danger" type="text" name="telefono" autocomplete="off">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="telefonoTrabajo">Teléfono de trabajo</label>
-                                    <input class="form-control form-control-sm" type="text" name="telefonoTrabajo">
+                                    <input class="form-control form-control-sm" type="text" name="telefonoTrabajo" autocomplete="off">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="ocupacion">Ocupación</label>
-                                    <input class="form-control form-control-sm" type="text" name="ocupacion">
+                                    <input class="form-control form-control-sm" type="text" name="ocupacion" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
@@ -408,7 +408,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 </div>
                                 <div class="col-md-3">
                                     <label for="formaFacturar">Forma al facturar</label>
-                                    <select class="form-control form-control-sm" name="formaFacturar">
+                                    <select class="form-control form-control-sm" name="formaFacturar" autocomplete="off">
                                         <?php
                                         $queryformas = $mysqli->query("SELECT * FROM tbl_forma_pago");
                                         while ($formas = $queryformas->fetch_array()) {
@@ -421,7 +421,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 </div>
                                 <div class="col-md-4">
                                     <label for="tipoComprobante">Tipo de comprobante</label>
-                                    <select class="form-control form-control-sm alert-danger" id="tipoComprobante" name="tipoComprobante">
+                                    <select class="form-control form-control-sm alert-danger" id="tipoComprobante" name="tipoComprobante" autocomplete="off">
                                         <option value="" selected>Seleccionar</option>
                                         <?php
                                         $queryComprobante = $mysqli->query("SELECT * FROM tbl_tipo_comprobante");
@@ -441,13 +441,13 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="facebook">Cuenta de Facebook</label>
-                                    <input class="form-control form-control-sm" type="text" name="facebook">
+                                    <input class="form-control form-control-sm" type="text" name="facebook" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="correo">Correo electrónico</label>
-                                    <input class="form-control form-control-sm" type="text" name="correo">
+                                    <input class="form-control form-control-sm" type="text" name="correo" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -455,7 +455,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="cobrador">Cobrador que lo atiende</label>
-                                    <select class="form-control form-control-sm alert-danger" name="cobrador" id="cobrador">
+                                    <select class="form-control form-control-sm alert-danger" name="cobrador" id="cobrador" autocomplete="off">
                                         <option value="">Seleccionar...</option>
                                         <?php
                                         $querycobradores = $mysqli->query('SELECT * FROM tbl_cobradores');
@@ -471,55 +471,55 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="rp1_nombre">Referencia personal #1</label>
-                                    <input class="form-control form-control-sm" type="text" name="rf1_nombre">
+                                    <input class="form-control form-control-sm" type="text" name="rf1_nombre" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp1_telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp1_telefono">
+                                    <input class="form-control form-control-sm" type="text" name="rp1_telefono" autocomplete="off">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rp1_direccion">Dirección</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp1_direccion">
+                                    <input class="form-control form-control-sm" type="text" name="rp1_direccion" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp1_parentezco">Parentezco</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp1_parentezco">
+                                    <input class="form-control form-control-sm" type="text" name="rp1_parentezco" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="rp2_nombre">Referencia personal #2</label>
-                                    <input class="form-control form-control-sm" type="text" name="rf2_nombre">
+                                    <input class="form-control form-control-sm" type="text" name="rf2_nombre" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp2_telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp2_telefono">
+                                    <input class="form-control form-control-sm" type="text" name="rp2_telefono" autocomplete="off">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rp2_direccion">Dirección</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp2_direccion">
+                                    <input class="form-control form-control-sm" type="text" name="rp2_direccion" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp2_parentezco">Parentezco</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp2_parentezco">
+                                    <input class="form-control form-control-sm" type="text" name="rp2_parentezco" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="rp3_nombre">Referencia personal #3</label>
-                                    <input class="form-control form-control-sm" type="text" name="rf3_nombre">
+                                    <input class="form-control form-control-sm" type="text" name="rf3_nombre" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp3_telefono">Teléfono</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp3_telefono">
+                                    <input class="form-control form-control-sm" type="text" name="rp3_telefono" autocomplete="off">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rp3_direccion">Dirección</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp3_direccion">
+                                    <input class="form-control form-control-sm" type="text" name="rp3_direccion" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="rp3_parentezco">Parentezco</label>
-                                    <input class="form-control form-control-sm" type="text" name="rp3_parentezco">
+                                    <input class="form-control form-control-sm" type="text" name="rp3_parentezco" autocomplete="off">
                                 </div>
                             </div>
 
@@ -536,37 +536,37 @@ function setMenu($permisosActuales, $permisoRequerido)
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="fechaInstalacionCable">Fecha de instalación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionCable" name="fechaInstalacionCable">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionCable" name="fechaInstalacionCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="fechaPrimerFacturaCable">Fecha primer factura</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="mesesContratoCable">Meses de contrato</label>
-                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoCable" name="mesesContratoCable">
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoCable" name="mesesContratoCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="exento">Exento</label>
-                                                    <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;">
+                                                    <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="cortesia">Cortesía</label>
-                                                    <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;">
+                                                    <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <label for="cuotaMensualCable">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm" type="text" name="cuotaMensualCable">
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaMensualCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="prepago">Prepago</label>
-                                                    <input class="form-control form-control-sm" type="text" name="prepago">
+                                                    <input class="form-control form-control-sm" type="text" name="prepago" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoServicio">Tipo de servicio</label>
-                                                    <select class="form-control form-control-sm" id="tipoServicioCable" name="tipoServicioCable">
+                                                    <select class="form-control form-control-sm" id="tipoServicioCable" name="tipoServicioCable" autocomplete="off">
                                                         <option value="" selected>Seleccionar...</option>
                                                         <?php
                                                         $queryServicioC = $mysqli->query("SELECT * FROM tbl_servicios_cable");
@@ -580,35 +580,35 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                 </div>
                                                 <div class="col-md-5">
                                                     <label for="diaGenerarFacturaCable">Día cobro</label>
-                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaCable">
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaCable" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="inicioContratoCable">Inicio de contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="inicioContratoCable" name="inicioContratoCable">
+                                                    <input class="form-control form-control-sm" type="date" id="inicioContratoCable" name="inicioContratoCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="vencimientoContratoCable">Vence contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoCable" name="vencimientoContratoCable">
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoCable" name="vencimientoContratoCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaSuspensionCable">Fecha suspension</label>
-                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspensionCable" name="fechaSuspensionCable">
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspensionCable" name="fechaSuspensionCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaReconexionCable">Fecha de reconexión</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionCable" name="fechaReconexionCable">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionCable" name="fechaReconexionCable" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="derivaciones">N° de derivaciones</label>
-                                                    <input class="form-control form-control-sm" type="number" name="derivaciones">
+                                                    <input class="form-control form-control-sm" type="number" name="derivaciones" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="encargadoInstalacionCable">Técnico que realizó la instalación</label>
-                                                    <select class="form-control form-control-sm" name="encargadoInstalacionCable">
+                                                    <select class="form-control form-control-sm" name="encargadoInstalacionCable" autocomplete="off">
                                                         <option value="">Seleccionar...</option>
                                                         <?php
                                                         $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
@@ -624,15 +624,15 @@ function setMenu($permisosActuales, $permisoRequerido)
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="cuotaCovidC">Cuota COVID-19</label>
-                                                    <input class="form-control form-control-sm " type="text" id="cuotaCovidC" name="cuotaCovidC">
+                                                    <input class="form-control form-control-sm " type="text" id="cuotaCovidC" name="cuotaCovidC" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidDesdeC">Desde</label>
-                                                    <input class="form-control form-control-sm " type="date" id="covidDesdeC" name="covidDesdeC">
+                                                    <input class="form-control form-control-sm " type="date" id="covidDesdeC" name="covidDesdeC" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidHastaC">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidHastaC" name="covidHastaC">
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaC" name="covidHastaC" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -652,19 +652,19 @@ function setMenu($permisosActuales, $permisoRequerido)
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <label for="fechaInstalacionInternet">Fecha de instalación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionInternet" name="fechaInstalacionInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionInternet" name="fechaInstalacionInternet" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaPrimerFacturaInternet">Fecha primer factura</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaInternet" name="fechaPrimerFacturaInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaInternet" name="fechaPrimerFacturaInternet" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="mesesContratoInternet">Meses de contrato</label>
-                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoInternet" name="mesesContratoInternet">
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoInternet" name="mesesContratoInternet" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoServicioInternet">Tipo de servicio</label>
-                                                    <select class="form-control form-control-sm" name="tipoServicioInternet">
+                                                    <select class="form-control form-control-sm" name="tipoServicioInternet" autocomplete="off">
                                                         <option value="" selected>Seleccionar...</option>
                                                         <?php
                                                         $queryServicioI = $mysqli->query("SELECT * FROM tbl_servicios_inter");
@@ -678,13 +678,13 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="diaGenerarFacturaInternet">Día para generar factura</label>
-                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaInternet">
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaInternet" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="velocidadInternet">Velocidad</label>
-                                                    <select class="form-control form-control-sm" name="velocidadInternet">
+                                                    <select class="form-control form-control-sm" name="velocidadInternet" autocomplete="off">
                                                         <option value="" selected>Seleccionar...</option>
                                                         <?php
                                                         $queryVelocidades = $mysqli->query("SELECT * FROM tbl_velocidades");
@@ -698,15 +698,15 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="cuotaMensualInternet">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet">
+                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="prepago_in">Prepago</label>
-                                                    <input class="form-control form-control-sm" type="text" name="prepago_in">
+                                                    <input class="form-control form-control-sm" type="text" name="prepago_in" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoCliente">Tipo de cliente</label>
-                                                    <select class="form-control form-control-sm" name="tipoCliente">
+                                                    <select class="form-control form-control-sm" name="tipoCliente" autocomplete="off">
                                                         <option value="" selected>Seleccionar...</option>
                                                         <?php
                                                         $queryTipo = $mysqli->query("SELECT * FROM tbl_tipos_clientes");
@@ -722,7 +722,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="tecnologia">Tecnología</label>
-                                                    <select class="form-control form-control-sm" name="tecnologia">
+                                                    <select class="form-control form-control-sm" name="tecnologia" autocomplete="off">
                                                         <option value="" selected>Seleccionar...</option>
                                                         <?php
                                                         $queryTecnologias = $mysqli->query("SELECT * FROM tbl_tecnologias");
@@ -737,12 +737,12 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="enCalidad">En calidad de</label>
-                                                    <input class="form-control form-control-sm" type="text" name="enCalidad">
+                                                    <input class="form-control form-control-sm" type="text" name="enCalidad" autocomplete="off">
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label for="tipo_de_contrato">Tipo de contrato</label>
-                                                    <select class="form-control form-control-sm" name="tipo_de_contrato">
+                                                    <select class="form-control form-control-sm" name="tipo_de_contrato" autocomplete="off">
                                                         <option value="">Seleccione</option>
                                                         <option value="Nuevo">Nuevo</option>
                                                         <option value="Reconexion">Reconexión</option>
@@ -757,43 +757,43 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="vencimientoContratoInternet">Vencimiento de contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoInternet" name="vencimientoContratoInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoInternet" name="vencimientoContratoInternet" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="ultimaRenovacionInternet">Última renovación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaSuspencionInternet">Fecha de suspensión</label>
-                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspencionInternet" name="fechaSuspencionInternet">
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspencionInternet" name="fechaSuspencionInternet" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaReconexionInternet">Fecha de reconexión</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionInternet" name="fechaReconexionInternet">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionInternet" name="fechaReconexionInternet" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <label for="promocion">Promoción</label>
-                                                    <input class="form-control form-control-sm" type="text" name="promocion">
+                                                    <input class="form-control form-control-sm" type="text" name="promocion" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="promocionDesde">Desde</label>
-                                                    <input class="form-control form-control-sm" type="date" name="promocionDesde">
+                                                    <input class="form-control form-control-sm" type="date" name="promocionDesde" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="promocionHasta">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" name="promocionHasta">
+                                                    <input class="form-control form-control-sm" type="date" name="promocionHasta" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="cuotaPromocion">Cuota de la promoción</label>
-                                                    <input class="form-control form-control-sm" type="text" name="cuotaPromocion">
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaPromocion" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-9">
                                                     <label for="encargadoInstalacionInter">Técnico que realizó la instalación</label>
-                                                    <select class="form-control form-control-sm " name="encargadoInstalacionInter">
+                                                    <select class="form-control form-control-sm " name="encargadoInstalacionInter" autocomplete="off">
                                                         <option value="">Seleccionar...</option>
                                                         <?php
                                                         $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
@@ -807,21 +807,21 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="costoInstalacionIn">Costo de instalación</label>
-                                                    <input class="form-control form-control-sm" type="text" name="costoInstalacionIn">
+                                                    <input class="form-control form-control-sm" type="text" name="costoInstalacionIn" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="cuotaCovidI">Cuota COVID-19</label>
-                                                    <input class="form-control form-control-sm" type="text" id="cuotaCovidI" name="cuotaCovidI">
+                                                    <input class="form-control form-control-sm" type="text" id="cuotaCovidI" name="cuotaCovidI" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidDesdeI">Desde</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidDesdeI" name="covidDesdeI">
+                                                    <input class="form-control form-control-sm" type="date" id="covidDesdeI" name="covidDesdeI" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidHastaI">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidHastaI" name="covidHastaI">
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaI" name="covidHastaI" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -836,19 +836,19 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label for="colilla">Colilla</label>
-                                                            <input class="form-control form-control-sm" type="text" name="colilla">
+                                                            <input class="form-control form-control-sm" type="text" name="colilla" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="wanip">WAN IP</label>
-                                                            <input class="form-control form-control-sm" type="text" id="wanip" name="wanip">
+                                                            <input class="form-control form-control-sm" type="text" id="wanip" name="wanip" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="coordenadas">Coordenadas</label>
-                                                            <input class="form-control form-control-sm" type="text" name="coordenadas">
+                                                            <input class="form-control form-control-sm" type="text" name="coordenadas" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="nodo">Nodo/Ap/Path</label>
-                                                            <input class="form-control form-control-sm" type="text" name="nodo">
+                                                            <input class="form-control form-control-sm" type="text" name="nodo" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -856,31 +856,31 @@ function setMenu($permisosActuales, $permisoRequerido)
                                                     <div class="row">
                                                         <div class="col-md-8">
                                                             <label for="modelo">Modelo</label>
-                                                            <input class="form-control form-control-sm" type="text" name="modelo">
+                                                            <input class="form-control form-control-sm" type="text" name="modelo" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="recepcion">Recepción</label>
-                                                            <input class="form-control form-control-sm" type="text" name="recepcion">
+                                                            <input class="form-control form-control-sm" type="text" name="recepcion" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-8">
                                                             <label for="mac">MAC</label>
-                                                            <input class="form-control form-control-sm" type="text" id="mac" name="mac">
+                                                            <input class="form-control form-control-sm" type="text" id="mac" name="mac" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="transmicion">Transmisión</label>
-                                                            <input class="form-control form-control-sm" type="text" name="transmision">
+                                                            <input class="form-control form-control-sm" type="text" name="transmision" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-8">
                                                             <label for="serie">Serie</label>
-                                                            <input class="form-control form-control-sm" type="text" name="serie">
+                                                            <input class="form-control form-control-sm" type="text" name="serie" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="ruido">Ruido</label>
-                                                            <input class="form-control form-control-sm" type="text" name="ruido">
+                                                            <input class="form-control form-control-sm" type="text" name="ruido" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="claveWifi">Clave WIFI</label>
-                                                            <input class="form-control form-control-sm" type="text" name="claveWifi">
+                                                            <input class="form-control form-control-sm" type="text" name="claveWifi" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
