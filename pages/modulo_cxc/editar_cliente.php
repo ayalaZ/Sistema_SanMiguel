@@ -40,6 +40,7 @@ if (isset($_GET['codigo'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cablesat</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -128,6 +129,24 @@ if (isset($_GET['codigo'])) {
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="ver_cliente.php?codigo=<?php echo $codigo; ?>" role="button"><i class="fas fa-eye"></i> Ver cliente</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline">
+                    <select name="busqueda" id="busqueda" class="buscador form-control">
+                        <option value="">Seleccionar...</option>
+                        <?php
+                        $datosClientes = $mysqli->query("SELECT cod_cliente,nombre FROM clientes");
+                        while ($datos = $datosClientes->fetch_array()) {
+                        ?>
+                            <option value="<?php echo $datos['cod_cliente'] ?>"><?php echo $datos['cod_cliente'] . " " . $datos['nombre'] ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </form>
             </li>
         </ul>
         <!-- Right navbar links -->
@@ -268,7 +287,7 @@ if (isset($_GET['codigo'])) {
                         <li class="nav-item"><a href="#otros-datos" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">OTROS DATOS</a></li>
                         <li class="nav-item"><a href="#servicios" data-toggle="tab" class="nav-link" style="text-decoration: none;color:#000;">SERVICIOS</a></li>
                         <li class="nav-item"><button type="submit" class="btn btn-default btn-lg"><i class="fas fa-save"></i></button></li>
-                        <input type="hidden" name="opcion" id="opcion" value="ingresar">
+                        <input type="hidden" name="opcion" id="opcion" value="editar">
                     </ul>
                 </div>
                 <div class="card-body">
@@ -277,7 +296,7 @@ if (isset($_GET['codigo'])) {
                             <div class="row">
                                 <div class="col-md-2 codigo">
                                     <label for="codigo">Código del cliente</label>
-                                    <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" value="<?php echo $codigo ?>" style="font-weight: bold;">
+                                    <input class="form-control form-control-sm" type="text" readonly name="codigo" id="codigo" value="<?php echo $codigo ?>" style="font-weight: bold;" >
                                 </div>
                                 <div class="col-md-3">
                                     <label for="contrato">N° de contrato (CABLE)</label>
@@ -315,7 +334,7 @@ if (isset($_GET['codigo'])) {
                                         <tr>
                                             <th>Cable </th>
                                             <td>
-                                                <button type="button" class="btn btn-default btn-lg" id="Ecable">
+                                                <button type="button" class="btn btn-default btn-lg" id="Ecable" value="<?php echo $estadoCable?>">
                                                     <?php
                                                     switch ($estadoCable) {
                                                         case '1':
@@ -341,7 +360,7 @@ if (isset($_GET['codigo'])) {
                                         <tr>
                                             <th>Internet </th>
                                             <td>
-                                                <button type="button" class="btn btn-default btn-lg" id="Einternet">
+                                                <button type="button" class="btn btn-default btn-lg" id="Einternet" value="<?php echo $estadoInternet ?>">
                                                     <?php
                                                     switch ($estadoInternet) {
                                                         case '1':
@@ -365,6 +384,14 @@ if (isset($_GET['codigo'])) {
                                             </td>
                                         </tr>
                                     </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea class="form-control  form-control-sm" name="notas" rows="2" cols="25" placeholder="Observaciones"><?php echo $arrayCliente['observaciones']; ?></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -659,86 +686,118 @@ if (isset($_GET['codigo'])) {
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="fechaInstalacionCable">Fecha de instalación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionCable" name="fechaInstalacionCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionCable" name="fechaInstalacionCable" autocomplete="off" value="<?php echo $arrayCliente['fecha_instalacion'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="fechaPrimerFacturaCable">Fecha primer factura</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaCable" name="fechaPrimerFacturaCable" autocomplete="off" value="<?php echo $arrayCliente['fecha_primer_factura'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="mesesContratoCable">Meses de contrato</label>
-                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoCable" name="mesesContratoCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoCable" name="mesesContratoCable" autocomplete="off" value="<?php echo $arrayCliente['periodo_contrato_ca'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="exento">Exento</label>
-                                                    <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" autocomplete="off">
+                                                    <?php
+                                                    if ($arrayCliente['exento'] == 'T') {
+                                                    ?>
+                                                        <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled checked>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <input type="checkbox" name="exento" id="exento" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="cortesia">Cortesía</label>
-                                                    <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" autocomplete="off">
+                                                    <?php
+                                                    if ($arrayCliente['servicio_cortesia'] == 'T') {
+                                                    ?>
+                                                        <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled checked>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <input type="checkbox" name="cortesia" id="cortesia" class="form-check-input" value="T" style="margin-top: 10%; width:35px;height:35px;" disabled>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <label for="cuotaMensualCable">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm" type="text" name="cuotaMensualCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaMensualCable" autocomplete="off" value="<?php echo number_format($arrayCliente['valor_cuota'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="prepago">Prepago</label>
-                                                    <input class="form-control form-control-sm" type="text" name="prepago" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" name="prepago" autocomplete="off" value="<?php echo number_format($arrayCliente['prepago'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoServicio">Tipo de servicio</label>
                                                     <select class="form-control form-control-sm" id="tipoServicioCable" name="tipoServicioCable" autocomplete="off">
-                                                        <option value="" selected>Seleccionar...</option>
                                                         <?php
+                                                        $idTipoServicio = $arrayCliente['tipo_servicio'];
                                                         $queryServicioC = $mysqli->query("SELECT * FROM tbl_servicios_cable");
                                                         while ($ServicioCable = $queryServicioC->fetch_array()) {
+                                                            if ($idTipoServicio == $ServicioCable['idServicioCable']) {
                                                         ?>
-                                                            <option value="<?php echo $ServicioCable['idServicioCable'] ?>"><?php echo $ServicioCable['nombreServicioCable'] ?></option>
+                                                                <option value="<?php echo $ServicioCable['idServicioCable'] ?>" selected><?php echo $ServicioCable['nombreServicioCable'] ?></option>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <option value="<?php echo $ServicioCable['idServicioCable'] ?>"><?php echo $ServicioCable['nombreServicioCable'] ?></option>
                                                         <?php
+                                                            }
                                                         }
                                                         ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <label for="diaGenerarFacturaCable">Día cobro</label>
-                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaCable" autocomplete="off" value="<?php echo $arrayCliente['dia_cobro'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="inicioContratoCable">Inicio de contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="inicioContratoCable" name="inicioContratoCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="inicioContratoCable" name="inicioContratoCable" autocomplete="off" value="<?php echo $arrayCliente['fecha_instalacion'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="vencimientoContratoCable">Vence contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoCable" name="vencimientoContratoCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoCable" name="vencimientoContratoCable" autocomplete="off" value="<?php echo $arrayCliente['vencimiento_ca'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaSuspensionCable">Fecha suspension</label>
-                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspensionCable" name="fechaSuspensionCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspensionCable" name="fechaSuspensionCable" autocomplete="off" value="<?php echo $arrayCliente['fecha_suspension'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaReconexionCable">Fecha de reconexión</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionCable" name="fechaReconexionCable" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionCable" name="fechaReconexionCable" autocomplete="off" value="<?php echo $arrayCliente['fecha_reinstalacion'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="derivaciones">N° de derivaciones</label>
-                                                    <input class="form-control form-control-sm" type="number" name="derivaciones" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="number" name="derivaciones" autocomplete="off" value="<?php echo $arrayCliente['numero_derivaciones'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="encargadoInstalacionCable">Técnico que realizó la instalación</label>
                                                     <select class="form-control form-control-sm" name="encargadoInstalacionCable" autocomplete="off">
-                                                        <option value="">Seleccionar...</option>
                                                         <?php
+                                                        $idTecnicoCable = $arrayCliente['id_tecnico'];
                                                         $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
                                                         while ($tecnicos = $querytecnicos->fetch_array()) {
+                                                            if ($idTecnicoCable == $tecnicos['idTecnico']) {
                                                         ?>
-                                                            <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
+                                                                <option value="<?php echo $tecnicos['idTecnico'] ?>" selected><?php echo $tecnicos['nombreTecnico'] ?></option>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
                                                         <?php
+                                                            }
                                                         }
                                                         ?>
                                                     </select>
@@ -747,21 +806,21 @@ if (isset($_GET['codigo'])) {
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="cuotaCovidC">Cuota COVID-19</label>
-                                                    <input class="form-control form-control-sm " type="text" id="cuotaCovidC" name="cuotaCovidC" autocomplete="off">
+                                                    <input class="form-control form-control-sm " type="text" id="cuotaCovidC" name="cuotaCovidC" autocomplete="off" value="<?php echo $arrayCliente['cuotaCovidC'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidDesdeC">Desde</label>
-                                                    <input class="form-control form-control-sm " type="date" id="covidDesdeC" name="covidDesdeC" autocomplete="off">
+                                                    <input class="form-control form-control-sm " type="date" id="covidDesdeC" name="covidDesdeC" autocomplete="off" value="<?php echo $arrayCliente['covidDesdeC'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidHastaC">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidHastaC" name="covidHastaC" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaC" name="covidHastaC" autocomplete="off" value="<?php echo $arrayCliente['covidHastaC'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="direccionCable">Dirección</label>
-                                                    <input class="form-control form-control-sm" type="text" name="direccionCable" id="direccionCable" readonly>
+                                                    <input class="form-control form-control-sm" type="text" name="direccionCable" id="direccionCable" readonly value="<?php echo $arrayCliente['dire_cable'] ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -775,68 +834,86 @@ if (isset($_GET['codigo'])) {
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <label for="fechaInstalacionInternet">Fecha de instalación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionInternet" name="fechaInstalacionInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaInstalacionInternet" name="fechaInstalacionInternet" autocomplete="off" value="<?php echo $arrayCliente['fecha_instalacion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaPrimerFacturaInternet">Fecha primer factura</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaInternet" name="fechaPrimerFacturaInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaPrimerFacturaInternet" name="fechaPrimerFacturaInternet" autocomplete="off" value="<?php echo $arrayCliente['fecha_primer_factura_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="mesesContratoInternet">Meses de contrato</label>
-                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoInternet" name="mesesContratoInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="number" id="mesesContratoInternet" name="mesesContratoInternet" autocomplete="off" value="<?php echo $arrayCliente['periodo_contrato_int'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoServicioInternet">Tipo de servicio</label>
                                                     <select class="form-control form-control-sm" name="tipoServicioInternet" autocomplete="off">
-                                                        <option value="" selected>Seleccionar...</option>
                                                         <?php
+                                                        $idTipoServicioInternet = $arrayCliente['tipo_servicio_in'];
                                                         $queryServicioI = $mysqli->query("SELECT * FROM tbl_servicios_inter");
                                                         while ($ServicioInter = $queryServicioI->fetch_array()) {
+                                                            if ($idTipoServicioInternet == $ServicioInter['idServicioInter']) {
                                                         ?>
-                                                            <option value="<?php echo $ServicioInter['idServicioInter'] ?>"><?php echo $ServicioInter['nombreServicioInter'] ?></option>
+                                                                <option value="<?php echo $ServicioInter['idServicioInter'] ?>" selected><?php echo $ServicioInter['nombreServicioInter'] ?></option>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <option value="<?php echo $ServicioInter['idServicioInter'] ?>"><?php echo $ServicioInter['nombreServicioInter'] ?></option>
                                                         <?php
+                                                            }
                                                         }
                                                         ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="diaGenerarFacturaInternet">Día para generar factura</label>
-                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="number" name="diaGenerarFacturaInternet" autocomplete="off" value="<?php echo $arrayCliente['dia_corbo_in'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="velocidadInternet">Velocidad</label>
                                                     <select class="form-control form-control-sm" name="velocidadInternet" autocomplete="off">
-                                                        <option value="" selected>Seleccionar...</option>
                                                         <?php
+                                                        $idVelocidad = $arrayCliente['id_velocidad'];
                                                         $queryVelocidades = $mysqli->query("SELECT * FROM tbl_velocidades");
                                                         while ($Velocidad = $queryVelocidades->fetch_array()) {
+                                                            if ($idVelocidad == $Velocidad['idVelocidad']) {
                                                         ?>
-                                                            <option value="<?php echo $Velocidad['idVelocidad'] ?>"><?php echo $Velocidad['nombreVelocidad'] ?></option>
+                                                                <option value="<?php echo $Velocidad['idVelocidad'] ?>" selected><?php echo $Velocidad['nombreVelocidad'] ?></option>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <option value="<?php echo $Velocidad['idVelocidad'] ?>"><?php echo $Velocidad['nombreVelocidad'] ?></option>
                                                         <?php
+                                                            }
                                                         }
                                                         ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="cuotaMensualInternet">Cuota mensual</label>
-                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm internet" type="text" name="cuotaMensualInternet" autocomplete="off" value="<?php echo number_format($arrayCliente['cuota_in'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="prepago_in">Prepago</label>
-                                                    <input class="form-control form-control-sm" type="text" name="prepago_in" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" name="prepago_in" autocomplete="off" value="<?php echo number_format($arrayCliente['prepago_in'], 2) ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="tipoCliente">Tipo de cliente</label>
                                                     <select class="form-control form-control-sm" name="tipoCliente" autocomplete="off">
-                                                        <option value="" selected>Seleccionar...</option>
                                                         <?php
+                                                        $idTipoCliente = $arrayCliente['id_tipo_cliente'];
                                                         $queryTipo = $mysqli->query("SELECT * FROM tbl_tipos_clientes");
                                                         while ($tipo = $queryTipo->fetch_array()) {
+                                                            if ($idTipoCliente == $tipo['idTipoCliente']) {
                                                         ?>
-                                                            <option value="<?php echo $tipo['idTipoCliente'] ?>"><?php echo $tipo['nombreTipoCliente'] ?></option>
+                                                                <option value="<?php echo $tipo['idTipoCliente'] ?>" selected><?php echo $tipo['nombreTipoCliente'] ?></option>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <option value="<?php echo $tipo['idTipoCliente'] ?>"><?php echo $tipo['nombreTipoCliente'] ?></option>
                                                         <?php
+                                                            }
                                                         }
                                                         ?>
                                                     </select>
@@ -846,13 +923,19 @@ if (isset($_GET['codigo'])) {
                                                 <div class="col-md-3">
                                                     <label for="tecnologia">Tecnología</label>
                                                     <select class="form-control form-control-sm" name="tecnologia" autocomplete="off">
-                                                        <option value="" selected>Seleccionar...</option>
                                                         <?php
+                                                        $tecnologiaa = $arrayTipoCliente['nombreTipoCliente'];
                                                         $queryTecnologias = $mysqli->query("SELECT * FROM tbl_tecnologias");
                                                         while ($tecnologia = $queryTecnologias->fetch_array()) {
+                                                            if ($tecnologiaa == $tecnologia['nombreTecnologia']) {
                                                         ?>
-                                                            <option value="<?php echo $tecnologia['idTecnologia'] ?>"><?php echo $tecnologia['nombreTecnologia'] ?></option>
+                                                                <option value="<?php echo $tecnologia['idTecnologia'] ?>" selected><?php echo $tecnologia['nombreTecnologia'] ?></option>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <option value="<?php echo $tecnologia['idTecnologia'] ?>"><?php echo $tecnologia['nombreTecnologia'] ?></option>
                                                         <?php
+                                                            }
                                                         }
                                                         ?>
 
@@ -860,13 +943,13 @@ if (isset($_GET['codigo'])) {
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="enCalidad">En calidad de</label>
-                                                    <input class="form-control form-control-sm" type="text" name="enCalidad" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" name="enCalidad" autocomplete="off" value="<?php echo $arrayCliente['entrega_calidad'] ?>">
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label for="tipo_de_contrato">Tipo de contrato</label>
-                                                    <select class="form-control form-control-sm" name="tipo_de_contrato" autocomplete="off">
-                                                        <option value="">Seleccione</option>
+                                                    <select class="form-control form-control-sm" name="tipo_de_contrato" autocomplete="off" require>
+                                                        <option value="<?php echo $arrayCliente['tipo_de_contrato'] ?>" selected><?php echo $arrayCliente['tipo_de_contrato'] ?></option>
                                                         <option value="Nuevo">Nuevo</option>
                                                         <option value="Reconexion">Reconexión</option>
                                                         <option value="Renovacion">Renovación</option>
@@ -876,81 +959,87 @@ if (isset($_GET['codigo'])) {
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label for="nContratoVigente">N° de contrato (INTERNET)</label>
-                                                    <input class="form-control form-control-sm" type="text" name="nContratoVigente" readonly>
+                                                    <input class="form-control form-control-sm" type="text" name="nContratoVigente" value="<?php echo $arrayCliente['no_contrato_inter'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="vencimientoContratoInternet">Vencimiento de contrato</label>
-                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoInternet" name="vencimientoContratoInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="vencimientoContratoInternet" name="vencimientoContratoInternet" autocomplete="off" value="<?php echo $arrayCliente['vencimiento_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="ultimaRenovacionInternet">Última renovación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet" autocomplete="off" value="<?php echo $arrayCliente['ult_ren_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaSuspencionInternet">Fecha de suspensión</label>
-                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspencionInternet" name="fechaSuspencionInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" style="color: #b71c1c;" type="date" id="fechaSuspencionInternet" name="fechaSuspencionInternet" autocomplete="off" value="<?php echo $arrayCliente['ultima_suspencion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaReconexionInternet">Fecha de reconexión</label>
-                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionInternet" name="fechaReconexionInternet" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="fechaReconexionInternet" name="fechaReconexionInternet" autocomplete="off" value="<?php echo $arrayCliente['fecha_reconexion_in'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-5">
                                                     <label for="promocion">Promoción</label>
-                                                    <input class="form-control form-control-sm" type="text" name="promocion" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" name="promocion" autocomplete="off" value="<?php echo $arrayCliente['id_promocion'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="promocionDesde">Desde</label>
-                                                    <input class="form-control form-control-sm" type="date" name="promocionDesde" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" name="promocionDesde" autocomplete="off" value="<?php echo $arrayCliente['dese_promocion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="promocionHasta">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" name="promocionHasta" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" name="promocionHasta" autocomplete="off" value="<?php echo $arrayCliente['hasta_promocion_in'] ?>">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="cuotaPromocion">Cuota de la promoción</label>
-                                                    <input class="form-control form-control-sm" type="text" name="cuotaPromocion" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" name="cuotaPromocion" autocomplete="off" value="<?php echo $arrayCliente['cuota_promocion'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-9">
                                                     <label for="encargadoInstalacionInter">Técnico que realizó la instalación</label>
                                                     <select class="form-control form-control-sm " name="encargadoInstalacionInter" autocomplete="off">
-                                                        <option value="">Seleccionar...</option>
                                                         <?php
+                                                         $idTecnicoInter = $arrayCliente['id_tecnico_in'];
                                                         $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
                                                         while ($tecnicos = $querytecnicos->fetch_array()) {
+                                                            if ($idTecnicoInter == $tecnicos['idTecnico']) {
+                                                                ?>
+                                                                <option value="<?php echo $tecnicos['idTecnico'] ?>" selected><?php echo $tecnicos['nombreTecnico'] ?></option>
+                                                                <?php
+                                                            }else{
                                                         ?>
                                                             <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
                                                         <?php
                                                         }
+                                                    }
                                                         ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="costoInstalacionIn">Costo de instalación</label>
-                                                    <input class="form-control form-control-sm" type="text" name="costoInstalacionIn" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" name="costoInstalacionIn" autocomplete="off" value="<?php echo $arrayCliente['costo_instalacion_in'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="cuotaCovidI">Cuota COVID-19</label>
-                                                    <input class="form-control form-control-sm" type="text" id="cuotaCovidI" name="cuotaCovidI" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="text" id="cuotaCovidI" name="cuotaCovidI" autocomplete="off" value="<?php echo $arrayCliente['cuotaCovidI'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidDesdeI">Desde</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidDesdeI" name="covidDesdeI" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="covidDesdeI" name="covidDesdeI" autocomplete="off" value="<?php echo $arrayCliente['covidDesdeI'] ?>">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label style="color: #CC0000" for="covidHastaI">Hasta</label>
-                                                    <input class="form-control form-control-sm" type="date" id="covidHastaI" name="covidHastaI" autocomplete="off">
+                                                    <input class="form-control form-control-sm" type="date" id="covidHastaI" name="covidHastaI" autocomplete="off" value="<?php echo $arrayCliente['covidHastaI'] ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="direccionInternet">Dirección</label>
-                                                    <input class="form-control form-control-sm" type="text" name="direccionInternet" id="direccionInternet" readonly>
+                                                    <input class="form-control form-control-sm" type="text" name="direccionInternet" id="direccionInternet" readonly value="<?php echo $arrayCliente['dire_internet'] ?>">
                                                 </div>
                                             </div>
                                             <hr>
@@ -959,19 +1048,19 @@ if (isset($_GET['codigo'])) {
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label for="colilla">Colilla</label>
-                                                            <input class="form-control form-control-sm" type="text" name="colilla" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="colilla" autocomplete="off" value="<?php echo $arrayCliente['colilla'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="wanip">WAN IP</label>
-                                                            <input class="form-control form-control-sm" type="text" id="wanip" name="wanip" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" id="wanip" name="wanip" autocomplete="off" value="<?php echo $arrayCliente['wanip'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="coordenadas">Coordenadas</label>
-                                                            <input class="form-control form-control-sm" type="text" name="coordenadas" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="coordenadas" autocomplete="off" value="<?php echo $arrayCliente['coordenadas'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="nodo">Nodo/Ap/Path</label>
-                                                            <input class="form-control form-control-sm" type="text" name="nodo" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="nodo" autocomplete="off" value="<?php echo $arrayCliente['dire_telefonia'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -979,31 +1068,31 @@ if (isset($_GET['codigo'])) {
                                                     <div class="row">
                                                         <div class="col-md-8">
                                                             <label for="modelo">Modelo</label>
-                                                            <input class="form-control form-control-sm" type="text" name="modelo" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="modelo" autocomplete="off" value="<?php echo $arrayCliente['marca_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="recepcion">Recepción</label>
-                                                            <input class="form-control form-control-sm" type="text" name="recepcion" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="recepcion" autocomplete="off" value="<?php echo $arrayCliente['recep_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-8">
                                                             <label for="mac">MAC</label>
-                                                            <input class="form-control form-control-sm" type="text" id="mac" name="mac" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" id="mac" name="mac" autocomplete="off" value="<?php echo $arrayCliente['mac_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="transmicion">Transmisión</label>
-                                                            <input class="form-control form-control-sm" type="text" name="transmision" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="transmision" autocomplete="off" value="<?php echo $arrayCliente['trans_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-8">
                                                             <label for="serie">Serie</label>
-                                                            <input class="form-control form-control-sm" type="text" name="serie" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="serie" autocomplete="off" value="<?php echo $arrayCliente['serie_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="ruido">Ruido</label>
-                                                            <input class="form-control form-control-sm" type="text" name="ruido" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="ruido" autocomplete="off" value="<?php echo $arrayCliente['ruido_modem'] ?>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="claveWifi">Clave WIFI</label>
-                                                            <input class="form-control form-control-sm" type="text" name="claveWifi" autocomplete="off">
+                                                            <input class="form-control form-control-sm" type="text" name="claveWifi" autocomplete="off" value="<?php echo $arrayCliente['clave_modem'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1280,8 +1369,16 @@ if (isset($_GET['codigo'])) {
     </aside>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
+        $(document).ready(function() {
+            $('.buscador').select2();
+        });
+        $("#busqueda").change(function() {
+            $codigo = $(this).val();
+            window.location.replace("editar_cliente.php?codigo=" + $codigo + "");
+        });
         $(".salir").on("click", function(e) {
             e.preventDefault();
             swal({

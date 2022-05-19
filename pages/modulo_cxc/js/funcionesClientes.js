@@ -3,11 +3,10 @@ $(document).ready(function () {
     $("#nit").mask("9999-999999-999-9");
     jQuery.validator.addMethod(
         "money",
-        function(value, element) {
+        function (value, element) {
             var isValidMoney = /^\d{0,4}(\.\d{0,2})?$/.test(value);
             return this.optional(element) || isValidMoney;
         },
-        "Insert "
     );
 
     $("#addcliente").validate({
@@ -50,17 +49,17 @@ $(document).ready(function () {
             cobrador: {
                 required: true,
             },
-            cuotaMensualCable:{
-                money:true,
+            cuotaMensualCable: {
+                money: true,
             },
-            prepago:{
-                money:true,
+            prepago: {
+                money: true,
             },
-            cuotaMensualInternet:{
-                money:true,
+            cuotaMensualInternet: {
+                money: true,
             },
-            prepago_in:{
-                money:true,
+            prepago_in: {
+                money: true,
             },
         },
         messages: {
@@ -102,17 +101,17 @@ $(document).ready(function () {
             cobrador: {
                 required: 'Este campo es necesario',
             },
-            cuotaMensualCable:{
-                money:'Debe ingresar valor monetario',
+            cuotaMensualCable: {
+                money: 'Debe ingresar valor monetario',
             },
-            prepago:{
-                money:'Debe ingresar valor monetario',
+            prepago: {
+                money: 'Debe ingresar valor monetario',
             },
-            cuotaMensualInternet:{
-                money:'Debe ingresar valor monetario',
+            cuotaMensualInternet: {
+                money: 'Debe ingresar valor monetario',
             },
-            prepago_in:{
-                money:'Debe ingresar valor monetario',
+            prepago_in: {
+                money: 'Debe ingresar valor monetario',
             },
         },
         submitHandler: function (form) {
@@ -134,7 +133,7 @@ $(document).ready(function () {
                     if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
                         setInterval('location.reload()', 1500);
                     }
-                }, 
+                },
                 error: function () {
                     swal('Error', 'Ha ocurrido un error al ingresar la informacion', 'error');
                 }
@@ -223,6 +222,48 @@ $("#mesesContratoInternet").blur(function () {
         dataType: 'Json',
         success: function (datax) {
             $("#vencimientoContratoInternet").val(datax.fechaFinal);
+        },
+        error: function () {
+            swal('Error', 'Ha ocurrido un error al traer la informacion', 'error');
+        }
+    });
+});
+
+$("#Ecable").on('click', function () {
+    $estadoCable = $(this).val();
+    $codigo = $("#codigo").val();
+    $opcion = 'eCable'
+    $.ajax({
+        type: 'POST',
+        url: 'php/funcionesClientes.php',
+        data: { codigo: $codigo, opcion: $opcion, estadoCable: $estadoCable },
+        dataType: 'Json',
+        success: function (datax) {
+            swal('Estado de la operacion', datax.msg, datax.typeinfo);
+            if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                setInterval('location.reload()', 1500);
+            }
+        },
+        error: function () {
+            swal('Error', 'Ha ocurrido un error al traer la informacion', 'error');
+        }
+    });
+});
+
+$("#Einternet").on('click', function () {
+    $estadoInternet = $(this).val();
+    $codigo = $("#codigo").val();
+    $opcion = 'eInternet'
+    $.ajax({
+        type: 'POST',
+        url: 'php/funcionesClientes.php',
+        data: { codigo: $codigo, opcion: $opcion, estadoInternet: $estadoInternet },
+        dataType: 'Json',
+        success: function (datax) {
+            swal('Estado de la operacion', datax.msg, datax.typeinfo);
+            if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
+                setInterval('location.reload()', 1500);
+            }
         },
         error: function () {
             swal('Error', 'Ha ocurrido un error al traer la informacion', 'error');

@@ -39,6 +39,7 @@ if (isset($_GET['codigo'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cablesat</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -104,7 +105,6 @@ if (isset($_GET['codigo'])) {
         input,
         select,
         textarea {
-            color: #CC0000 !important;
             font-size: large !important;
             font-weight: bold;
         }
@@ -115,7 +115,7 @@ if (isset($_GET['codigo'])) {
         }
 
         .codigo input {
-            color: #CC0000;
+            color: #CC0000 !important;
             background-color: transparent !important;
             border: none;
             text-align: center;
@@ -144,6 +144,15 @@ if (isset($_GET['codigo'])) {
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="navbar-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="procesos" role="button" data-bs-toggle="dropdown" aria-expanded="false">Procesos</a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="procesos">
+                    <li><a class="dropdown-item" onclick="window.open('ordenTrabajo.php<?php echo "?codigoCliente=" . $codigo; ?>','','height=600,width=1000,top=-300,left=200')">Orden de trabajo</a></li>
+                    <li><a class="dropdown-item" onclick="window.open('ordenSuspension.php<?php echo "?codigoCliente=" . $codigo; ?>','','height=600,width=1000,top=-300,left=200')">Orden de suspension</a></li>
+                    <li><a class="dropdown-item" onclick="window.open('ordenReconexion.php<?php echo "?codigoCliente=" . $codigo; ?>','','height=600,width=1000,top=-300,left=200')">Orden de reconexion</a></li>
+                    <li><a class="dropdown-item" onclick="window.open('ordenTraslado.php<?php echo "?codigoCliente=" . $codigo; ?>','','height=600,width=1000,top=-300,left=200')">Orden de traslado</a></li>
+                </ul>
+            </li>
+            <li class="navbar-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="documentacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">Documentacion</a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="documentacion">
                     <li><a class="dropdown-item" onclick="window.open('php/f3.php<?php echo "?id=" . $codigo; ?>','','height=600,width=1000,top=-300,left=200')">Documento F-3</a></li>
@@ -162,6 +171,24 @@ if (isset($_GET['codigo'])) {
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="estadoCuenta.php?codigoCliente=<?php echo $codigo; ?>" role="button"><i class="fas fa-file-invoice-dollar"></i> Estado de cuenta</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="editar_cliente.php?codigo=<?php echo $codigo; ?>" role="button"><i class="fas fa-pencil-alt"></i> Editar</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline">
+                    <select name="busqueda" id="busqueda" class="buscador form-control">
+                        <option value="">Seleccionar...</option>
+                        <?php
+                        $datosClientes = $mysqli->query("SELECT cod_cliente,nombre FROM clientes");
+                        while ($datos = $datosClientes->fetch_array()) {
+                        ?>
+                            <option value="<?php echo $datos['cod_cliente'] ?>"><?php echo $datos['cod_cliente'] . " " . $datos['nombre'] ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </form>
             </li>
         </ul>
         <!-- Right navbar links -->
@@ -398,6 +425,14 @@ if (isset($_GET['codigo'])) {
                                             </td>
                                         </tr>
                                     </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea class="form-control  form-control-sm" name="notas" rows="2" cols="25" placeholder="Observaciones" readOnly><?php echo $arrayCliente['observaciones']; ?></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -815,12 +850,6 @@ if (isset($_GET['codigo'])) {
 
                                                 <div class="col-md-3">
                                                     <label for="tipo_de_contrato">Tipo de contrato</label>
-                                                    <select class="form-control form-control-sm" name="tipo_de_contrato">
-                                                        <option value="">Seleccione</option>
-                                                        <option value="Nuevo">Nuevo</option>
-                                                        <option value="Reconexion">Reconexión</option>
-                                                        <option value="Renovacion">Renovación</option>
-                                                    </select>
                                                     <input type="text" class="form-control form-control-sm" id="tipo_de_contrato" name="tipo_de_contrato" value="<?php echo $arrayCliente['tipo_de_contrato'] ?>">
                                                 </div>
                                             </div>
@@ -835,7 +864,7 @@ if (isset($_GET['codigo'])) {
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="ultimaRenovacionInternet">Última renovación</label>
-                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet" <?php echo $arrayCliente['ult_ren_in'] ?>>
+                                                    <input class="form-control form-control-sm" type="date" id="ultimaRenovacionInternet" name="ultimaRenovacionInternet" value="<?php echo $arrayCliente['ult_ren_in'] ?>">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="fechaSuspencionInternet">Fecha de suspensión</label>
@@ -1522,6 +1551,7 @@ if (isset($_GET['codigo'])) {
     <!-- Fin modal contrato internet -->
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#Ccable').on('click', function() {
@@ -1533,6 +1563,14 @@ if (isset($_GET['codigo'])) {
         $("input").prop('readonly', true);
         $("textarea").prop('readonly', true);
         $("select").prop('disabled', true);
+        $("#busqueda").prop('disabled', false);
+        $(document).ready(function() {
+            $('.buscador').select2();
+        });
+        $("#busqueda").change(function() {
+            $codigo = $(this).val();
+            window.location.replace("ver_cliente.php?codigo=" + $codigo + "");
+        });
         $(".salir").on("click", function(e) {
             e.preventDefault();
             swal({

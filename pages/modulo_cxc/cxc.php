@@ -201,7 +201,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="infoCliente.php?id=00001" class="nav-link">Clientes</a>
+                <a href="infoCliente.php" class="nav-link">Clientes</a>
             </li>
             <li class="nav-item">
                 <a href="abonos.php" class="nav-link">Abonos</a>
