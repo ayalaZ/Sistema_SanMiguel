@@ -281,6 +281,7 @@ if (isset($_GET['codigo'])) {
                 <div class="card-body">
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="row" style="text-align:center;"><h2 style="font-weight: bold;">FICHA PARA EDITAR INFORMACION DEL CLIENTE</h2></div>
                             <div class="row">
                                 <div class="col-md-2 codigo">
                                     <label for="codigo">Código del cliente</label>

@@ -269,17 +269,8 @@ function setMenu($permisosActuales, $permisoRequerido)
                 <div class="card-body">
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <div class="row" style="text-align:center;"><h2 style="font-weight: bold;">FICHA PARA AGREGAR NUEVO CLIENTE</h2></div>
                             <div class="row">
-                                <div class="col-md-2 codigo">
-                                    <label for="codigo">Código del cliente</label>
-                                    <?php
-                                    $querycodigo = $mysqli->query("SELECT cod_cliente FROM clientes ORDER BY cod_cliente DESC LIMIT 1");
-                                    $codigo = $querycodigo->fetch_array();
-                                    $nuevoCodigo = $codigo['cod_cliente'] + 1;
-                                    $nuevoCodigo = str_pad($nuevoCodigo, 5, "0", STR_PAD_LEFT);
-                                    ?>
-                                    <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" value="<?php echo $nuevoCodigo ?>" style="font-weight: bold;">
-                                </div>
                                 <div class="col-md-3">
                                     <label for="contrato">N° de contrato (CABLE)</label>
                                     <input class="form-control form-control-sm" type="text" name="contrato" readonly>
@@ -295,6 +286,16 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 <div class="col-md-1">
                                     <label for="ordenes">Ordenes</label>
                                     <input type="checkbox" name="ordenes" id="ordenes" class="form-check-input" value="1" style="margin-top: 20%; width:35px;height:35px;" checked>
+                                </div>
+                                <div class="col-md-2 codigo">
+                                    <label for="codigo">Código del cliente</label>
+                                    <?php
+                                    $querycodigo = $mysqli->query("SELECT cod_cliente FROM clientes ORDER BY cod_cliente DESC LIMIT 1");
+                                    $codigo = $querycodigo->fetch_array();
+                                    $nuevoCodigo = $codigo['cod_cliente'] + 1;
+                                    $nuevoCodigo = str_pad($nuevoCodigo, 5, "0", STR_PAD_LEFT);
+                                    ?>
+                                    <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" value="<?php echo $nuevoCodigo ?>" style="font-weight: bold;">
                                 </div>
                             </div>
                             <div class="row">
