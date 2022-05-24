@@ -131,7 +131,11 @@ $(document).ready(function () {
                 success: function (datax) {
                     swal('Estado de la operacion', datax.msg, datax.typeinfo);
                     if (datax.typeinfo == "success" || datax.typeinfo == "Success") {
-                        setInterval('location.reload()', 1500);
+                        if(datax.pagina == 'ver'){
+                            window.location.replace("ver_cliente.php?codigo=" + datax.codigo +"");
+                        }else{
+                            setInterval('location.reload()', 1500);
+                        }
                     }
                 },
                 error: function () {

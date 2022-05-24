@@ -131,22 +131,10 @@ if (isset($_GET['codigo'])) {
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="ver_cliente.php?codigo=<?php echo $codigo; ?>" role="button"><i class="fas fa-eye"></i> Ver cliente</a>
+                <a class="nav-link" href="ver_cliente.php?codigo=<?php echo $codigo; ?>" role="button"><i class="fas fa-eye"></i></a>
             </li>
             <li class="nav-item">
-                <form class="form-inline">
-                    <select name="busqueda" id="busqueda" class="buscador form-control">
-                        <option value="">Seleccionar...</option>
-                        <?php
-                        $datosClientes = $mysqli->query("SELECT cod_cliente,nombre FROM clientes");
-                        while ($datos = $datosClientes->fetch_array()) {
-                        ?>
-                            <option value="<?php echo $datos['cod_cliente'] ?>"><?php echo $datos['cod_cliente'] . " " . $datos['nombre'] ?></option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-                </form>
+                <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#busquedaModal"><i class="fas fa-search"></i></a>
             </li>
         </ul>
         <!-- Right navbar links -->
@@ -280,7 +268,7 @@ if (isset($_GET['codigo'])) {
     <div class="content-wrapper">
         <div class="card" style="margin: 10px;">
             <form id="addcliente" method="POST">
-                <div class="card-header">
+                <div class="card-header" style="border-top: 5px solid #ffc107;">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item"><a href="#datos-generales" data-toggle="tab" class="nav-link active" style="text-decoration: none;color:#000;">DATOS GENERALES</a></li>
@@ -296,7 +284,7 @@ if (isset($_GET['codigo'])) {
                             <div class="row">
                                 <div class="col-md-2 codigo">
                                     <label for="codigo">Código del cliente</label>
-                                    <input class="form-control form-control-sm" type="text" readonly name="codigo" id="codigo" value="<?php echo $codigo ?>" style="font-weight: bold;" >
+                                    <input class="form-control form-control-sm" type="text" readonly name="codigo" id="codigo" value="<?php echo $codigo ?>" style="font-weight: bold;">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="contrato">N° de contrato (CABLE)</label>
@@ -334,7 +322,7 @@ if (isset($_GET['codigo'])) {
                                         <tr>
                                             <th>Cable </th>
                                             <td>
-                                                <button type="button" class="btn btn-default btn-lg" id="Ecable" value="<?php echo $estadoCable?>">
+                                                <button type="button" class="btn btn-default btn-lg" id="Ecable" value="<?php echo $estadoCable ?>">
                                                     <?php
                                                     switch ($estadoCable) {
                                                         case '1':
@@ -1001,19 +989,19 @@ if (isset($_GET['codigo'])) {
                                                     <label for="encargadoInstalacionInter">Técnico que realizó la instalación</label>
                                                     <select class="form-control form-control-sm " name="encargadoInstalacionInter" autocomplete="off">
                                                         <?php
-                                                         $idTecnicoInter = $arrayCliente['id_tecnico_in'];
+                                                        $idTecnicoInter = $arrayCliente['id_tecnico_in'];
                                                         $querytecnicos = $mysqli->query("SELECT * FROM tbl_tecnicos_cxc");
                                                         while ($tecnicos = $querytecnicos->fetch_array()) {
                                                             if ($idTecnicoInter == $tecnicos['idTecnico']) {
-                                                                ?>
-                                                                <option value="<?php echo $tecnicos['idTecnico'] ?>" selected><?php echo $tecnicos['nombreTecnico'] ?></option>
-                                                                <?php
-                                                            }else{
                                                         ?>
-                                                            <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
+                                                                <option value="<?php echo $tecnicos['idTecnico'] ?>" selected><?php echo $tecnicos['nombreTecnico'] ?></option>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <option value="<?php echo $tecnicos['idTecnico'] ?>"><?php echo $tecnicos['nombreTecnico'] ?></option>
                                                         <?php
+                                                            }
                                                         }
-                                                    }
                                                         ?>
                                                     </select>
                                                 </div>
@@ -1367,6 +1355,38 @@ if (isset($_GET['codigo'])) {
             </table>
         </div>
     </aside>
+    <!--MODAL BUSQUEDA -->
+    <div id="busquedaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="busquedaModallabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-hover tabla" id="TableClientes">
+                        <thead>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Direccion</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion FROM clientes");
+                            while ($clientes = $datos->fetch_array()) {
+                            ?>
+                                <tr style="cursor: pointer;" class="busquedadClientes" codigo="<?php echo $clientes['cod_cliente'] ?>">
+                                    <td><?php echo $clientes['cod_cliente'] ?></td>
+                                    <td><?php echo $clientes['nombre'] ?></td>
+                                    <td><?php echo $clientes['direccion'] ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODA BUSQUEDA -->
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
@@ -1377,6 +1397,10 @@ if (isset($_GET['codigo'])) {
         });
         $("#busqueda").change(function() {
             $codigo = $(this).val();
+            window.location.replace("editar_cliente.php?codigo=" + $codigo + "");
+        });
+        $("#TableClientes tbody").on('click', 'tr', function() {
+            $codigo = $(this).attr('codigo');
             window.location.replace("editar_cliente.php?codigo=" + $codigo + "");
         });
         $(".salir").on("click", function(e) {
@@ -1397,6 +1421,33 @@ if (isset($_GET['codigo'])) {
     });
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
+    });
+    $('.tabla').DataTable({
+        dom: 'Pfrtip',
+        pageLength: 5,
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        "order": [
+            [0, "asc"]
+        ],
     });
 </script>
 <script src="js/funcionesClientes.js"></script>

@@ -449,6 +449,8 @@ switch ($proceso) {
         if ($modificarCliente) {
             $xdatos['msg'] = "Modificaciones realizadas con exito";
             $xdatos['typeinfo'] = "success";
+            $xdatos['pagina'] = "ver";
+            $xdatos['codigo'] = $codigo;
         } else {
             $xdatos['msg'] = "Error en la base de datos" . $mysqli->error;
             $xdatos['typeinfo'] = "error";

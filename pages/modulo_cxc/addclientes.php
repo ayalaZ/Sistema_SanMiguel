@@ -256,7 +256,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     <div class="content-wrapper">
         <div class="card" style="margin: 10px;">
             <form id="addcliente" method="POST">
-                <div class="card-header">
+                <div class="card-header" style="border-top: 5px solid green;">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item"><a href="#datos-generales" data-toggle="tab" class="nav-link active" style="text-decoration: none;color:#000;">DATOS GENERALES</a></li>
@@ -267,7 +267,6 @@ function setMenu($permisosActuales, $permisoRequerido)
                     </ul>
                 </div>
                 <div class="card-body">
-
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="row">
