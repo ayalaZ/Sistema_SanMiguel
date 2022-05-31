@@ -76,6 +76,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <style>
         .accordion-button {
             outline: none !important;
@@ -328,6 +329,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                     <input class="form-control form-control-sm" type="text" name="saldoInternet" autocomplete="off">
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-2">
                                     <label for="dui">DUI</label>
@@ -376,7 +378,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                                 </div>
                                 <div class="col-md-5">
                                     <label for="colonia">Barrio o colonia</label>
-                                    <select class="form-control form-control-sm alert-danger" id="colonia" name="colonia" autocomplete="off">
+                                    <select class="form-control form-control-sm alert-danger buscador" id="colonia" name="colonia" autocomplete="off">
                                         <option value="">Seleccionar...</option>
                                     </select>
                                 </div>
@@ -1157,8 +1159,10 @@ function setMenu($permisosActuales, $permisoRequerido)
     </aside>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('.buscador').select2();
         $(".salir").on("click", function(e) {
             e.preventDefault();
             swal({

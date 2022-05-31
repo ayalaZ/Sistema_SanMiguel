@@ -110,7 +110,30 @@ $(document).ready(function() {
         }
     });
 });
+
 $(".departamento").change(function () {
+    $id = $(this).val();
+    $opcion = 'municipios';
+    $.ajax({
+        type: 'POST',
+        url: 'php/funcionesClientes.php',
+        data: { id: $id, opcion: $opcion },
+        dataType: 'Json',
+        success: function (datax) {
+            $(".municipio").empty();
+            var filas = datax.filas;
+            $(".municipio").append("<option value=''>Seleccionar...</option>");
+            for (var i = 0; i < filas; i++) {
+                var nuevafila = "<option value=" + datax.municipios[i].idMunicipio + ">" + datax.municipios[i].nombreMunicipio + "</option>";
+                $(".municipio").append(nuevafila);
+            }
+        },
+        error: function () {
+            swal('Error', 'Ha ocurrido un error al traer la informacion', 'error');
+        }
+    });
+});
+$("#departamento").change(function () {
     $id = $(this).val();
     $opcion = 'municipios';
     $.ajax({

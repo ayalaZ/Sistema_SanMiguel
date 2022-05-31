@@ -1550,16 +1550,18 @@ if (isset($_GET['codigo'])) {
                                 <th>Codigo</th>
                                 <th>Nombre</th>
                                 <th>Direccion</th>
+                                <th>Dui</th>
                             </thead>
                             <tbody>
                                 <?php 
-                                    $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion FROM clientes");
+                                    $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion,numero_dui FROM clientes");
                                     while ($clientes = $datos->fetch_array()) {
                                         ?>
                                         <tr style="cursor: pointer;" class="busquedadClientes" codigo="<?php echo $clientes['cod_cliente'] ?>">
                                             <td><?php echo $clientes['cod_cliente']?></td>
                                             <td><?php echo $clientes['nombre'] ?></td>
                                             <td><?php echo $clientes['direccion'] ?></td>
+                                            <td><?php echo $clientes['numero_dui'] ?></td>
                                         </tr>
                                         <?php
                                     }

@@ -82,6 +82,7 @@ if (isset($_GET['codigo'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <style>
         .accordion-button {
             outline: none !important;
@@ -481,7 +482,7 @@ if (isset($_GET['codigo'])) {
                                 </div>
                                 <div class="col-md-5">
                                     <label for="colonia">Barrio o colonia</label>
-                                    <select class="form-control form-control-sm alert-danger" id="colonia" name="colonia" autocomplete="off">
+                                    <select class="form-control form-control-sm alert-danger buscador" id="colonia" name="colonia" autocomplete="off">
                                         <?php
                                         $municipio = $arrayCliente['id_municipio'];
                                         $colonia = $arrayCliente['id_colonia'];
@@ -1367,16 +1368,18 @@ if (isset($_GET['codigo'])) {
                             <th>Codigo</th>
                             <th>Nombre</th>
                             <th>Direccion</th>
+                            <th>Dui</th>
                         </thead>
                         <tbody>
                             <?php
-                            $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion FROM clientes");
+                            $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion,numero_dui FROM clientes");
                             while ($clientes = $datos->fetch_array()) {
                             ?>
                                 <tr style="cursor: pointer;" class="busquedadClientes" codigo="<?php echo $clientes['cod_cliente'] ?>">
                                     <td><?php echo $clientes['cod_cliente'] ?></td>
                                     <td><?php echo $clientes['nombre'] ?></td>
                                     <td><?php echo $clientes['direccion'] ?></td>
+                                    <td><?php echo $clientes['numero_dui'] ?></td>
                                 </tr>
                             <?php
                             }
