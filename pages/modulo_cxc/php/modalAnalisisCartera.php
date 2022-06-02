@@ -110,7 +110,7 @@
              success: function(datax) {
                  $("#clColonia").empty();
                  var filas = datax.filas;
-                 $("#clColonia").append("<option value=''>Seleccionar...</option>");
+                 $("#clColonia").append("<option value='todas'>Todas las zonas</option>");
                  for (var i = 0; i < filas; i++) {
                      var nuevafila = "<option value=" + datax.colonias[i].idColonia + ">" + datax.colonias[i].nombreColonia + "</option>";
                      $("#clColonia").append(nuevafila);

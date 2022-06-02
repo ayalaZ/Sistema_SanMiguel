@@ -518,23 +518,29 @@ function setMenu($permisosActuales, $permisoRequerido)
                     $CsusServido = datax.clientes[i].servicio_suspendido;
                     $CsinServicio = datax.clientes[i].sin_servicio;
                     if ($CsusServido == "T" && $CsinServicio == "F") {
-                        $estadoCable = '1';
+                        $estadoCable = '1';//cable suspendido
+                        $letrascable = "SC";
                     }
                     if ($CsusServido != "T" && $CsinServicio == "T") {
-                        $estadoCable = '2';
+                        $estadoCable = '2';//sin servicio cable
+                        $letrascable = "SSC";
                     }
                     if ($CsusServido != "T" && $CsinServicio == "F") {
-                        $estadoCable = '3';
+                        $estadoCable = '3';//cable activo
+                        $letrascable = "AC";
                     }
                     $estado = datax.clientes[i].estado_cliente_in;
                     if ($estado == 2) {
-                        $estadoInternet = '1';
+                        $estadoInternet = '1';//internet suspendido
+                        $letrasInternet = "SI";
                     }
                     if ($estado == 3) {
-                        $estadoInternet = '2';
+                        $estadoInternet = '2';//internet sin servicio
+                        $letrasInternet = "SSI";
                     }
                     if ($estado == 1) {
-                        $estadoInternet = '3';
+                        $estadoInternet = '3';//internet activo
+                        $letrasInternet = "AI";
                     }
                     if ($estadoCable == 3 && $estadoInternet == 3) {
                         var nuevafila = "<tr class = 'table-warning'>";
