@@ -280,9 +280,14 @@ if (isset($_GET['codigo'])) {
                     </ul>
                 </div>
                 <div class="card-body">
+                    <div class="row" style="text-align:center;">
+                        <h2 style="font-weight: bold;">FICHA PARA EDITAR INFORMACION DEL CLIENTE</h2>
+                    </div>
+                    <div class="row">
+                        <p><b style="color: #cc0000;font-size:large;"><?php echo $codigo . " " ?></b><?php echo $arrayCliente['nombre'] ?></p>
+                    </div>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="row" style="text-align:center;"><h2 style="font-weight: bold;">FICHA PARA EDITAR INFORMACION DEL CLIENTE</h2></div>
                             <div class="row">
                                 <div class="col-md-2 codigo">
                                     <label for="codigo">Código del cliente</label>
@@ -381,7 +386,7 @@ if (isset($_GET['codigo'])) {
 
                                 </div>
                                 <div class="col-md-10">
-                                    <textarea class="form-control  form-control-sm" name="notas" rows="2" cols="25" placeholder="Observaciones"><?php echo $arrayCliente['observaciones']; ?></textarea>
+                                    <textarea class="form-control  form-control-sm" name="notas" rows="2" cols="25" placeholder="Observaciones" style="color: #cc0000;border:1px solid #cc0000;font-size:large;font-weight:bold;"><?php echo $arrayCliente['observaciones']; ?></textarea>
                                 </div>
                             </div>
                             <div class="row">

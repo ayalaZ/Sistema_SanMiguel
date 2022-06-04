@@ -176,10 +176,10 @@ if (isset($_GET['codigo'])) {
                 <a class="nav-link" href="editar_cliente.php?codigo=<?php echo $codigo; ?>" role="button"><i class="fas fa-pencil-alt"></i> Editar</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#busquedaModal" ><i class="fas fa-search"></i></a>
+                <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#busquedaModal"><i class="fas fa-search"></i></a>
             </li>
         </ul>
-       
+
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
@@ -321,9 +321,14 @@ if (isset($_GET['codigo'])) {
                     </ul>
                 </div>
                 <div class="card-body">
+                    <div class="row" style="text-align:center;">
+                        <h2 style="font-weight: bold;">FICHA PARA VER INFORMACION DEL CLIENTE</h2>
+                    </div>
+                    <div class="row">
+                        <p><b style="color: #cc0000;font-size:large;"><?php echo $codigo." " ?></b><?php echo $arrayCliente['nombre'] ?></p>
+                    </div>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="row" style="text-align:center;"><h2 style="font-weight: bold;">FICHA PARA VER INFORMACION DEL CLIENTE</h2></div>
                             <div class="row">
                                 <div class="col-md-2 codigo">
                                     <label for="codigo">Código del cliente</label>
@@ -422,7 +427,7 @@ if (isset($_GET['codigo'])) {
 
                                 </div>
                                 <div class="col-md-10">
-                                    <textarea class="form-control  form-control-sm" name="notas" rows="2" cols="25" placeholder="Observaciones" readOnly><?php echo $arrayCliente['observaciones']; ?></textarea>
+                                    <textarea class="form-control  form-control-sm" name="notas" rows="2" cols="25" placeholder="Observaciones" readOnly style="color: #cc0000;border:1px solid #cc0000;font-size:large;font-weight:bold;"><?php echo $arrayCliente['observaciones']; ?></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -1539,40 +1544,40 @@ if (isset($_GET['codigo'])) {
         </div>
     </div>
     <!-- Fin modal contrato internet -->
-     <!--MODAL BUSQUEDA -->
-     <div id="busquedaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="busquedaModallabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <table class="table table-hover tabla" id="TableClientes">
-                            <thead>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>Direccion</th>
-                                <th>Dui</th>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                    $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion,numero_dui FROM clientes");
-                                    while ($clientes = $datos->fetch_array()) {
-                                        ?>
-                                        <tr style="cursor: pointer;" class="busquedadClientes" codigo="<?php echo $clientes['cod_cliente'] ?>">
-                                            <td><?php echo $clientes['cod_cliente']?></td>
-                                            <td><?php echo $clientes['nombre'] ?></td>
-                                            <td><?php echo $clientes['direccion'] ?></td>
-                                            <td><?php echo $clientes['numero_dui'] ?></td>
-                                        </tr>
-                                        <?php
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+    <!--MODAL BUSQUEDA -->
+    <div id="busquedaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="busquedaModallabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-hover tabla" id="TableClientes">
+                        <thead>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Direccion</th>
+                            <th>Dui</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion,numero_dui FROM clientes");
+                            while ($clientes = $datos->fetch_array()) {
+                            ?>
+                                <tr style="cursor: pointer;" class="busquedadClientes" codigo="<?php echo $clientes['cod_cliente'] ?>">
+                                    <td><?php echo $clientes['cod_cliente'] ?></td>
+                                    <td><?php echo $clientes['nombre'] ?></td>
+                                    <td><?php echo $clientes['direccion'] ?></td>
+                                    <td><?php echo $clientes['numero_dui'] ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <!-- FIN MODA BUSQUEDA -->
+    </div>
+    <!-- FIN MODA BUSQUEDA -->
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
@@ -1590,7 +1595,7 @@ if (isset($_GET['codigo'])) {
         $(document).ready(function() {
             $('.buscador').select2();
         });
-        $("#TableClientes tbody").on('click','tr',function(){
+        $("#TableClientes tbody").on('click', 'tr', function() {
             $codigo = $(this).attr('codigo');
             window.location.replace("ver_cliente.php?codigo=" + $codigo + "");
         });
@@ -1614,32 +1619,32 @@ if (isset($_GET['codigo'])) {
         $('[data-toggle="tooltip"]').tooltip()
     });
     $('.tabla').DataTable({
-                    dom: 'Pfrtip',
-                    pageLength: 5,
-                    language: {
-                        "decimal": "",
-                        "emptyTable": "No hay información",
-                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                        "infoPostFix": "",
-                        "thousands": ",",
-                        "lengthMenu": "Mostrar _MENU_ Entradas",
-                        "loadingRecords": "Cargando...",
-                        "processing": "Procesando...",
-                        "search": "Buscar:",
-                        "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Ultimo",
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        }
-                    },
-                    "order": [
-                        [0, "asc"]
-                    ],
-                });
+        dom: 'Pfrtip',
+        pageLength: 5,
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        "order": [
+            [0, "asc"]
+        ],
+    });
 </script>
 <script src="js/verclientes.js"></script>
 

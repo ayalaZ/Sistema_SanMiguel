@@ -77,6 +77,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../modulo_cxc/css/estilo_cxc.css">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
@@ -88,6 +89,9 @@ function setMenu($permisosActuales, $permisoRequerido)
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#busquedaModal"><i class="fas fa-search"></i></a>
             </li>
         </ul>
         <!-- Right navbar links -->
@@ -219,29 +223,29 @@ function setMenu($permisosActuales, $permisoRequerido)
         </div>
     </aside>
     <div class="content-wrapper">
-            <div class="card" style="margin: 10px;">
-                <div class="card-header">
-                    <h3>Listado de clientes</h3>
-                </div>
-                <div class="card-body">
-                    <a href="addclientes.php" class="btn btn-lg btn-outline-dark" data-toggle="tooltip" title="Nuevo Cliente" data-placement="top"><i class="fas fa-user-plus"></i></a>
-                    <button class="btn btn-lg btn-outline-dark" data-toggle="tooltip" title="Clientes" data-placement="top" id="cant_clientes"><i class="fas fa-users"></i>&nbsp;&nbsp;</button>
-                    <table class="table tabla" id="clientes">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>Direccion</th>
-                                <th>Dui</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
+        <div class="card" style="margin: 10px;">
+            <div class="card-header">
+                <h3>Listado de clientes</h3>
             </div>
+            <div class="card-body">
+                <a href="addclientes.php" class="btn btn-lg btn-outline-dark" data-toggle="tooltip" title="Nuevo Cliente" data-placement="top"><i class="fas fa-user-plus"></i></a>
+                <button class="btn btn-lg btn-outline-dark" data-toggle="tooltip" title="Clientes" data-placement="top" id="cant_clientes"><i class="fas fa-users"></i>&nbsp;&nbsp;</button>
+                <table class="table tabla" id="clientes">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Direccion</th>
+                            <th>Dui</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <?php
         ?>
     </div>
@@ -488,6 +492,69 @@ function setMenu($permisosActuales, $permisoRequerido)
             </table>
         </div>
     </aside>
+    <!--MODAL BUSQUEDA -->
+    <div id="busquedaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="busquedaModallabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #cc0000;color:#fff;">
+                    <h5 class="modal-title">Buscar clientes</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="Cable">Cable</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqCable" id="todosC" value="0" checked>
+                                <label class="form-check-label" for="busqCable">Todos</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqCable" id="activosC" value="1">
+                                <label class="form-check-label" for="busqCable">Activos</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqCable" id="suspendidosC" value="2">
+                                <label class="form-check-label" for="busqCable">Suspendidos</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqCable" id="sinservicioC" value="3">
+                                <label class="form-check-label" for="busqCable">Sin servicio</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="internet">Internet</label>
+                        </div>
+                        <div class="col-md-9">
+                        <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqInternet" id="todosI" value="0" checked>
+                                <label class="form-check-label" for="busqInternet">Todos</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqInternet" id="activosI" value="1">
+                                <label class="form-check-label" for="busqInternet">Activos</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqInternet" id="suspendidosI" value="2">
+                                <label class="form-check-label" for="busqInternet">Suspendidos</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="busqInternet" id="sinservicioI" value="3">
+                                <label class="form-check-label" for="busqInternet">Sin servicio</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-danger" id="btnbuscar">Buscar clientes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODA BUSQUEDA -->
 </body>
 <script>
     $(document).ready(function() {
@@ -518,42 +585,42 @@ function setMenu($permisosActuales, $permisoRequerido)
                     $CsusServido = datax.clientes[i].servicio_suspendido;
                     $CsinServicio = datax.clientes[i].sin_servicio;
                     if ($CsusServido == "T" && $CsinServicio == "F") {
-                        $estadoCable = '1';//cable suspendido
+                        $estadoCable = '1'; //cable suspendido
                         $letrascable = "SC";
                     }
                     if ($CsusServido != "T" && $CsinServicio == "T") {
-                        $estadoCable = '2';//sin servicio cable
+                        $estadoCable = '2'; //sin servicio cable
                         $letrascable = "SSC";
                     }
                     if ($CsusServido != "T" && $CsinServicio == "F") {
-                        $estadoCable = '3';//cable activo
+                        $estadoCable = '3'; //cable activo
                         $letrascable = "AC";
                     }
                     $estado = datax.clientes[i].estado_cliente_in;
                     if ($estado == 2) {
-                        $estadoInternet = '1';//internet suspendido
+                        $estadoInternet = '1'; //internet suspendido
                         $letrasInternet = "SI";
                     }
                     if ($estado == 3) {
-                        $estadoInternet = '2';//internet sin servicio
+                        $estadoInternet = '2'; //internet sin servicio
                         $letrasInternet = "SSI";
                     }
                     if ($estado == 1) {
-                        $estadoInternet = '3';//internet activo
+                        $estadoInternet = '3'; //internet activo
                         $letrasInternet = "AI";
                     }
                     if ($estadoCable == 3 && $estadoInternet == 3) {
                         var nuevafila = "<tr class = 'table-warning'>";
                     }
-                    if($estadoCable == 3 && $estadoInternet != 3) {
+                    if ($estadoCable == 3 && $estadoInternet != 3) {
                         var nuevafila = "<tr class = 'table-success'>";
                     }
-                    if($estadoCable != 3 && $estadoInternet == 3) {
+                    if ($estadoCable != 3 && $estadoInternet == 3) {
                         var nuevafila = "<tr class = 'table-danger'>";
 
-                    } 
-                    
-                    if($estadoCable != 3 && $estadoInternet != 3){
+                    }
+
+                    if ($estadoCable != 3 && $estadoInternet != 3) {
                         var nuevafila = "<tr>";
                     }
 
@@ -561,10 +628,10 @@ function setMenu($permisosActuales, $permisoRequerido)
                         datax.clientes[i].cod_cliente + "</td><td>" +
                         datax.clientes[i].nombre + "</td><td style='width:50%;'>" +
                         datax.clientes[i].direccion + "</td><td>" +
-                        datax.clientes[i].numero_dui + "</td><td><a href='ver_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-ver' id='btn-ver' data-toggle='tooltip' title='Ver' data-placement='top'><i class='fas fa-eye'></i></a><a href='editar_cliente.php?codigo="+ datax.clientes[i].cod_cliente +"' class='btn btn-default btn-sm' name='btn-editar' id='btn-editar' data-toggle='tooltip' title='Editar' data-placement='top'><i class='fas fa-pencil-alt'></i></a></td></tr>";
+                        datax.clientes[i].numero_dui + "</td><td><a href='ver_cliente.php?codigo=" + datax.clientes[i].cod_cliente + "' class='btn btn-default btn-sm' name='btn-ver' id='btn-ver' data-toggle='tooltip' title='Ver' data-placement='top'><i class='fas fa-eye'></i></a><a href='editar_cliente.php?codigo=" + datax.clientes[i].cod_cliente + "' class='btn btn-default btn-sm' name='btn-editar' id='btn-editar' data-toggle='tooltip' title='Editar' data-placement='top'><i class='fas fa-pencil-alt'></i></a></td></tr>";
                     $("#clientes tbody").append(nuevafila);
                 }
-                $("#cant_clientes").append(filas +1);
+                $("#cant_clientes").append(filas + 1);
                 $('.tabla').DataTable({
                     dom: 'Pfrtip',
                     pageLength: 50,
@@ -597,6 +664,11 @@ function setMenu($permisosActuales, $permisoRequerido)
     });
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
+    });
+    $("#btnbuscar").on('click',function(){
+        $("#clientes tbody").empty();
+        $("#clientes tbody").append("<tr><td colspan='5' style='text-align:center;font-weight: bold;font-size:1.6rem'>Cargando datos...</td></tr>");
+
     });
 </script>
 
