@@ -547,9 +547,29 @@ function setMenu($permisosActuales, $permisoRequerido)
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-lg btn-danger" id="btnbuscar">Buscar clientes</button>
+                    <table class="table table-hover tabla" id="TableClientes">
+                        <thead>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Direccion</th>
+                            <th>Dui</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $datos = $mysqli->query("SELECT cod_cliente,nombre,direccion,numero_dui FROM clientes");
+                            while ($clientes = $datos->fetch_array()) {
+                            ?>
+                                <tr style="cursor: pointer;" class="busquedadClientes" codigo="<?php echo $clientes['cod_cliente'] ?>">
+                                    <td><?php echo $clientes['cod_cliente'] ?></td>
+                                    <td><?php echo $clientes['nombre'] ?></td>
+                                    <td><?php echo $clientes['direccion'] ?></td>
+                                    <td><?php echo $clientes['numero_dui'] ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -634,7 +654,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                 $("#cant_clientes").append(filas + 1);
                 $('.tabla').DataTable({
                     dom: 'Pfrtip',
-                    pageLength: 50,
+                    pageLength: 10,
                     language: {
                         "decimal": "",
                         "emptyTable": "No hay información",
@@ -665,11 +685,7 @@ function setMenu($permisosActuales, $permisoRequerido)
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     });
-    $("#btnbuscar").on('click',function(){
-        $("#clientes tbody").empty();
-        $("#clientes tbody").append("<tr><td colspan='5' style='text-align:center;font-weight: bold;font-size:1.6rem'>Cargando datos...</td></tr>");
-
-    });
+   
 </script>
 
 </html>
