@@ -43,7 +43,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
     <link rel="stylesheet" href="css/abonos.css">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-fixed sidebar-collapse">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
         <img class="animation__shake" src="../herramientas/dist/img/logo.png" alt="Cabesat" height="60" width="60">

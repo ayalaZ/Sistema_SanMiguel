@@ -98,6 +98,9 @@ function setMenu($permisosActuales, $permisoRequerido)
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
             <li class="nav-item">
+                <a href="#" class="nav-link" role="button" data-toggle="modal" data-target="#modalayuda"><i class="fas fa-question"></i></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
@@ -529,7 +532,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             <label for="internet">Internet</label>
                         </div>
                         <div class="col-md-9">
-                        <div class="form-check form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="busqInternet" id="todosI" value="0" checked>
                                 <label class="form-check-label" for="busqInternet">Todos</label>
                             </div>
@@ -547,7 +550,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                             </div>
                         </div>
                     </div>
-                    <table class="table table-hover tabla" id="TableClientes">
+                    <table class="table table-hover" id="TableClientes">
                         <thead>
                             <th>Codigo</th>
                             <th>Nombre</th>
@@ -560,9 +563,9 @@ function setMenu($permisosActuales, $permisoRequerido)
                             while ($clientes = $datos->fetch_array()) {
                             ?>
                                 <tr style="cursor: pointer;" class="busquedadClientes" codigo="<?php echo $clientes['cod_cliente'] ?>">
-                                    <td><?php echo $clientes['cod_cliente'] ?></td>
+                                    <td style='font-weight:bold;'><?php echo $clientes['cod_cliente'] ?></td>
                                     <td><?php echo $clientes['nombre'] ?></td>
-                                    <td><?php echo $clientes['direccion'] ?></td>
+                                    <td style='width:75%;'><?php echo $clientes['direccion'] ?></td>
                                     <td><?php echo $clientes['numero_dui'] ?></td>
                                 </tr>
                             <?php
@@ -575,9 +578,61 @@ function setMenu($permisosActuales, $permisoRequerido)
         </div>
     </div>
     <!-- FIN MODA BUSQUEDA -->
+    <!-- MODAL AYUDA -->
+    <div id="modalayuda" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div style="background-color: #d32f2f; color:white;" class="modal-header">
+                    <h4 class="modal-title">Ayuda!</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><input type="color" value="#FFFFFF" disabled> Cclientes sin servicio o suspendidos.</li>
+                        <li><input type="color" value="#dc3545" disabled> Clientes con servicio solo de internet.</li>
+                        <li><input type="color" value="#198754" disabled> Clientes con servicio solo de cable.</li>
+                        <li><input type="color" value="#FFC107" disabled> Clientes con ambos servicios.</li>
+                        <li><i class='fas fa-eye'></i> Al dar clic en este icono podras dirigirte a la ventana donde estar toda la informacion del cliente pero sin poder modificar.</li>
+                        <li><i class='fas fa-pencil-alt'></i> Si damos clic sobre este icono podemos ir a la ventana donde podriamos modificar la informacion del cliente.</li>
+                        <li><i class="fas fa-user-plus"></i> Para poder agregar un nuevo cliente damos clic en este icono y nos redireccionara a la ventana donde podremos ingresar la informacion del cliente.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div><!-- FIN MODAL AYUDA -->
 </body>
 <script>
     $(document).ready(function() {
+        $('#TableClientes').DataTable({
+            dom: 'Pfrtip',
+            pageLength: 10,
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "order": [
+                [0, "asc"]
+            ],
+        });
+
         $(".salir").on("click", function(e) {
             e.preventDefault();
             swal({
@@ -685,7 +740,72 @@ function setMenu($permisosActuales, $permisoRequerido)
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     });
-   
+    $("input:radio[name=busqInternet]").change(function() {
+        $cable = $('input:radio[name=busqCable]:checked').val();
+        $internet = $('input:radio[name=busqInternet]:checked').val();
+        busquedad($cable, $internet);
+    });
+    $("input:radio[name=busqCable]").change(function() {
+        $cable = $('input:radio[name=busqCable]:checked').val();
+        $internet = $('input:radio[name=busqInternet]:checked').val();
+        busquedad($cable, $internet);
+    });
+
+    function busquedad(ca, int) {
+        $("#TableClientes").dataTable().fnDestroy();
+        $.ajax({
+            type: 'POST',
+            dataType: 'Json',
+            url: 'php/clientes2.php',
+            data: {
+                cable: ca,
+                internet: int
+            },
+            success: function(datax) {
+                $("#TableClientes tbody").empty();
+                var filass = datax.filass;
+                var nuevafila;
+                for (var j = 0; j < filass; j++) {
+                    nuevafila = "<tr><td style='font-weight:bold;'>" +
+                        datax.clientess[j].cod_cliente + "</td><td>" +
+                        datax.clientess[j].nombre + "</td><td style='width:75%;'>" +
+                        datax.clientess[j].direccion + "</td><td>" +
+                        datax.clientess[j].numero_dui + "</td></tr>";
+                    $("#TableClientes tbody").append(nuevafila);
+                }
+                $('#TableClientes').DataTable({
+                    dom: 'Pfrtip',
+                    pageLength: 10,
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    },
+                    "order": [
+                        [0, "asc"]
+                    ],
+                });
+            },
+            error: function() {
+                swal('Error', 'Ha ocurrido un error al traer la informacion', 'error');
+            }
+        });
+    }
 </script>
 
 </html>
