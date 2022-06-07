@@ -131,6 +131,7 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                     <h3 class="card-title">Abonos</h3>
                     <button class="btn btn-danger float-right" id="ayuda" name="ayuda" data-toggle="modal" data-target="#modalayuda"><i class="fas fa-question"></i></button>
                     <button class="btn btn-danger float-right" id="estado" name="estado"><i class="fas fa-file-invoice-dollar"></i></button>
+                    <button class="btn btn-danger float-right" id="gestion" name="gestion" data-toggle="modal" data-target="#modalgestion"><i class="fas fa-money-check-alt"></i></button>
                 </div>
                 <div class="card-body">
                     <form id="frAbonos" method="POST">
@@ -423,6 +424,43 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
         </div>
     </div>
     </div><!-- Fin Modal SUSPENSIONES AUTOMATICAS -->
+    <!-- MODAL GESTION DE COBROS -->
+    <div id="modalgestion" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div style="background-color: #d32f2f; color:white;" class="modal-header">
+                    <h4 class="modal-title">Gestion de cobro</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="codigogestion">Codigo</label>
+                            <input type="text" class="form-control form-control-sm" readonly id="gestioncodigo" name="gestioncodigo">
+                        </div>
+                        <div class="col-md-9">
+                            <label for="nombregestion">Nombre</label>
+                            <input type="text" class="form-control form-control-sm" readonly id="gestionnombre" name="gestionnombre">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="direcciongestion">Direccion</label>
+                            <textarea name="gestiondireccion" id="gestiondireccion" cols="30" rows="5" readonly class="form-control form-control-sm"></textarea>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+
+                        
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div><!-- FIN DE MODAL GESTION DE COBROS -->
     <?php
     include('../controladores/telefonos.php');
     ?>
