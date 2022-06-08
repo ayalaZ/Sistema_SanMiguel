@@ -189,7 +189,75 @@ $(document).ready(function () {
                 swal('Error', 'Ha ocurrido un error al traer la informacion del cliente', 'error');
             }
         });
+        gestionCobro($codigo);
     });
+    function gestionCobro(codigo) {
+        $cod = codigo;
+        $proceso = 'gestion';
+        $.ajax({
+            type: 'POST',
+            url: 'php/informacionCliente.php',
+            data: { proceso: $proceso, codigo: $cod },
+            dataType: 'Json',
+            success: function (datax) {
+                $("#gestioncodigo").val(datax.id);
+                $("#gestionnombre").val(datax.name);
+                $("#gestiondireccion").val(datax.address);
+                $("#idgestion").val(datax.idGestion);
+                if (datax.filas != 0) {
+                    $("#tablaGestion tbody").empty();
+                    var filas = datax.filas;
+                    for (var i = 0; i < filas; i++) {
+                        switch (datax.tabla[i].gestion) {
+                            case "0":
+                                $gestion = "SUSPENDER";
+                                break;
+                            case "1":
+                                $gestion = "PRORROGA DE 1 DIA";
+                                break;
+                            case "2":
+                                $gestion = "PRORROGA DE 2 DIAS";
+                                break;
+                            case "3":
+                                $gestion = "PRORROGA DE 3 DIAS";
+                                break;
+                            case "4":
+                                $gestion = "PRORROGA DE 4 DIAS";
+                                break;
+                            case "5":
+                                $gestion = "PRORROGA DE 5 DIAS";
+                                break;
+                            case "6":
+                                $gestion = "SUSPENDIDO";
+                                break;
+                            case "7":
+                                $gestion = "ENVIAR COBRADOR";
+                                break;
+                            case "8":
+                                $gestion = "CLIENTE PAGO";
+                                break;
+                            case "9":
+                                $gestion = "NO LOCALIZADO";
+                                break;
+                            default:
+                                $gestion = "SIN ASIGNAR";
+                                break;
+                        }
+                        var nuevafila = "<tr><td>" +
+                            datax.tabla[i].fechaGestion + "</td><td>" +
+                            datax.tabla[i].descripcion + "</td><td>" +
+                            $gestion + "</td><td>" +
+                            datax.tabla[i].fechaSuspension + "</td><td>" +
+                            datax.tabla[i].creadoPor + "</td><td>" +
+                            datax.tabla[i].tipoServicio + "</td></tr>";
+                        $("#tablaGestion tbody").append(nuevafila);
+                    }
+                } else {
+                    $("#tablaGestion tbody").empty();
+                }
+            }
+        });
+    }
 
     $("#servicio").change(function () {
         $servicio = $(this).val();
@@ -269,18 +337,18 @@ $(document).ready(function () {
         }
     });
 
-    $("#mover").change(function(){
-        if(this.checked){
+    $("#mover").change(function () {
+        if (this.checked) {
             $mover = 1;
             $proceso = 'mover';
             $codigo = $("#codigo").val();
             document.getElementById("xmeses").selectedIndex = 0;
             $.ajax({
-                type:'POST',
+                type: 'POST',
                 url: 'php/informacionCliente.php',
-                data:{mover: $mover, proceso:$proceso, codigo:$codigo},
-                dataType:'Json',
-                success:function(datax){
+                data: { mover: $mover, proceso: $proceso, codigo: $codigo },
+                dataType: 'Json',
+                success: function (datax) {
                     $("#meses").val(datax.meses);
                 }
             });
@@ -332,14 +400,14 @@ $(document).ready(function () {
         $servicio = $("#servicio").val();
         if ($("#mover").is(':checked')) {
             $mov = 1;
-        }else{
+        } else {
             $mov = 0;
         }
         $proceso = 'meses',
             $.ajax({
                 type: 'POST',
                 url: 'php/informacionCliente.php',
-                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo, serv: $servicio,mover:$mov },
+                data: { meses: $meses, cuota: $cuota, proceso: $proceso, porcentaje: $porcentaje, cod: $codigo, serv: $servicio, mover: $mov },
                 dataType: 'Json',
                 success: function (datax) {
                     $("#totalPagar").val(datax.cuota);
@@ -497,7 +565,7 @@ function abono() {
     if ($("#anularComp").is(':checked')) {
         $mensajes = 'Esta a punto de anular este recibo';
     } else {
-        $mensajes = "Esta a punto de abonar <mark style='background-color:yellow'>" + formatter.format($total) + "</mark> del cliente <mark style='background-color:yellow'>" + $codigo + " " + $nombre + "</mark> por el servicio de <mark style='background-color:yellow'>" + $servicio + "</mark> en el recibo numero <mark style='background-color:yellow'>" + $recibo +"</mark> Correspondiente al periodo de <mark style='background-color:yellow'>" + $otromeses +"</mark>";
+        $mensajes = "Esta a punto de abonar <mark style='background-color:yellow'>" + formatter.format($total) + "</mark> del cliente <mark style='background-color:yellow'>" + $codigo + " " + $nombre + "</mark> por el servicio de <mark style='background-color:yellow'>" + $servicio + "</mark> en el recibo numero <mark style='background-color:yellow'>" + $recibo + "</mark> Correspondiente al periodo de <mark style='background-color:yellow'>" + $otromeses + "</mark>";
     }
     swal({
         title: "¿Seguro que deseas continuar?",
@@ -543,7 +611,7 @@ function abono() {
                         }).then(function () {
                             window.open("php/comprobantePagox2.php?uaid1=" + datax.Crecibo + "&cod=" + datax.Ccodigo + "&desde=" + datax.Cdesde + "&hasta=" + datax.Chasta + "&tipoServicio=" + datax.Cservicio + "", "_blank");
                             setInterval('location.reload()', 500);
-                        }).catch(function(){
+                        }).catch(function () {
                             setInterval('location.reload()', 500);
                         });
                     }
@@ -553,3 +621,4 @@ function abono() {
         }
     });
 }
+

@@ -41,6 +41,11 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
     <link rel="stylesheet" href="css/abonos.css">
+    <style>
+        .modal-lg { 
+            max-width: 60% !important; 
+        }
+    </style>
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-collapse">
@@ -435,6 +440,9 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <button class="btn btn-danger btn-sm" id="addgestion" name="addgestion" style="border-radius: 50%!important;margin-left:95%!important;"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="row">
                         <div class="col-md-3">
                             <label for="codigogestion">Codigo</label>
                             <input type="text" class="form-control form-control-sm" readonly id="gestioncodigo" name="gestioncodigo">
@@ -447,14 +455,24 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
                     <div class="row">
                         <div class="col-md-12">
                             <label for="direcciongestion">Direccion</label>
-                            <textarea name="gestiondireccion" id="gestiondireccion" cols="30" rows="5" readonly class="form-control form-control-sm"></textarea>
+                            <textarea name="gestiondireccion" id="gestiondireccion" cols="30" rows="3" readonly class="form-control form-control-sm"></textarea>
                         </div>
+                        <input type="hidden" name="idgestion" id="idgestion">
                     </div>
-                    <table class="table">
+                    <table class="table" id="tablaGestion">
                         <thead>
-
-                        
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Descripcion</th>
+                                <th>Gestion</th>
+                                <th>Fecha Final</th>
+                                <th>Usuario</th>
+                                <th>Servicio</th>
+                            </tr>                        
                         </thead>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -474,6 +492,10 @@ $zonas = $mysqli->query("SELECT * FROM tbl_cobradores");
     <script>
         $(document).ready(function() {
             $('.buscador').select2();
+        });
+        $("#addgestion").on('click', function(){
+            $id = $("#idgestion").val();
+            window.open("gestionCobros.php?idGestion="+$id+"", '_blank');
         });
     </script>
     <script>

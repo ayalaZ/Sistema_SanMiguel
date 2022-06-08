@@ -655,4 +655,30 @@ switch ($proceso) {
         $xdatos['meses'] = $mes;
         echo json_encode($xdatos);
         break;
+    case 'gestion':
+        $codigo = $_POST['codigo'];
+        $gestion = $mysqli->query("SELECT fechaGestion, descripcion, gestion, fechaSuspension, tipoServicio, tbl_gestion_clientes.creadoPor FROM tbl_gestion_general INNER JOIN tbl_gestion_clientes ON tbl_gestion_general.idGestionGeneral = tbl_gestion_clientes.idGestionGeneral WHERE tbl_gestion_general.codigoCliente='$codigo' ORDER BY fechaGestion DESC LIMIT 3");
+        $generales = $mysqli->query("SELECT nombre,direccion FROM clientes WHERE cod_cliente='$codigo'");
+        $idGestion = $mysqli->query("SELECT tbl_gestion_clientes.idGestionGeneral FROM tbl_gestion_general INNER JOIN tbl_gestion_clientes ON tbl_gestion_general.idGestionGeneral = tbl_gestion_clientes.idGestionGeneral WHERE tbl_gestion_general.codigoCliente='$codigo'ORDER BY tbl_gestion_clientes.idGestionGeneral DESC LIMIT 1");
+        $datosGestion = $idGestion->fetch_array();
+        $datos = $generales->fetch_array();
+        $xdatos['name'] = $datos['nombre'];
+        $xdatos['address'] = $datos['direccion'];
+        $xdatos['id'] = $codigo;
+        $xdatos['idGestion'] = $datosGestion['idGestionGeneral'];
+        $contador = 0;
+        $xdatos['filas'] = $gestion->num_rows;
+        while ($datoss = $gestion->fetch_array()) {
+            $xdatos['tabla'][$contador] = [
+                'fechaGestion' => $datoss['fechaGestion'],
+                'descripcion' => $datoss['descripcion'],
+                'gestion' => $datoss['gestion'],
+                'fechaSuspension' => $datoss['fechaSuspension'],
+                'tipoServicio' => $datoss['tipoServicio'],
+                'creadoPor' => $datoss['creadoPor'],
+            ];
+            $contador += 1;
+        }
+        echo json_encode($xdatos);
+        break;
 }

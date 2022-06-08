@@ -178,6 +178,9 @@ if (isset($_GET['codigo'])) {
             <li class="nav-item">
                 <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#busquedaModal"><i class="fas fa-search"></i></a>
             </li>
+            <li>
+                <a href="#" class="nav-link" role="button" id="addgestion" name='addgestion'><i class="fas fa-money-check-alt"></i></a>
+            </li>
         </ul>
 
         <!-- Right navbar links -->
@@ -325,7 +328,7 @@ if (isset($_GET['codigo'])) {
                         <h2 style="font-weight: bold;">FICHA PARA VER INFORMACION DEL CLIENTE</h2>
                     </div>
                     <div class="row">
-                        <p><b style="color: #cc0000;font-size:large;"><?php echo $codigo." " ?></b><?php echo $arrayCliente['nombre'] ?></p>
+                        <p><b style="color: #cc0000;font-size:large;"><?php echo $codigo . " " ?></b><?php echo $arrayCliente['nombre'] ?></p>
                     </div>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -333,6 +336,12 @@ if (isset($_GET['codigo'])) {
                                 <div class="col-md-2 codigo">
                                     <label for="codigo">Código del cliente</label>
                                     <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" value="<?php echo $codigo ?>" style="font-weight: bold;">
+                                    <?php 
+                                     $idGestion = $mysqli->query("SELECT tbl_gestion_clientes.idGestionGeneral FROM tbl_gestion_general INNER JOIN tbl_gestion_clientes ON tbl_gestion_general.idGestionGeneral = tbl_gestion_clientes.idGestionGeneral WHERE tbl_gestion_general.codigoCliente='$codigo'ORDER BY tbl_gestion_clientes.idGestionGeneral DESC LIMIT 1");
+                                     $datosGestion = $idGestion->fetch_array();
+
+                                    ?>
+                                    <input type="hidden" name="idgestion" id="idgestion" value="<?php echo $datosGestion['idGestionGeneral'] ?>">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="contrato">N° de contrato (CABLE)</label>
@@ -1617,6 +1626,10 @@ if (isset($_GET['codigo'])) {
     });
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
+    });
+    $("#addgestion").on('click', function() {
+        $id = $("#idgestion").val();
+        window.open("gestionCobros.php?idGestion=" + $id + "", '_blank');
     });
     $('.tabla').DataTable({
         dom: 'Pfrtip',
