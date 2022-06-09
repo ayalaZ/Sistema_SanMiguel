@@ -382,6 +382,71 @@ $(".editar").click(function() {
                 $("#Editdescripcion").val(datax.descripcion);
                 $("#Editcredito").val(datax.credito);
                 $("#Editgarantia").val(datax.garantia);
+
+                if (datax.filasproveedores != 0) {
+                    $("#Editproveedor").empty();
+                    var filasproveedor = datax.filasproveedores;
+                    for(var i = 0; i< filasproveedor; i++){
+                        if (datax.idProveedor == datax.listaproveedores[i].IdProveedor) {
+                            var nuevafila = "<option value="+datax.listaproveedores[i].IdProveedor+" selected>"+datax.listaproveedores[i].nombre+"</option>";                            
+                        }else{
+                            var nuevafila = "<option value="+datax.listaproveedores[i].IdProveedor+">"+datax.listaproveedores[i].nombre+"</option>";
+                        }
+                        $("#Editproveedor").append(nuevafila);
+                    }
+                }
+
+                if (datax.filastipo != 0) {
+                    $("#Edittipo").empty();
+                    var filastipo = datax.filastipo;
+                    for(var i = 0; i< filastipo; i++){
+                        if (datax.idTipoProducto == datax.listatipo[i].idTipo) {
+                            var nuevafila = "<option value="+datax.listatipo[i].idTipo+" selected>"+datax.listatipo[i].nombre+"</option>";                            
+                        }else{
+                            var nuevafila = "<option value="+datax.listatipo[i].idTipo+">"+datax.listatipo[i].nombre+"</option>";
+                        }
+                        $("#Edittipo").append(nuevafila);
+                    }
+                }
+
+                if(datax.filascategoria != 0) {
+                    $("#Editcategoria").empty();
+                    var filascategoria = datax.filascategoria;
+                    for(var i = 0; i< filascategoria; i++){
+                        if (datax.idCategoria == datax.listacategoria[i].idCategoria) {
+                            var nuevafila = "<option value="+datax.listacategoria[i].idCategoria+" selected>"+datax.listacategoria[i].nombre+"</option>";                            
+                        }else{
+                            var nuevafila = "<option value="+datax.listacategoria[i].idCategoria+">"+datax.listacategoria[i].nombre+"</option>";
+                        }
+                        $("#Editcategoria").append(nuevafila);
+                    }
+                }
+
+                if(datax.filasbodega != 0) {
+                    $("#Editbodega").empty();
+                    var filasbodega = datax.filasbodegas;
+                    for(var i = 0; i< filasbodega; i++){
+                        if (datax.idBodega == datax.listabodegas[i].idBodega) {
+                            var nuevafila = "<option value="+datax.listabodegas[i].idBodega+" selected>"+datax.listabodegas[i].nombre+"</option>";                            
+                        }else{
+                            var nuevafila = "<option value="+datax.listabodegas[i].idBodega+">"+datax.listabodegas[i].nombre+"</option>";
+                        }
+                        $("#Editbodega").append(nuevafila);
+                    }
+                }
+
+                if(datax.filasunidad != 0) {
+                    $("#Editunidad").empty();
+                    var filasunidad = datax.filasunidad;
+                    for(var i = 0; i< filasunidad; i++){
+                        if (datax.idUnidad == datax.listaunidad[i].idUnidad) {
+                            var nuevafila = "<option value="+datax.listaunidad[i].idUnidad+" selected>"+datax.listaunidad[i].nombre+"</option>";                            
+                        }else{
+                            var nuevafila = "<option value="+datax.listaunidad[i].idUnidad+">"+datax.listaunidad[i].nombre+"</option>";
+                        }
+                        $("#Editunidad").append(nuevafila);
+                    }
+                }
             }
         });
 });

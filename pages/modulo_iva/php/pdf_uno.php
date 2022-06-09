@@ -120,7 +120,7 @@ if ($detallado == 1) {
             if ($datos['tipoServicio'] == 'C') {
                 $monto = $datos['cuotaCable'];
                 $montoCancelado = 0.00;
-                $separado = round(($datos['cuotaCable'] / 1.13),2,PHP_ROUND_HALF_EVEN);
+                $separado = ($datos['cuotaCable'] / 1.13);
                 $iva = ($separado * 0.13);
                 $internasGravadas = $datos['cuotaCable'] - $iva;
                 $debitoFiscal = $iva;
@@ -132,7 +132,7 @@ if ($detallado == 1) {
             } else {
                 $monto = $datos['cuotaInternet'];
                 $montoCancelado = 0.00;
-                $separado = round(($datos['cuotaInternet'] / 1.13),2,PHP_ROUND_HALF_EVEN);
+                $separado = ($datos['cuotaInternet'] / 1.13);
                 $iva = ($separado * 0.13);
                 $internasGravadas = $datos['cuotaInternet'] - $iva;
                 $debitoFiscal = $iva;
@@ -146,7 +146,7 @@ if ($detallado == 1) {
         $totalA = $totalA + $montoCancelado;
         $pdf->Cell(12.5, 5, utf8_decode(number_format($montoCancelado, 2)), 0, 0, 'C');
         $totalB = $totalB + $internasGravadas;
-        $pdf->Cell(20, 5, utf8_decode(number_format($internasGravadas, 2)), 0, 0, 'C');
+        $pdf->Cell(20, 5, utf8_decode(number_format($internasGravadas,2)), 0, 0, 'C');
         $totalC = $totalC + $debitoFiscal;
         $pdf->Cell(15, 5, utf8_decode(number_format($debitoFiscal, 2)), 0, 0, 'C');
         $totalD = $totalD + $montoCancelado;

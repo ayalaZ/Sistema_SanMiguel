@@ -15,6 +15,7 @@ $mysqli = new mysqli($host, $user, $password, $database);
 $proceso = $_POST['proceso'];
 
 switch ($proceso) {
+
     case 'Ver':
         $id = $_POST['id'];
         $articulo = $mysqli->query("SELECT * FROM tbl_articulo WHERE IdArticulo='$id'");
@@ -41,7 +42,6 @@ switch ($proceso) {
         $xdatos['tipo'] = $tipos['NombreTipoProducto'];
         $xdatos['categoria'] = $nombrecategoria['NombreCategoria'];
         $xdatos['bodega'] = $nombreBodega['NombreBodega'];
-
         echo json_encode($xdatos);
         break;
     case 'salidad':
@@ -89,6 +89,67 @@ switch ($proceso) {
         $xdatos['descripcion'] = $datos['Descripcion'];
         $xdatos['credito'] = $datos['nFactura'];
         $xdatos['garantia'] = $datos['pGarantia'];
+        $xdatos['idProveedor'] = $datos['IdProveedor'];
+        $xdatos['idTipoProducto'] = $datos['IdTipoProducto'];
+        $xdatos['idCategoria'] = $datos['IdCategoria'];
+        $xdatos['idBodega'] = $datos['IdBodega'];
+        $xdatos['idUnidad'] = $datos['IdUnidadMedida'];
+
+        $listproveedores = $mysqli->query("SELECT * FROM tbl_proveedor");
+        $contador1 = 0;
+        $xdatos['filasproveedores'] = $listproveedores->num_rows;
+        while ($datosproveedores = $listproveedores->fetch_array()) {
+            $xdatos['listaproveedores'][$contador1] = [
+                'IdProveedor' => $datosproveedores['IdProveedor'],
+                'nombre' => $datosproveedores['Nombre'],
+            ];
+            $contador1+=1;
+        }
+
+        $listtipo = $mysqli->query("SELECT * FROM tbl_tipoproducto");
+        $contador2 = 0;
+        $xdatos['filastipo'] = $listtipo->num_rows;
+        while ($datostipo = $listtipo->fetch_array()) {
+            $xdatos['listatipo'][$contador2] = [
+                'idTipo' => $datostipo['IdTipoProducto'],
+                'nombre' => $datostipo['NombreTipoProducto'],
+            ];
+            $contador2+=1;
+        }
+
+        $listCategoria = $mysqli->query("SELECT * FROM tbl_categoria");
+        $contador3 = 0;
+        $xdatos['filascategoria'] = $listCategoria->num_rows;
+        while ($datostipo = $listCategoria->fetch_array()) {
+            $xdatos['listacategoria'][$contador3] = [
+                'idCategoria' => $datostipo['IdCategoria'],
+                'nombre' => $datostipo['NombreCategoria'],
+            ];
+            $contador3+=1;
+        }
+
+        $listbodegas = $mysqli->query("SELECT * FROM tbl_bodega");
+        $contador4 = 0;
+        $xdatos['filasbodegas'] = $listbodegas->num_rows;
+        while ($datostipo = $listbodegas->fetch_array()) {
+            $xdatos['listabodegas'][$contador4] = [
+                'idBodega' => $datostipo['IdBodega'],
+                'nombre' => $datostipo['NombreBodega'],
+            ];
+            $contador4+=1;
+        }
+
+        $listunidad = $mysqli->query("SELECT * FROM tbl_unidadmedida");
+        $contador5 = 0;
+        $xdatos['filasunidad'] = $listunidad->num_rows;
+        while ($datostipo = $listunidad->fetch_array()) {
+            $xdatos['listaunidad'][$contador5] = [
+                'idUnidad' => $datostipo['IdUnidadMedida'],
+                'nombre' => $datostipo['NombreUnidadMedida'],
+            ];
+            $contador5+=1;
+        }
+
         echo json_encode($xdatos);
         break;
     case 'aplicaredicion':

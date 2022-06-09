@@ -642,7 +642,7 @@ if (isset($_POST['bodega'])) {
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="EditarArticuloLabel">Editar articulo prueba</h5>
+                    <h5 class="modal-title" id="EditarArticuloLabel">Editar articulo</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -664,14 +664,7 @@ if (isset($_POST['bodega'])) {
                                 <label for="proveedor">Proveedor</label>
                                 <select name="Editproveedor" id="Editproveedor" class="form-control">
                                     <option value="">Seleccione proveedor del articulo</option>
-                                    <?php
-                                    $tipo = $mysqli->query("SELECT * FROM tbl_proveedor");
-                                    while ($datos = $tipo->fetch_array()) {
-                                    ?>
-                                        <option value="<?php echo $datos['IdProveedor'] ?>"><?php echo $datos['Nombre'] ?></option>
-                                    <?php
-                                    }
-                                    ?>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -710,28 +703,14 @@ if (isset($_POST['bodega'])) {
                                 <label for="tipo">Tipo</label>
                                 <select name="Edittipo" id="Edittipo" class="form-control">
                                     <option value="">Seleccione tipo de articulo</option>
-                                    <?php
-                                    $tipo = $mysqli->query("SELECT * FROM tbl_tipoproducto");
-                                    while ($datos = $tipo->fetch_array()) {
-                                    ?>
-                                        <option value="<?php echo $datos['IdTipoProducto'] ?>"><?php echo $datos['NombreTipoProducto'] ?></option>
-                                    <?php
-                                    }
-                                    ?>
+                                    
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="categoria">Categoria</label>
                                 <select name="Editcategoria" id="Editcategoria" class="form-control">
                                     <option value="">Seleccione categoria de articulo</option>
-                                    <?php
-                                    $tipo = $mysqli->query("SELECT * FROM tbl_categoria");
-                                    while ($datos = $tipo->fetch_array()) {
-                                    ?>
-                                        <option value="<?php echo $datos['IdCategoria'] ?>"><?php echo $datos['NombreCategoria'] ?></option>
-                                    <?php
-                                    }
-                                    ?>
+                                   
                                 </select>
                             </div>
                         </div>
@@ -740,28 +719,12 @@ if (isset($_POST['bodega'])) {
                                 <label for="bodega">Bodega</label>
                                 <select name="Editbodega" id="Editbodega" class="form-control">
                                     <option value="">Seleccione bodega de articulo</option>
-                                    <?php
-                                    $bodegas = $mysqli->query("SELECT * FROM tbl_bodega");
-                                    while ($datos = $bodegas->fetch_array()) {
-                                    ?>
-                                        <option value="<?php echo $datos['IdBodega'] ?>"><?php echo $datos['NombreBodega'] ?></option>
-                                    <?php
-                                    }
-                                    ?>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="unidad">Unidad de medida</label>
                                 <select name="Editunidad" id="Editunidad" class="form-control">
                                     <option value="">Seleccione unidad de articulo</option>
-                                    <?php
-                                    $tipo = $mysqli->query("SELECT * FROM tbl_unidadmedida");
-                                    while ($datos = $tipo->fetch_array()) {
-                                    ?>
-                                        <option value="<?php echo $datos['IdUnidadMedida'] ?>"><?php echo $datos['NombreUnidadMedida'] ?></option>
-                                    <?php
-                                    }
-                                    ?>
                                 </select>
                             </div>
                         </div>
