@@ -151,6 +151,7 @@ function setMenu($permisosActuales, $permisoRequerido)
                     ?>
                         <li><a href="#" data-toggle="modal" data-target="#eliminarAbonos" class="dropdown-item">Administrar abonos</a></li>
                         <li><a href="ventasManuales.php" class="dropdown-item">Ventas manuales</a></li>
+                        <li><a href="Banco_Promerica/bancoP.php" class="dropdown-item">Pagos Banco Promerica</a></li>
                     <?php
                     } else {
                     ?>
