@@ -172,9 +172,25 @@ include("php/primero.php");
             <div class="card-header">
                 <h3>Pagos con Banco Promerica</h3>
                 <div class="row">
-                    <div class="col-md-12">
-                        <label for="">Descargar archivo .TXT</label><br>
-                        <button class="btn btn-lg btn-danger" id="descarga" name="descarga"><i class="fas fa-file-invoice"></i></button>
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card" style="width: 18rem;">
+                            <center><i class="fas fa-file fa-2x fa-lg card-img-top"></i></center>
+                            <div class="card-body">
+                                <h3 class="card-title" style="font-weight: bold;">DESCARGAR LISTADO DE CLIENTES</h3>
+                                <p class="card-text">Aqui puede descargar el archivo .TXT que despues se debe subir a la plataforma de Banco Promerica</p>
+                                <button class="btn btn-danger stretched-link" id="descarga" name="descarga">Descargar</button>
+                            </div>
+                        </div>
+                        <!--<center>
+                            <label for="">Descargar archivo .TXT</label><br>
+                            <button class="btn btn-lg btn-danger btn-block" id="descarga" name="descarga" style="height: 100%!important;"><i class="fas fa-file fa-2x fa-lg"></i></button>
+                        </center>-->
+                    </div>
+                    <div class="col-md-3">
+
                     </div>
                 </div>
             </div>
@@ -339,4 +355,5 @@ include("php/primero.php");
 <!-- AdminLTE App -->
 <script src="../../herramientas/dist/js/adminlte.js"></script>
 <script src="js/primero.js"></script>
+
 </html>
