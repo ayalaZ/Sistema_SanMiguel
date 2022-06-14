@@ -177,7 +177,7 @@ include("php/primero.php");
                     </div>
                     <div class="col-md-6">
                         <div class="card" style="width: 18rem;">
-                            <center><i class="fas fa-file fa-2x fa-lg card-img-top"></i></center>
+                            <center><i class="fas fa-file-download fa-2x fa-lg card-img-top" style="margin-top: 20px;"></i></center>
                             <div class="card-body">
                                 <h3 class="card-title" style="font-weight: bold;">DESCARGAR LISTADO DE CLIENTES</h3>
                                 <p class="card-text">Aqui puede descargar el archivo .TXT que despues se debe subir a la plataforma de Banco Promerica</p>
