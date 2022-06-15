@@ -172,10 +172,10 @@ include("php/primero.php");
             <div class="card-header">
                 <h3>Pagos con Banco Promerica</h3>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="card" style="width: 18rem;">
                             <center><i class="fas fa-file-download fa-2x fa-lg card-img-top" style="margin-top: 20px;"></i></center>
                             <div class="card-body">
@@ -184,10 +184,21 @@ include("php/primero.php");
                                 <button class="btn btn-danger stretched-link" id="descarga" name="descarga">Descargar</button>
                             </div>
                         </div>
-                        <!--<center>
-                            <label for="">Descargar archivo .TXT</label><br>
-                            <button class="btn btn-lg btn-danger btn-block" id="descarga" name="descarga" style="height: 100%!important;"><i class="fas fa-file fa-2x fa-lg"></i></button>
-                        </center>-->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style=" width:25rem;">
+                            <center><i class="fas fa-file-upload fa-2x fa-lg card-img-top" style="margin-top: 20px;"></i></center>
+                            <div class="card-body">
+                                <h3 class="card-title" style="font-weight: bold;">CARGAR LISTADO DE CLIENTES</h3>
+                                <P class="card-text">Aqui puede subir el archiv .csv para aplicar los abonos.</P>
+                                <form>
+                                    <div class="form-group">
+                                        <input type="file" name="cargar" id="cargar" class="form-control-file">
+                                    </div>
+                                    <button type="submit" class="btn btn-danger" id="procesar" name="procesar">Procesar</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-3">
 

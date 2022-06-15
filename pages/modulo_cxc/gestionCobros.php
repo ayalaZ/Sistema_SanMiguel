@@ -745,7 +745,7 @@ if(!isset($_SESSION))
     echo "<script>
         function verCliente(){
             var cod = document.getElementById("codigoCliente").value;
-            window.open("infoCliente.php?id="+cod);
+            window.open("ver_cliente.php?codigo="+cod);
         }
 
     </script>";
